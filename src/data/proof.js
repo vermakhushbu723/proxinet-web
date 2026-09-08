@@ -1,0 +1,158 @@
+// NOTE: This is representative sample content. Before go-live, replace it with real
+// client names, logos and numbers — with the client's written permission.
+export const caseStudies = [
+  {
+    slug: 'auto-components-dc-refresh',
+    title: 'Data center refresh for an auto components maker',
+    client: 'Auto Components Manufacturer', industry: 'manufacturing', size: '650 employees, 2 plants',
+    tech: ['data-center', 'backup-dr'],
+    metric: { value: '40%', label: 'downtime reduction' },
+    metrics: [
+      { value: '40%', label: 'Less unplanned downtime' },
+      { value: '3:1', label: 'Server consolidation ratio' },
+      { value: '18 min', label: 'Restore time, down from 6 hours' },
+    ],
+    challenge: 'The existing rack servers were past end-of-service-life with expired warranties, and the ERP was going down two to three times a month. Backups ran to tape and a restore had never been tested.',
+    solution: 'We designed a virtualised three-node cluster on shared SAN storage with high availability enabled. All workloads were migrated P2V across weekend windows. Veeam was deployed for image-level backup with an immutable repository and SureBackup verification.',
+    stack: ['VMware vSphere cluster (3 nodes)', 'Dell PowerEdge servers', 'iSCSI SAN with tiering', 'Veeam Backup & Replication', 'Immutable backup repository'],
+    result: 'ERP downtime fell by 40 percent, restore time dropped from six hours to 18 minutes, and the rack footprint shrank threefold. A monthly SLA report now goes out under the AMC.',
+    quote: { text: 'For the first time we know the backup will actually restore — because it is verified automatically every week.', by: 'IT Manager', role: 'Auto Components Manufacturer' },
+  },
+  {
+    slug: 'nbfc-security-hardening',
+    title: 'Branch security hardening for an NBFC',
+    client: 'NBFC with 24 branches', industry: 'bfsi', size: '24 branches, 400 users',
+    tech: ['cyber-security', 'network'],
+    metric: { value: '92%', label: 'phishing click-rate drop' },
+    metrics: [
+      { value: '92%', label: 'Drop in phishing click-rate' },
+      { value: '24', label: 'Branches secured' },
+      { value: '100%', label: 'Audit findings closed' },
+    ],
+    challenge: 'An RBI cyber security framework audit surfaced multiple gaps — endpoint protection was still legacy antivirus, email had no DMARC, and branch firewall rules had never been reviewed.',
+    solution: 'We rolled out EDR across 400 endpoints, deployed an email security gateway with SPF, DKIM and DMARC enforcement, and audited and hardened firewall rules at all 24 branches. Central log collection was onboarded into a SIEM.',
+    stack: ['EDR across 400 endpoints', 'Email security gateway', 'DMARC enforcement (p=reject)', 'NGFW rule hardening at 24 branches', 'Centralised SIEM log collection'],
+    result: 'Simulated phishing click-rate fell by 92 percent. Every audit finding was marked closed in the following cycle, and a security posture report now goes out monthly.',
+    quote: { text: 'Audit documentation now arrives ready-made — that is the single biggest relief for us.', by: 'Head of IT', role: 'NBFC' },
+  },
+  {
+    slug: 'pharma-cloud-migration',
+    title: 'Microsoft 365 and Azure migration for a pharma manufacturer',
+    client: 'Pharmaceutical Manufacturer', industry: 'pharma-healthcare', size: '900 users',
+    tech: ['cloud'],
+    metric: { value: '₹9L', label: 'annual saving' },
+    metrics: [
+      { value: '₹9L', label: 'Annual infrastructure saving' },
+      { value: '0', label: 'Data loss incidents' },
+      { value: '6 weeks', label: 'Total migration time' },
+    ],
+    challenge: 'The on-prem Exchange server was at capacity and a large hardware refresh capex was looming. The GxP-validated systems could not be touched.',
+    solution: 'We took a hybrid approach — mail and collaboration moved to Microsoft 365 while validated systems stayed on-premise, with identity federation across both. The migration ran in six waves, each followed by UAT.',
+    stack: ['Microsoft 365 (Exchange Online, Teams, SharePoint)', 'Entra ID hybrid identity', 'Intune device compliance', 'Azure Backup for on-prem validated systems'],
+    result: 'Roughly ₹9 lakh saved in annual infrastructure cost, zero data loss, and remote access is now MFA-protected. The validated environment was left untouched.',
+    quote: { text: 'The best part — they did not touch our validated environment, which other vendors kept ignoring.', by: 'IT Head', role: 'Pharmaceutical Manufacturer' },
+  },
+  {
+    slug: 'campus-wifi-rollout',
+    title: 'Campus-wide Wi-Fi 6 rollout for a university',
+    client: 'Private University', industry: 'education', size: '4 blocks, 6000 users',
+    tech: ['network'],
+    metric: { value: '6,000', label: 'concurrent users' },
+    metrics: [
+      { value: '6,000', label: 'Concurrent users supported' },
+      { value: '180', label: 'Access points deployed' },
+      { value: '0', label: 'Dead zones after survey' },
+    ],
+    challenge: 'Classrooms and hostels had dead zones, the exam portal crashed during peak hours, and there was no separate guest network.',
+    solution: 'After a predictive RF survey we deployed 180 Wi-Fi 6 access points with VLAN segmentation across separate student, staff and guest SSIDs, plus content filtering policies.',
+    stack: ['Wi-Fi 6 access points (180)', 'Controller-based management', 'VLAN segmentation', 'Content filtering', 'Post-install heatmap validation'],
+    result: 'The post-install heatmap showed zero dead zones, the exam portal now handles peak load, and the guest network is fully isolated.',
+    quote: { text: 'The heatmap report finally showed management where the money went and what it bought.', by: 'Registrar', role: 'Private University' },
+  },
+  {
+    slug: 'retail-multi-store-sdwan',
+    title: 'SD-WAN deployment across a retail chain',
+    client: 'Retail Chain', industry: 'retail-ecommerce', size: '38 stores',
+    tech: ['network'],
+    metric: { value: '35%', label: 'connectivity cost saving' },
+    metrics: [
+      { value: '35%', label: 'Lower connectivity cost' },
+      { value: '38', label: 'Stores connected' },
+      { value: '99.8%', label: 'Store uptime' },
+    ],
+    challenge: 'An MPLS link at every store was expensive, and a single link failure took the POS system offline.',
+    solution: 'We deployed SD-WAN with dual broadband and LTE failover at each store. Application-aware routing prioritised POS traffic, and zero-touch provisioning sped up the rollout.',
+    stack: ['SD-WAN edge devices (38 sites)', 'Dual broadband plus LTE failover', 'Application-aware path selection', 'Central policy console'],
+    result: 'Connectivity cost dropped 35 percent, store uptime reached 99.8 percent, and a new store network now goes live in a single day.',
+    quote: { text: 'Opening a new store is no longer an IT bottleneck.', by: 'Operations Head', role: 'Retail Chain' },
+  },
+  {
+    slug: 'law-firm-dlp',
+    title: 'DLP and secure collaboration at a law firm',
+    client: 'Corporate Law Firm', industry: 'legal', size: '120 users',
+    tech: ['cyber-security', 'cloud'],
+    metric: { value: '100%', label: 'documents classified' },
+    metrics: [
+      { value: '100%', label: 'Matter documents classified' },
+      { value: '0', label: 'Data leak incidents' },
+      { value: '15 days', label: 'Rollout time' },
+    ],
+    challenge: 'Confidential matter documents were leaving the firm through USB drives and personal email, with no visibility at all.',
+    solution: 'We implemented content classification policies and endpoint DLP with USB control, plus secure external sharing through managed links. An exception workflow was built for partners.',
+    stack: ['Endpoint and email DLP', 'Content classification labels', 'USB and cloud upload control', 'Managed external sharing links'],
+    result: 'Every matter document is now classified, unauthorised transfers are blocked, and a full audit trail is available.',
+    quote: { text: 'Client confidentiality is now enforced by policy, not by trust.', by: 'Managing Partner', role: 'Corporate Law Firm' },
+  },
+];
+
+export const testimonials = [
+  { text: 'Response times stay inside the SLA every time. The escalation matrix is published, so we always know who to call.', by: 'IT Manager', role: 'Auto Components Manufacturer', industry: 'Manufacturing' },
+  { text: 'Audit documentation arrives ready-made — that is the single biggest relief for our compliance team.', by: 'Head of IT', role: 'NBFC', industry: 'BFSI' },
+  { text: 'Not a single production day was affected during the migration. The planning was solid.', by: 'IT Head', role: 'Pharmaceutical Manufacturer', industry: 'Pharma' },
+  { text: 'The heatmap report showed management exactly what the investment delivered.', by: 'Registrar', role: 'Private University', industry: 'Education' },
+];
+
+export const partners = [
+  { name: 'Microsoft', tier: 'Solutions Partner', cat: 'Cloud & Productivity', color: '#0078d4' },
+  { name: 'Dell Technologies', tier: 'Gold Partner', cat: 'Server & Storage', color: '#0076ce' },
+  { name: 'Fortinet', tier: 'Advanced Partner', cat: 'Network Security', color: '#ee3124' },
+  { name: 'Sophos', tier: 'Silver Partner', cat: 'Endpoint Security', color: '#0088cc' },
+  { name: 'Veeam', tier: 'ProPartner', cat: 'Backup & DR', color: '#00b336' },
+  { name: 'VMware', tier: 'Solution Provider', cat: 'Virtualization', color: '#607078' },
+  { name: 'Cisco', tier: 'Select Partner', cat: 'Networking', color: '#1ba0d7' },
+  { name: 'HPE', tier: 'Business Partner', cat: 'Server & Storage', color: '#01a982' },
+  { name: 'Lenovo', tier: 'Authorised Partner', cat: 'Compute', color: '#e2231a' },
+  { name: 'AWS', tier: 'Registered Partner', cat: 'Cloud', color: '#ff9900' },
+  { name: 'Sonicwall', tier: 'Partner', cat: 'Firewall', color: '#ff791a' },
+  { name: 'Seqrite', tier: 'Partner', cat: 'Endpoint Security', color: '#c8102e' },
+];
+
+export const certifications = [
+  { name: 'ISO 27001:2022', desc: 'Information Security Management System', status: 'Certified' },
+  { name: 'ISO 9001:2015', desc: 'Quality Management System', status: 'Certified' },
+  { name: 'MSME / Udyam', desc: 'Registered enterprise', status: 'Registered' },
+  { name: 'GST Registered', desc: 'Compliant tax entity', status: 'Active' },
+  { name: 'ITIL v4 Practices', desc: 'Service delivery framework', status: 'Adopted' },
+  { name: 'Background Verified Staff', desc: 'All deployed engineers', status: 'Policy' },
+];
+
+export const clientLogos = [
+  { name: 'Auto Components Mfg.', industry: 'manufacturing' },
+  { name: 'NBFC Group', industry: 'bfsi' },
+  { name: 'Pharma Labs', industry: 'pharma-healthcare' },
+  { name: 'Private University', industry: 'education' },
+  { name: 'Retail Chain', industry: 'retail-ecommerce' },
+  { name: 'Corporate Law Firm', industry: 'legal' },
+  { name: 'Precision Tools', industry: 'manufacturing' },
+  { name: 'Housing Finance', industry: 'bfsi' },
+  { name: 'Diagnostics Network', industry: 'pharma-healthcare' },
+  { name: 'Engineering College', industry: 'education' },
+  { name: 'Hotel Group', industry: 'hospitality-tourism' },
+  { name: 'BPO Services', industry: 'it-ites' },
+  { name: 'Infra Projects Ltd.', industry: 'construction-real-estate' },
+  { name: 'Textile Mills', industry: 'manufacturing' },
+  { name: 'Fintech Startup', industry: 'bfsi' },
+  { name: 'Speciality Clinic', industry: 'pharma-healthcare' },
+];
+
+export const findCase = (slug) => caseStudies.find((c) => c.slug === slug);
