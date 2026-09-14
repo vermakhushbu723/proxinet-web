@@ -46,6 +46,9 @@ function Shell() {
   const loc = useLocation();
   const isPortalLogin = loc.pathname === '/portal/login';
 
+  // Client dashboard uses its own admin-style layout (sidebar + header), not the website chrome
+  if (loc.pathname.startsWith('/portal/dashboard')) return <PortalDashboard />;
+
   return (
     <div className="flex min-h-screen flex-col pb-14 sm:pb-0">
       <a
@@ -137,15 +140,15 @@ function Shell() {
 export default function App() {
   const [dark, setDark] = useState(() => {
     try {
-      const saved = localStorage.getItem('px-theme');
-      if (saved) return saved === 'dark';
+      // Light is the default; dark only if the visitor chose it from the navbar toggle
+      return localStorage.getItem('px-theme-v2') === 'dark';
     } catch { /* private mode / blocked storage */ }
-    return window.matchMedia?.('(prefers-color-scheme: dark)').matches ?? false;
+    return false;
   });
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', dark);
-    try { localStorage.setItem('px-theme', dark ? 'dark' : 'light'); } catch { /* ignore */ }
+    try { localStorage.setItem('px-theme-v2', dark ? 'dark' : 'light'); } catch { /* ignore */ }
   }, [dark]);
 
   const ctx = useMemo(() => ({ dark, toggle: () => setDark((d) => !d) }), [dark]);

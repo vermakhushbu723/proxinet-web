@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Button, Form, Input, Checkbox, Alert, Tabs, Table, Tag, Progress, Statistic,
-  Timeline, Modal, Select, message, Badge, Descriptions,
+  Timeline, Modal, Select, message, Badge, Menu, Drawer, Dropdown, Avatar,
 } from 'antd';
 import {
   LockOutlined, UserOutlined, PlusOutlined, CheckCircleFilled,
   WarningFilled, ClockCircleOutlined, FileTextOutlined, DesktopOutlined,
-  SafetyCertificateOutlined, DownloadOutlined,
+  SafetyCertificateOutlined, DownloadOutlined, DashboardOutlined, CustomerServiceOutlined,
+  ApartmentOutlined, MenuFoldOutlined, MenuUnfoldOutlined, SearchOutlined, BellOutlined,
+  SunOutlined, MoonOutlined, LogoutOutlined, HomeOutlined,
 } from '@ant-design/icons';
-import { Reveal, SectionHead, Counter } from '../components/ui';
+import { Reveal, SectionHead, useTheme } from '../components/ui';
 import { PageHero } from '../components/blocks';
 import { company } from '../data/company';
 import Logo from '../components/Logo';
@@ -119,160 +121,289 @@ export function PortalLogin() {
   );
 }
 
-/* =================== DASHBOARD =================== */
+/* =================== DASHBOARD (admin-style layout) =================== */
+const navItems = [
+  { key: 'overview', icon: <DashboardOutlined />, label: 'Overview' },
+  { key: 'tickets', icon: <CustomerServiceOutlined />, label: 'Tickets' },
+  { key: 'assets', icon: <DesktopOutlined />, label: 'Assets' },
+  { key: 'licences', icon: <SafetyCertificateOutlined />, label: 'Licences' },
+  { key: 'reports', icon: <FileTextOutlined />, label: 'Reports & Docs' },
+  { key: 'escalation', icon: <ApartmentOutlined />, label: 'Escalation' },
+];
+
+const cardCls = 'rounded-xl border border-slate-200 bg-white dark:border-white/10 dark:bg-[#101d2b]';
+
+function TicketsTable({ rows = tickets }) {
+  return (
+    <Table
+      dataSource={rows.map((t) => ({ ...t, key: t.id }))} pagination={false} scroll={{ x: 820 }}
+      columns={[
+        { title: 'ID', dataIndex: 'id', render: (v) => <span className="font-mono text-[13px] font-semibold text-brand-600">{v}</span> },
+        { title: 'Subject', dataIndex: 'subject', width: 300 },
+        { title: 'Priority', dataIndex: 'pri', render: (v) => <Tag color={priColor[v]}>{v}</Tag> },
+        { title: 'Status', dataIndex: 'status', render: (v) => <Badge status={statusColor[v]} text={v} /> },
+        { title: 'Assigned', dataIndex: 'owner' },
+        { title: 'Age', dataIndex: 'age' },
+        {
+          title: 'SLA', dataIndex: 'sla', width: 130,
+          render: (v) => (
+            <Progress
+              percent={v} size="small"
+              strokeColor={v >= 100 ? '#12a06a' : v > 60 ? '#d18700' : '#d62b1f'}
+              format={(p) => (p >= 100 ? 'Met' : `${p}%`)}
+            />
+          ),
+        },
+      ]}
+    />
+  );
+}
+
+function Panel({ title, extra, children, className = '' }) {
+  return (
+    <div className={`${cardCls} ${className}`}>
+      {title && (
+        <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-5 py-3.5 dark:border-white/10">
+          <h2 className="font-display text-[15px] font-semibold text-slate-900 dark:text-white">{title}</h2>
+          {extra}
+        </div>
+      )}
+      <div className="p-5">{children}</div>
+    </div>
+  );
+}
+
+function SideNav({ active, onSelect, collapsed = false }) {
+  return (
+    <div className="flex h-full flex-col">
+      <div className="flex h-16 shrink-0 items-center border-b border-slate-200 px-5 dark:border-white/10">
+        <Link to="/" aria-label="ProXinet home"><Logo compact={collapsed} /></Link>
+      </div>
+      <Menu
+        mode="inline" inlineCollapsed={collapsed} selectedKeys={[active]}
+        items={navItems} onClick={({ key }) => onSelect(key)}
+        className="!flex-1 !border-e-0 !px-2 !pt-3"
+      />
+      {!collapsed && (
+        <div className="m-3 rounded-lg bg-brand-50 p-3 text-[12.5px] dark:bg-white/5">
+          <p className="font-semibold text-slate-800 dark:text-slate-100">24×7 NOC</p>
+          <p className="text-slate-500">{company.phones[0]}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function PortalDashboard() {
+  const nav = useNavigate();
+  const { dark, toggle } = useTheme();
+  const [section, setSection] = useState('overview');
+  const [collapsed, setCollapsed] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [newTicket, setNewTicket] = useState(false);
 
+  const go = (key) => { setSection(key); setMobileOpen(false); };
+  const current = navItems.find((n) => n.key === section);
+
   const kpis = [
-    { k: 'Uptime this month', v: '99.94%', tone: 'text-emerald-500', sub: 'SLA target 99.5%' },
-    { k: 'Open tickets', v: '3', tone: 'text-slate-900 dark:text-white', sub: '1 P1, 1 P2, 1 P4' },
-    { k: 'Avg response', v: '11 min', tone: 'text-brand-500', sub: 'SLA target 15 min' },
-    { k: 'SLA compliance', v: '100%', tone: 'text-emerald-500', sub: 'last 30 days' },
+    { k: 'Uptime this month', v: '99.94%', tone: 'text-emerald-500', sub: 'SLA target 99.5%', icon: <CheckCircleFilled /> },
+    { k: 'Open tickets', v: '3', tone: 'text-slate-900 dark:text-white', sub: '1 P1, 1 P2, 1 P4', icon: <CustomerServiceOutlined /> },
+    { k: 'Avg response', v: '11 min', tone: 'text-brand-500', sub: 'SLA target 15 min', icon: <ClockCircleOutlined /> },
+    { k: 'SLA compliance', v: '100%', tone: 'text-emerald-500', sub: 'last 30 days', icon: <SafetyCertificateOutlined /> },
   ];
 
-  return (
-    <>
-      <PageHero
-        eyebrow="Client portal" title="Welcome back, Auto Components Mfg." compact
-        sub="Gold plan · 24×7×365 coverage · Account engineer: Technical Director"
-        crumbs={[{ label: 'Portal' }]}
-      >
-        <div className="flex flex-wrap gap-3">
-          <Button type="primary" size="large" icon={<PlusOutlined />} onClick={() => setNewTicket(true)}>Raise a ticket</Button>
-          <Button size="large" icon={<DownloadOutlined />}>Download SLA report</Button>
-        </div>
-      </PageHero>
+  const userMenu = {
+    items: [
+      { key: 'site', icon: <HomeOutlined />, label: 'Back to website' },
+      { type: 'divider' },
+      { key: 'logout', icon: <LogoutOutlined />, label: 'Log out', danger: true },
+    ],
+    onClick: ({ key }) => {
+      if (key === 'logout') nav('/portal/login');
+      if (key === 'site') nav('/');
+    },
+  };
 
-      <section className="px-container py-10">
-        {/* KPI row */}
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {kpis.map((k, i) => (
-            <Reveal key={k.k} delay={i * 0.06}>
-              <div className="px-card">
+  const sections = {
+    overview: (
+      <div className="space-y-6">
+        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          {kpis.map((k) => (
+            <div key={k.k} className={`${cardCls} p-5`}>
+              <div className="flex items-start justify-between">
                 <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">{k.k}</p>
-                <p className={`mt-1.5 font-display text-3xl font-bold tabular-nums ${k.tone}`}>{k.v}</p>
-                <p className="mt-0.5 text-[12.5px] text-slate-500">{k.sub}</p>
+                <span className="grid h-9 w-9 place-items-center rounded-lg bg-brand-50 text-brand-500 dark:bg-white/5">{k.icon}</span>
               </div>
-            </Reveal>
+              <p className={`mt-1 font-display text-3xl font-bold tabular-nums ${k.tone}`}>{k.v}</p>
+              <p className="mt-0.5 text-[12.5px] text-slate-500">{k.sub}</p>
+            </div>
           ))}
         </div>
-
-        <Reveal className="mt-8">
-          <Tabs
-            size="large"
-            items={[
-              {
-                key: 'tickets', label: 'Tickets',
-                children: (
-                  <div className="overflow-x-auto">
-                    <Table
-                      dataSource={tickets.map((t) => ({ ...t, key: t.id }))} pagination={false} scroll={{ x: 820 }}
-                      columns={[
-                        { title: 'ID', dataIndex: 'id', render: (v) => <span className="font-mono text-[13px] font-semibold text-brand-600">{v}</span> },
-                        { title: 'Subject', dataIndex: 'subject', width: 300 },
-                        { title: 'Priority', dataIndex: 'pri', render: (v) => <Tag color={priColor[v]}>{v}</Tag> },
-                        { title: 'Status', dataIndex: 'status', render: (v) => <Badge status={statusColor[v]} text={v} /> },
-                        { title: 'Assigned', dataIndex: 'owner' },
-                        { title: 'Age', dataIndex: 'age' },
-                        {
-                          title: 'SLA', dataIndex: 'sla', width: 130,
-                          render: (v) => (
-                            <Progress
-                              percent={v} size="small"
-                              strokeColor={v >= 100 ? '#12a06a' : v > 60 ? '#d18700' : '#d62b1f'}
-                              format={(p) => (p >= 100 ? 'Met' : `${p}%`)}
-                            />
-                          ),
-                        },
-                      ]}
-                    />
+        <div className="grid gap-6 xl:grid-cols-3">
+          <Panel
+            className="min-w-0 xl:col-span-2" title="Open tickets"
+            extra={<Button type="link" size="small" onClick={() => go('tickets')}>View all</Button>}
+          >
+            <div className="overflow-x-auto"><TicketsTable rows={tickets.filter((t) => t.status !== 'Resolved')} /></div>
+          </Panel>
+          <Panel title="Upcoming renewals" extra={<Button type="link" size="small" onClick={() => go('licences')}>View all</Button>}>
+            <div className="space-y-4">
+              {[...licences].sort((a, b) => a.days - b.days).slice(0, 3).map((l) => (
+                <div key={l.name}>
+                  <div className="flex items-center justify-between gap-2">
+                    <p className="truncate text-[13.5px] font-medium text-slate-800 dark:text-slate-100">{l.name}</p>
+                    <Tag color={l.days < 45 ? 'red' : l.days < 90 ? 'orange' : 'green'}>{l.days}d</Tag>
                   </div>
-                ),
-              },
+                  <p className="text-[12px] text-slate-500">Renews {l.renew}</p>
+                </div>
+              ))}
+            </div>
+          </Panel>
+        </div>
+      </div>
+    ),
+    tickets: (
+      <Panel title="All tickets" extra={<Button type="primary" icon={<PlusOutlined />} onClick={() => setNewTicket(true)}>New ticket</Button>}>
+        <div className="overflow-x-auto"><TicketsTable /></div>
+      </Panel>
+    ),
+    assets: (
+      <Panel title="Asset inventory">
+        <div className="overflow-x-auto">
+          <Table
+            dataSource={assets.map((a) => ({ ...a, key: a.name }))} pagination={false} scroll={{ x: 700 }}
+            columns={[
+              { title: 'Asset', dataIndex: 'name', render: (v) => <span className="font-mono text-[13px] font-semibold">{v}</span> },
+              { title: 'Type', dataIndex: 'type' },
+              { title: 'Model', dataIndex: 'model' },
+              { title: 'Warranty until', dataIndex: 'warranty' },
               {
-                key: 'assets', label: 'Assets',
-                children: (
-                  <div className="overflow-x-auto">
-                    <Table
-                      dataSource={assets.map((a) => ({ ...a, key: a.name }))} pagination={false} scroll={{ x: 700 }}
-                      columns={[
-                        { title: 'Asset', dataIndex: 'name', render: (v) => <span className="font-mono text-[13px] font-semibold">{v}</span> },
-                        { title: 'Type', dataIndex: 'type' },
-                        { title: 'Model', dataIndex: 'model' },
-                        { title: 'Warranty until', dataIndex: 'warranty' },
-                        {
-                          title: 'Status', dataIndex: 'status',
-                          render: (v) => <Tag color={v === 'Healthy' ? 'green' : v === 'Warning' ? 'orange' : 'red'}>{v}</Tag>,
-                        },
-                      ]}
-                    />
-                  </div>
-                ),
-              },
-              {
-                key: 'licences', label: <span>Licences <Badge count={2} size="small" offset={[6, -4]} /></span>,
-                children: (
-                  <div className="space-y-3">
-                    <Alert
-                      type="warning" showIcon
-                      message="Two renewals fall due in the next 45 days"
-                      description="Request a renewal quote — if a licence lapses, support and updates stop."
-                    />
-                    {licences.map((l) => (
-                      <div key={l.name} className="px-card flex flex-wrap items-center justify-between gap-4">
-                        <div className="min-w-0">
-                          <p className="font-display font-semibold text-slate-900 dark:text-white">{l.name}</p>
-                          <p className="mt-0.5 text-[13px] text-slate-500">{l.qty} licences · renews {l.renew}</p>
-                        </div>
-                        <div className="flex items-center gap-4">
-                          <Tag color={l.days < 45 ? 'red' : l.days < 90 ? 'orange' : 'green'}>{l.days} days left</Tag>
-                          <Button size="small">Request renewal quote</Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ),
-              },
-              {
-                key: 'reports', label: 'Reports & Docs',
-                children: (
-                  <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                    {[
-                      'SLA Report — August 2026', 'SLA Report — July 2026', 'Quarterly Business Review Q2',
-                      'Network as-built documentation', 'Backup policy document', 'Escalation matrix (current)',
-                      'Invoice INV-2026-0842', 'Invoice INV-2026-0796', 'Annual security posture review',
-                    ].map((d) => (
-                      <div key={d} className="px-card px-card-hover flex items-center gap-3">
-                        <FileTextOutlined className="text-xl text-brand-500" />
-                        <div className="min-w-0 flex-1">
-                          <p className="truncate text-[14px] font-medium text-slate-800 dark:text-slate-100">{d}</p>
-                          <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">PDF</p>
-                        </div>
-                        <Button type="text" icon={<DownloadOutlined />} aria-label={`Download ${d}`} />
-                      </div>
-                    ))}
-                  </div>
-                ),
-              },
-              {
-                key: 'escalation', label: 'Escalation',
-                children: (
-                  <div className="max-w-2xl">
-                    <Timeline
-                      items={[
-                        { color: '#d62b1f', children: <><p className="font-semibold">L1 — Service Desk</p><p className="px-body">First response · {company.phones[0]} · support@proxinet.in</p></> },
-                        { color: '#d62b1f', children: <><p className="font-semibold">L2 — Practice Engineer</p><p className="px-body">Escalated after 30 minutes if L1 cannot resolve it</p></> },
-                        { color: '#d18700', children: <><p className="font-semibold">L3 — Practice Lead</p><p className="px-body">After one hour on a P1, or on customer request</p></> },
-                        { color: '#d2453c', children: <><p className="font-semibold">Management — Service Delivery Manager</p><p className="px-body">After two hours on a P1 · {company.phones[1]}</p></> },
-                      ]}
-                    />
-                  </div>
-                ),
+                title: 'Status', dataIndex: 'status',
+                render: (v) => <Tag color={v === 'Healthy' ? 'green' : v === 'Warning' ? 'orange' : 'red'}>{v}</Tag>,
               },
             ]}
           />
-        </Reveal>
-      </section>
+        </div>
+      </Panel>
+    ),
+    licences: (
+      <div className="space-y-3">
+        <Alert
+          type="warning" showIcon
+          message="Two renewals fall due in the next 45 days"
+          description="Request a renewal quote — if a licence lapses, support and updates stop."
+        />
+        {licences.map((l) => (
+          <div key={l.name} className={`${cardCls} flex flex-wrap items-center justify-between gap-4 p-5`}>
+            <div className="min-w-0">
+              <p className="font-display font-semibold text-slate-900 dark:text-white">{l.name}</p>
+              <p className="mt-0.5 text-[13px] text-slate-500">{l.qty} licences · renews {l.renew}</p>
+            </div>
+            <div className="flex items-center gap-4">
+              <Tag color={l.days < 45 ? 'red' : l.days < 90 ? 'orange' : 'green'}>{l.days} days left</Tag>
+              <Button size="small">Request renewal quote</Button>
+            </div>
+          </div>
+        ))}
+      </div>
+    ),
+    reports: (
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+        {[
+          'SLA Report — August 2026', 'SLA Report — July 2026', 'Quarterly Business Review Q2',
+          'Network as-built documentation', 'Backup policy document', 'Escalation matrix (current)',
+          'Invoice INV-2026-0842', 'Invoice INV-2026-0796', 'Annual security posture review',
+        ].map((d) => (
+          <div key={d} className={`${cardCls} flex items-center gap-3 p-4`}>
+            <FileTextOutlined className="text-xl text-brand-500" />
+            <div className="min-w-0 flex-1">
+              <p className="truncate text-[14px] font-medium text-slate-800 dark:text-slate-100">{d}</p>
+              <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">PDF</p>
+            </div>
+            <Button type="text" icon={<DownloadOutlined />} aria-label={`Download ${d}`} />
+          </div>
+        ))}
+      </div>
+    ),
+    escalation: (
+      <Panel title="Escalation matrix" className="max-w-3xl">
+        <Timeline
+          items={[
+            { color: '#d62b1f', children: <><p className="font-semibold">L1 — Service Desk</p><p className="px-body">First response · {company.phones[0]} · support@proxinet.in</p></> },
+            { color: '#d62b1f', children: <><p className="font-semibold">L2 — Practice Engineer</p><p className="px-body">Escalated after 30 minutes if L1 cannot resolve it</p></> },
+            { color: '#d18700', children: <><p className="font-semibold">L3 — Practice Lead</p><p className="px-body">After one hour on a P1, or on customer request</p></> },
+            { color: '#d2453c', children: <><p className="font-semibold">Management — Service Delivery Manager</p><p className="px-body">After two hours on a P1 · {company.phones[1]}</p></> },
+          ]}
+        />
+      </Panel>
+    ),
+  };
+
+  return (
+    <div className="flex h-screen overflow-hidden bg-slate-50 dark:bg-[#0a1520]">
+      {/* Desktop sidebar */}
+      <aside
+        className={`hidden shrink-0 border-e border-slate-200 bg-white transition-[width] duration-200 dark:border-white/10 dark:bg-[#101d2b] lg:block ${collapsed ? 'w-20' : 'w-64'}`}
+      >
+        <SideNav active={section} onSelect={go} collapsed={collapsed} />
+      </aside>
+
+      {/* Mobile sidebar */}
+      <Drawer
+        placement="left" open={mobileOpen} onClose={() => setMobileOpen(false)}
+        width={260} closable={false} styles={{ body: { padding: 0 } }}
+      >
+        <SideNav active={section} onSelect={go} />
+      </Drawer>
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Top header */}
+        <header className="flex h-16 shrink-0 items-center gap-3 border-b border-slate-200 bg-white px-4 dark:border-white/10 dark:bg-[#101d2b] sm:px-6">
+          <Button
+            type="text" aria-label="Open menu" className="lg:!hidden"
+            icon={<MenuUnfoldOutlined />} onClick={() => setMobileOpen(true)}
+          />
+          <Button
+            type="text" aria-label="Collapse sidebar" className="!hidden lg:!inline-flex"
+            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />} onClick={() => setCollapsed((c) => !c)}
+          />
+          <div className="hidden w-full max-w-xs md:block">
+            <Input prefix={<SearchOutlined className="text-slate-400" />} placeholder="Search tickets, assets…" />
+          </div>
+          <div className="ms-auto flex items-center gap-1 sm:gap-2">
+            <Button type="primary" icon={<PlusOutlined />} onClick={() => setNewTicket(true)} className="!hidden sm:!inline-flex">
+              Raise a ticket
+            </Button>
+            <Button type="text" aria-label="Toggle theme" icon={dark ? <SunOutlined /> : <MoonOutlined />} onClick={toggle} />
+            <Badge count={2} size="small" offset={[-4, 4]}>
+              <Button type="text" aria-label="Notifications" icon={<BellOutlined />} />
+            </Badge>
+            <Dropdown menu={userMenu} trigger={['click']} placement="bottomRight">
+              <button type="button" className="flex items-center gap-2 rounded-lg px-2 py-1 hover:bg-slate-100 dark:hover:bg-white/5">
+                <Avatar size={32} className="!bg-brand-500">AC</Avatar>
+                <span className="hidden text-start leading-tight md:block">
+                  <span className="block text-[13px] font-semibold text-slate-800 dark:text-slate-100">Auto Components Mfg.</span>
+                  <span className="block text-[11.5px] text-slate-500">Gold plan</span>
+                </span>
+              </button>
+            </Dropdown>
+          </div>
+        </header>
+
+        {/* Content */}
+        <main id="main" className="flex-1 overflow-y-auto p-4 sm:p-6">
+          <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h1 className="font-display text-2xl font-bold text-slate-900 dark:text-white">
+                {section === 'overview' ? 'Welcome back, Auto Components Mfg.' : current.label}
+              </h1>
+              <p className="mt-1 text-[13.5px] text-slate-500">Gold plan · 24×7×365 coverage · Account engineer: Technical Director</p>
+            </div>
+            {section === 'overview' && <Button icon={<DownloadOutlined />}>Download SLA report</Button>}
+          </div>
+          {sections[section]}
+        </main>
+      </div>
 
       <Modal
         open={newTicket} onCancel={() => setNewTicket(false)} footer={null} title="Raise a ticket" destroyOnClose
@@ -306,7 +437,7 @@ export function PortalDashboard() {
           <Button type="primary" size="large" htmlType="submit" block>Create ticket</Button>
         </Form>
       </Modal>
-    </>
+    </div>
   );
 }
 
