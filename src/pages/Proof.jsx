@@ -5,7 +5,9 @@ import { StarFilled, SafetyCertificateOutlined, CheckCircleFilled, DownloadOutli
 import { caseStudies, findCase, clientLogos, partners, testimonials, certifications } from '../data/proof';
 import { industries } from '../data/industries';
 import { Reveal, Stagger, StaggerItem, SectionHead, Counter } from '../components/ui';
-import { PageHero, CTABand, TickList } from '../components/blocks';
+import { PageHero, CTABand, TickList, CardImage } from '../components/blocks';
+import { caseImg } from '../data/images';
+import PartnerLogo from '../components/PartnerLogo';
 
 const sampleNote = (
   <Alert
@@ -75,6 +77,7 @@ function CaseCard({ c }) {
     <Reveal>
       <Link to={`/case-studies/${c.slug}`} className="group block h-full">
         <article className="px-card px-card-hover flex h-full flex-col">
+          <CardImage src={caseImg(c.slug, 800)} alt={c.title} className="h-48" />
           <Tag color="red" className="!mb-3 self-start">{ind?.name || c.industry}</Tag>
           <h3 className="font-display text-[17px] font-semibold leading-snug text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">
             {c.title}
@@ -148,6 +151,9 @@ export function CaseStudyDetail() {
 
       <div className="px-container grid gap-12 px-section lg:grid-cols-[1fr_300px]">
         <div className="min-w-0 space-y-10">
+          <Reveal>
+            <img src={caseImg(c.slug, 1400)} alt={c.title} className="aspect-[16/9] w-full rounded-3xl object-cover shadow-lift" />
+          </Reveal>
           <Reveal>
             <h2 className="px-h3 text-slate-900 dark:text-white">Challenge</h2>
             <p className="px-lead mt-3">{c.challenge}</p>
@@ -229,7 +235,9 @@ export function Partners() {
             <StaggerItem key={p.name}>
               <div className="px-card px-card-hover h-full">
                 <div className="flex items-center gap-3">
-                  <span className="h-10 w-1.5 rounded-full" style={{ background: p.color }} aria-hidden="true" />
+                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white dark:border-white/10 dark:bg-white/90">
+                    <PartnerLogo partner={p} size={26} />
+                  </span>
                   <div>
                     <h3 className="font-display text-[17px] font-semibold text-slate-900 dark:text-white">{p.name}</h3>
                     <p className="font-mono text-[10.5px] uppercase tracking-wider text-slate-400">{p.cat}</p>

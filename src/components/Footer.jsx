@@ -6,32 +6,14 @@ import {
   FacebookFilled, TwitterOutlined, InstagramOutlined, SafetyCertificateOutlined,
 } from '@ant-design/icons';
 import { company } from '../data/company';
-import { solutionFamilies } from '../data/solutions';
-import { services } from '../data/services';
-import { industries } from '../data/industries';
 import { certifications } from '../data/proof';
 import Logo from './Logo';
 
-const cols = [
-  { title: 'Solutions', links: solutionFamilies.map((f) => ({ label: f.name, to: `/solutions/${f.slug}` })) },
-  { title: 'Services', links: services.slice(0, 7).map((s) => ({ label: s.name, to: `/services/${s.slug}` })) },
-  { title: 'Industries', links: industries.map((i) => ({ label: i.name, to: `/industries/${i.slug}` })) },
-  {
-    title: 'Company', links: [
-      { label: 'About Us', to: '/about' }, { label: 'Leadership', to: '/about/leadership' },
-      { label: 'Our Process', to: '/about/process' }, { label: 'Clients', to: '/clients' },
-      { label: 'Case Studies', to: '/case-studies' }, { label: 'Partners', to: '/partners' },
-      { label: 'Careers', to: '/careers' }, { label: 'News & Events', to: '/news-events' },
-    ],
-  },
-  {
-    title: 'Resources', links: [
-      { label: 'Blog', to: '/blog' }, { label: 'Whitepapers', to: '/resources/whitepapers' },
-      { label: 'Glossary', to: '/resources/glossary' }, { label: 'FAQs', to: '/resources/faq' },
-      { label: 'Tools & Calculators', to: '/tools' }, { label: 'Procurement Pack', to: '/procurement' },
-      { label: 'Service Status', to: '/status' }, { label: 'Sitemap', to: '/sitemap' },
-    ],
-  },
+// Only links that are NOT already in the navbar menus
+const supportLinks = [
+  { label: 'Client Portal login', to: '/portal/login' },
+  { label: 'Service Status', to: '/status' },
+  { label: 'Sitemap', to: '/sitemap' },
 ];
 
 export default function Footer() {
@@ -67,7 +49,7 @@ export default function Footer() {
       </div>
 
       {/* main grid */}
-      <div className="px-container grid gap-10 py-14 lg:grid-cols-[1.3fr_repeat(5,1fr)]">
+      <div className="px-container grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
         <div>
           <Logo />
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-500 dark:text-slate-400">
@@ -84,12 +66,7 @@ export default function Footer() {
                 </span>
               </div>
             ))}
-            <a href={`tel:${company.phones[0]}`} className="flex items-center gap-2.5 text-slate-600 hover:text-brand-600 dark:text-slate-300">
-              <PhoneOutlined className="text-brand-500" /> {company.phones.join(' · ')}
-            </a>
-            <a href={`mailto:${company.email}`} className="flex items-center gap-2.5 text-slate-600 hover:text-brand-600 dark:text-slate-300">
-              <MailOutlined className="text-brand-500" /> {company.email}
-            </a>
+
           </div>
           <div className="mt-5 flex gap-2">
             {[
@@ -108,22 +85,37 @@ export default function Footer() {
           </div>
         </div>
 
-        {cols.map((c) => (
-          <div key={c.title}>
-            <p className="mb-3.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-              {c.title}
-            </p>
-            <ul className="space-y-2">
-              {c.links.map((l) => (
-                <li key={l.to}>
-                  <Link className="text-[13.5px] text-slate-600 transition-colors hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-300" to={l.to}>
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        <div>
+          <p className="mb-3.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">Talk to us</p>
+          <ul className="m-0 list-none space-y-3 p-0 text-sm">
+            {company.phones.map((p) => (
+              <li key={p}>
+                <a href={`tel:${p}`} className="flex items-center gap-2.5 text-slate-600 hover:text-brand-600 dark:text-slate-300">
+                  <PhoneOutlined className="text-brand-500" /> {p}
+                </a>
+              </li>
+            ))}
+            <li>
+              <a href={`mailto:${company.email}`} className="flex items-center gap-2.5 text-slate-600 hover:text-brand-600 dark:text-slate-300">
+                <MailOutlined className="text-brand-500" /> {company.email}
+              </a>
+            </li>
+            <li className="font-mono text-[11px] uppercase tracking-wider text-slate-400">Mon–Sat · 9:30 AM – 6:30 PM · NOC 24×7</li>
+          </ul>
+        </div>
+
+        <div>
+          <p className="mb-3.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">Support</p>
+          <ul className="m-0 list-none space-y-2.5 p-0">
+            {supportLinks.map((l) => (
+              <li key={l.to}>
+                <Link className="text-[13.5px] text-slate-600 transition-colors hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-300" to={l.to}>
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
 
       {/* certifications row */}

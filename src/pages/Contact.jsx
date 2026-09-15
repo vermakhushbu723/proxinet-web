@@ -8,7 +8,8 @@ import {
 import { company } from '../data/company';
 import { jobs, findJob } from '../data/people';
 import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge } from '../components/ui';
-import { PageHero, CTABand, LeadForm, TickList } from '../components/blocks';
+import { PageHero, CTABand, LeadForm, TickList, PhotoSection, DarkHead, FeatureImage } from '../components/blocks';
+import { img, photos } from '../data/images';
 
 /* =================== CONTACT =================== */
 export function Contact() {
@@ -262,9 +263,9 @@ export function Careers() {
         </Stagger>
       </section>
 
-      <section className="border-y border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
+      <PhotoSection image={img(photos.officeTeam, 1920)}>
         <div className="px-container px-section">
-          <SectionHead eyebrow="Life at ProXinet" title="What the work is like" />
+          <DarkHead eyebrow="Life at ProXinet" title="What the work is like" />
           <div className="mt-9 grid gap-4 md:grid-cols-3">
             {[
               { t: 'Real ownership', d: 'A small team means you work directly with the client rather than hiding behind a ticket queue.' },
@@ -275,16 +276,16 @@ export function Careers() {
               { t: 'Delhi NCR base', d: 'Offices in Noida and New Ashok Nagar, with hybrid options on selected roles.' },
             ].map((x) => (
               <Reveal key={x.t}>
-                <div className="px-card h-full">
-                  <CheckCircleFilled className="text-lg text-brand-500" />
-                  <h3 className="mt-2.5 font-display text-[16px] font-semibold text-slate-900 dark:text-white">{x.t}</h3>
-                  <p className="px-body mt-1.5">{x.d}</p>
+                <div className="h-full rounded-2xl border border-white/15 bg-white/[0.07] p-6 backdrop-blur-md transition-colors hover:bg-white/[0.12]">
+                  <CheckCircleFilled className="text-lg text-brand-400" />
+                  <h3 className="mt-2.5 font-display text-[16px] font-semibold text-white">{x.t}</h3>
+                  <p className="mt-1.5 text-[0.97rem] leading-relaxed text-white/75">{x.d}</p>
                 </div>
               </Reveal>
             ))}
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       <section id="apply" className="px-container px-section">
         <div className="mx-auto max-w-2xl">

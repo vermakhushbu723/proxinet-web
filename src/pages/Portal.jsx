@@ -15,6 +15,7 @@ import { Reveal, SectionHead, useTheme } from '../components/ui';
 import { PageHero } from '../components/blocks';
 import { company } from '../data/company';
 import Logo from '../components/Logo';
+import { img, photos } from '../data/images';
 
 /* ---------------- demo data ---------------- */
 const tickets = [
@@ -50,7 +51,9 @@ export function PortalLogin() {
   return (
     <div className="grid min-h-[calc(100vh-108px)] lg:grid-cols-2">
       {/* left: brand panel */}
-      <div className="relative hidden overflow-hidden bg-gradient-to-br from-brand-700 via-brand-600 to-ink-900 p-12 lg:flex lg:flex-col lg:justify-between">
+      <div className="relative hidden overflow-hidden bg-ink-900 p-12 lg:flex lg:flex-col lg:justify-between">
+        <img src={img(photos.dcEngineer, 1400)} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-700/90 via-brand-800/80 to-ink-900/90" aria-hidden="true" />
         <div
           className="absolute inset-0 opacity-15" aria-hidden="true"
           style={{

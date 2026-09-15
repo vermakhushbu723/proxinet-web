@@ -124,3 +124,18 @@ a { color: inherit; text-decoration: none; }
 .ant-collapse-header { align-items: center !important; }
 .ant-steps-item-title { font-family: 'Sora', sans-serif !important; }
 .dark .ant-typography { color: var(--px-text) !important; }
+
+/* --- photo hero: light breadcrumb + readable secondary buttons on dark imagery --- */
+.px-crumbs-light .ant-breadcrumb-link,
+.px-crumbs-light .ant-breadcrumb-link a,
+.px-crumbs-light .ant-breadcrumb-separator,
+.px-crumbs-light li a { color: rgba(255,255,255,.72) !important; }
+.px-crumbs-light li:last-child .ant-breadcrumb-link { color: #fff !important; }
+.px-crumbs-light a:hover { color: #fff !important; background: rgba(255,255,255,.1) !important; }
+.px-hero-photo .ant-btn-default:not(.ant-btn-primary) {
+  background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.35); color: #fff; backdrop-filter: blur(6px);
+}
+.px-hero-photo .ant-btn-default:not(.ant-btn-primary):hover {
+  background: rgba(255,255,255,.2) !important; border-color: #fff !important; color: #fff !important;
+}
+.px-hero-photo .text-slate-400 { color: rgba(255,255,255,.7) !important; }

@@ -4,9 +4,16 @@ import { Button, Tag, Segmented, Input, Collapse, Empty, Modal, Form, message } 
 import { SearchOutlined, DownloadOutlined, FileTextOutlined, CalendarOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { posts, findPost, glossary, faqs, whitepapers } from '../data/resources';
 import { Reveal, Stagger, StaggerItem, SectionHead, ArrowLink } from '../components/ui';
-import { PageHero, CTABand } from '../components/blocks';
+import { PageHero, CTABand, CardImage } from '../components/blocks';
+import { img, photos, postImg } from '../data/images';
 
 const fmt = (d) => new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+
+const resImg = {
+  Blog: photos.laptopDesk, 'Whitepapers & Guides': photos.writing, Glossary: photos.bwLaptop,
+  FAQs: photos.phoneLaptop, 'Tools & Calculators': photos.analytics, 'News & Events': photos.event,
+};
+const wpImgs = [photos.virus, photos.signing, photos.dashboardLaptop, photos.hardDisk, photos.router, photos.documentation, photos.lineChart, photos.padlockCard];
 
 /* =================== RESOURCE HUB =================== */
 export function ResourcesHub() {
@@ -31,6 +38,7 @@ export function ResourcesHub() {
             <StaggerItem key={c.t}>
               <Link to={c.to} className="group block h-full">
                 <div className="px-card px-card-hover flex h-full flex-col">
+                  <CardImage src={img(resImg[c.t], 700)} alt={c.t} />
                   <span className="font-mono text-[10.5px] uppercase tracking-wider text-slate-400">{c.n}</span>
                   <h2 className="mt-2 font-display text-[18px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">{c.t}</h2>
                   <p className="px-body mt-2 flex-1">{c.d}</p>
@@ -82,6 +90,7 @@ export function Blog() {
               <StaggerItem key={p.slug}>
                 <Link to={`/blog/${p.slug}`} className="group block h-full">
                   <article className="px-card px-card-hover flex h-full flex-col">
+                    <CardImage src={postImg(p.slug, 700)} alt={p.title} className="h-48" />
                     <div className="flex items-center gap-2.5">
                       <Tag color="red" className="!m-0">{p.cat}</Tag>
                       <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400">{p.read}</span>
@@ -127,6 +136,7 @@ export function BlogPost() {
 
       <div className="px-container grid gap-12 px-section lg:grid-cols-[1fr_280px]">
         <article className="min-w-0 max-w-[68ch]">
+          <img src={postImg(p.slug, 1400)} alt={p.title} className="mb-10 aspect-[16/9] w-full rounded-3xl object-cover shadow-lift" />
           {p.body.map((b, i) => (
             <Reveal key={i} className="mb-8">
               <h2 className="px-h3 text-slate-900 dark:text-white">{b.h}</h2>
@@ -147,6 +157,7 @@ export function BlogPost() {
               {more.map((m) => (
                 <li key={m.slug}>
                   <Link to={`/blog/${m.slug}`} className="group block">
+                    <img src={postImg(m.slug, 500)} alt="" aria-hidden="true" loading="lazy" className="mb-2.5 aspect-[16/9] w-full rounded-xl object-cover" />
                     <Tag color="red" className="!mb-1.5">{m.cat}</Tag>
                     <p className="text-[14px] font-medium leading-snug text-slate-700 group-hover:text-brand-600 dark:text-slate-200">{m.title}</p>
                   </Link>
@@ -184,9 +195,10 @@ export function Whitepapers() {
       />
       <section className="px-container px-section">
         <Stagger className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {whitepapers.map((w) => (
+          {whitepapers.map((w, wi) => (
             <StaggerItem key={w.title}>
               <div className="px-card px-card-hover flex h-full flex-col">
+                <CardImage src={img(wpImgs[wi % wpImgs.length], 700)} alt={w.title} className="h-40" />
                 <div className="flex items-start justify-between">
                   <FileTextOutlined className="text-2xl text-brand-500" />
                   <Tag>{w.cat}</Tag>
@@ -329,6 +341,10 @@ export function NewsEvents() {
                   <h2 className="mt-2 font-display text-[17px] font-semibold text-slate-900 dark:text-white">{n.title}</h2>
                   <p className="px-body mt-1.5">{n.desc}</p>
                 </div>
+                <img
+                  src={img(n.type === 'Event' ? photos.event : photos.openOffice, 400)} alt="" aria-hidden="true" loading="lazy"
+                  className="hidden h-24 w-36 shrink-0 rounded-xl object-cover sm:block"
+                />
               </div>
             </Reveal>
           ))}

@@ -7,7 +7,8 @@ import {
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge } from '../components/ui';
-import { PageHero, CTABand } from '../components/blocks';
+import { PageHero, CTABand, CardImage } from '../components/blocks';
+import { toolImg } from '../data/images';
 
 const inr = (n) => '₹' + Math.round(n).toLocaleString('en-IN');
 
@@ -34,6 +35,7 @@ export function ToolsHub() {
             <StaggerItem key={t.to}>
               <Link to={t.to} className="group block h-full">
                 <div className="px-card px-card-hover flex h-full flex-col">
+                  <CardImage src={toolImg(t.to, 800)} alt={t.t} />
                   <IconBadge size="lg">{t.icon}</IconBadge>
                   <h2 className="mt-4 font-display text-[17px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">{t.t}</h2>
                   <p className="px-body mt-2 flex-1">{t.d}</p>

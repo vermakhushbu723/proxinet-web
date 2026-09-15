@@ -4,7 +4,8 @@ import { Button, Collapse, Tag, Table } from 'antd';
 import { CheckCircleFilled, CloseOutlined, ArrowRightOutlined, CrownFilled } from '@ant-design/icons';
 import { services, findService, slaPlans } from '../data/services';
 import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge } from '../components/ui';
-import { PageHero, CTABand, TickList } from '../components/blocks';
+import { PageHero, CTABand, TickList, CardImage, FeatureImage } from '../components/blocks';
+import { serviceImg } from '../data/images';
 
 /* =================== HUB =================== */
 export function ServicesHub() {
@@ -25,6 +26,7 @@ export function ServicesHub() {
             <StaggerItem key={s.slug}>
               <Link to={`/services/${s.slug}`} className="group block h-full">
                 <div className="px-card px-card-hover flex h-full flex-col">
+                  <CardImage src={serviceImg(s.slug, 800)} alt={s.name} className="h-48" />
                   <h2 className="font-display text-[17px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">
                     {s.name}
                   </h2>
@@ -65,6 +67,7 @@ export function ServiceDetail() {
       <div className="px-container grid gap-12 px-section lg:grid-cols-[1fr_320px]">
         <div className="min-w-0">
           <Reveal>
+            <FeatureImage src={serviceImg(s.slug, 1400)} alt={s.name} ratio="aspect-[16/9]" className="mb-12" />
             <p className="px-lead">{s.blurb}</p>
             <h2 className="px-h3 mt-10 text-slate-900 dark:text-white">What is included</h2>
             <TickList items={s.deliverables} className="mt-5" />

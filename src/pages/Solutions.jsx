@@ -10,7 +10,8 @@ import { solutionFamilies, findFamily, findChild } from '../data/solutions';
 import { industries } from '../data/industries';
 import { caseStudies } from '../data/proof';
 import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge, ArrowLink } from '../components/ui';
-import { PageHero, CTABand, TickList } from '../components/blocks';
+import { PageHero, CTABand, TickList, CardImage, FeatureImage } from '../components/blocks';
+import { familyImg, solutionImg, caseImg } from '../data/images';
 
 const icons = {
   cloud: <CloudOutlined />, shield: <SafetyOutlined />, server: <DatabaseOutlined />,
@@ -33,6 +34,9 @@ export function SolutionsHub() {
           {solutionFamilies.map((f) => (
             <StaggerItem key={f.slug}>
               <div className="px-card px-card-hover h-full">
+                <Link to={`/solutions/${f.slug}`} className="group block">
+                  <CardImage src={familyImg(f.slug, 1000)} alt={f.name} className="h-52" />
+                </Link>
                 <div className="flex items-start gap-4">
                   <IconBadge size="lg">{icons[f.icon]}</IconBadge>
                   <div className="min-w-0 flex-1">
@@ -84,8 +88,11 @@ export function SolutionFamily() {
 
       {/* pains */}
       <section className="px-container px-section">
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
+        <FeatureImage src={familyImg(f.slug, 1200)} alt={f.name} />
+        <div>
         <SectionHead eyebrow="Sound familiar?" title="Are you running into these?" />
-        <Stagger className="mt-8 grid gap-4 md:grid-cols-3">
+        <Stagger className="mt-8 grid gap-4">
           {f.pains.map((p) => (
             <StaggerItem key={p}>
               <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-5 dark:border-amber-500/25 dark:bg-amber-500/5">
@@ -95,6 +102,8 @@ export function SolutionFamily() {
             </StaggerItem>
           ))}
         </Stagger>
+        </div>
+        </div>
       </section>
 
       {/* children */}
@@ -106,6 +115,7 @@ export function SolutionFamily() {
               <StaggerItem key={c.slug}>
                 <Link to={`/solutions/${f.slug}/${c.slug}`} className="group block h-full">
                   <div className="px-card px-card-hover flex h-full flex-col">
+                    <CardImage src={solutionImg(c.slug, 800)} alt={c.name} />
                     <h3 className="font-display text-[16.5px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">
                       {c.name}
                     </h3>
@@ -129,6 +139,7 @@ export function SolutionFamily() {
               <Reveal key={c.slug}>
                 <Link to={`/case-studies/${c.slug}`} className="group block h-full">
                   <div className="px-card px-card-hover h-full">
+                    <CardImage src={caseImg(c.slug, 900)} alt={c.title} className="h-48" />
                     <Tag color="red">{c.industry.replace(/-/g, ' ')}</Tag>
                     <h3 className="mt-3 font-display text-lg font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white">{c.title}</h3>
                     <p className="px-body mt-2">{c.challenge.slice(0, 150)}…</p>
@@ -182,6 +193,7 @@ export function SolutionDetail() {
         <div className="min-w-0">
           {/* what you get */}
           <Reveal>
+            <FeatureImage src={solutionImg(c.slug, 1400)} alt={c.name} ratio="aspect-[16/9]" className="mb-12" />
             <h2 className="px-h3 text-slate-900 dark:text-white">What gets delivered</h2>
             <TickList items={c.bullets} className="mt-5" />
           </Reveal>
@@ -224,7 +236,8 @@ export function SolutionDetail() {
               <h2 className="px-h3 text-slate-900 dark:text-white">Related case study</h2>
               <Link to={`/case-studies/${related.slug}`} className="group mt-5 block">
                 <div className="px-card px-card-hover flex flex-wrap items-center justify-between gap-5">
-                  <div className="min-w-0">
+                  <img src={caseImg(related.slug, 300)} alt="" aria-hidden="true" loading="lazy" className="h-20 w-28 shrink-0 rounded-xl object-cover" />
+                  <div className="min-w-0 flex-1">
                     <h3 className="font-display text-[17px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white">{related.title}</h3>
                     <p className="px-body mt-1.5">{related.result.slice(0, 130)}…</p>
                   </div>

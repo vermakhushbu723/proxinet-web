@@ -1,25 +1,154 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Tag, Carousel } from 'antd';
 import {
   ArrowRightOutlined, CloudOutlined, SafetyOutlined, DatabaseOutlined,
   CloudDownloadOutlined, WifiOutlined, TeamOutlined, VideoCameraOutlined,
   PlayCircleOutlined, StarFilled, CheckCircleFilled, ThunderboltFilled,
+  CustomerServiceOutlined, ScanOutlined, ToolOutlined, ClusterOutlined,
 } from '@ant-design/icons';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { company, stats, painPoints, processSteps } from '../data/company';
 import { solutionFamilies } from '../data/solutions';
 import { industries } from '../data/industries';
 import { caseStudies, testimonials, partners, clientLogos } from '../data/proof';
 import { posts } from '../data/resources';
 import { Reveal, Stagger, StaggerItem, Counter, SectionHead, ArrowLink, Glow, NetworkGraphic, IconBadge } from '../components/ui';
-import { CTABand, LeadForm } from '../components/blocks';
+import PartnerLogo from '../components/PartnerLogo';
+import { CTABand, LeadForm, CardImage, PhotoSection, DarkHead, ImageTile } from '../components/blocks';
+import { img, photos, familyImg, industryImg, caseImg, postImg, iconFamily } from '../data/images';
 
 const icons = {
   cloud: <CloudOutlined />, shield: <SafetyOutlined />, server: <DatabaseOutlined />,
   backup: <CloudDownloadOutlined />, wifi: <WifiOutlined />, team: <TeamOutlined />,
   camera: <VideoCameraOutlined />,
 };
+
+/* ------------------------------------------------------------------ *
+ *  Hero orbit — solutions circle a rotating photo, services on an inner ring
+ * ------------------------------------------------------------------ */
+const orbitServices = [
+  { to: '/services/managed-it-services', name: 'Managed IT', icon: <ClusterOutlined /> },
+  { to: '/services/247-noc-helpdesk', name: '24×7 NOC', icon: <CustomerServiceOutlined /> },
+  { to: '/services/security-audit-vapt', name: 'VAPT', icon: <ScanOutlined /> },
+  { to: '/services/annual-maintenance-contract', name: 'AMC', icon: <ToolOutlined /> },
+];
+
+const onRing = (i, total, radius, offset = -90) => {
+  const a = ((360 / total) * i + offset) * (Math.PI / 180);
+  return { left: `${50 + radius * Math.cos(a)}%`, top: `${50 + radius * Math.sin(a)}%` };
+};
+
+function HeroOrbit() {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+
+  useEffect(() => {
+    if (paused) return undefined;
+    const t = setInterval(() => setActive((i) => (i + 1) % solutionFamilies.length), 2600);
+    return () => clearInterval(t);
+  }, [paused]);
+
+  const current = solutionFamilies[active];
+  const spin = paused ? '[animation-play-state:paused]' : '';
+
+  return (
+    <div
+      className="relative mx-auto aspect-square w-full max-w-[520px] select-none"
+      onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
+    >
+      {/* soft glow behind everything */}
+      <div className="absolute inset-[12%] rounded-full bg-brand-500/20 blur-3xl" aria-hidden="true" />
+
+      {/* outer ring — solutions */}
+      <div className={`absolute inset-[4%] animate-[spin_46s_linear_infinite] rounded-full border border-dashed border-brand-300/70 dark:border-brand-500/40 ${spin}`}>
+        {solutionFamilies.map((f, i) => {
+          const on = i === active;
+          return (
+            <Link
+              key={f.slug} to={`/solutions/${f.slug}`} aria-label={f.name}
+              onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)}
+              className="absolute -translate-x-1/2 -translate-y-1/2" style={onRing(i, solutionFamilies.length, 50)}
+            >
+              <span className={`block animate-[spin_46s_linear_infinite_reverse] ${spin}`}>
+                <span
+                  className={`grid h-11 w-11 place-items-center rounded-2xl border text-lg shadow-lift transition-all duration-500 sm:h-14 sm:w-14 sm:text-2xl ${
+                    on
+                      ? 'scale-110 border-brand-500 bg-brand-500 text-white shadow-glow'
+                      : 'border-slate-200 bg-white text-brand-500 hover:border-brand-400 dark:border-white/10 dark:bg-ink-800'
+                  }`}
+                >
+                  {icons[f.icon]}
+                </span>
+              </span>
+            </Link>
+          );
+        })}
+      </div>
+
+      {/* inner ring — services, turning the other way */}
+      <div className={`absolute inset-[21%] animate-[spin_30s_linear_infinite_reverse] rounded-full border border-slate-300/70 dark:border-white/15 ${spin}`}>
+        {orbitServices.map((sv, i) => (
+          <Link
+            key={sv.to} to={sv.to} aria-label={sv.name}
+            className="absolute -translate-x-1/2 -translate-y-1/2" style={onRing(i, orbitServices.length, 50, -45)}
+          >
+            <span className={`block animate-[spin_30s_linear_infinite] ${spin}`}>
+              <span className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-white/95 px-2.5 py-1 text-[10.5px] font-semibold text-slate-700 shadow-soft backdrop-blur transition-colors hover:border-brand-400 hover:text-brand-600 dark:border-white/10 dark:bg-ink-800/95 dark:text-slate-200 sm:text-[12px]">
+                <span className="text-brand-500">{sv.icon}</span>{sv.name}
+              </span>
+            </span>
+          </Link>
+        ))}
+      </div>
+
+      {/* centre — spinning gradient border around a cross-fading photo */}
+      <div className="absolute inset-[29%]">
+        <div
+          className={`absolute -inset-[6px] animate-[spin_6s_linear_infinite] rounded-full ${spin}`}
+          style={{ background: 'conic-gradient(from 0deg, #d62b1f, #f09b94, transparent 40%, #d62b1f 70%, #971a13)' }}
+          aria-hidden="true"
+        />
+        <div className="relative h-full w-full overflow-hidden rounded-full border-4 border-white bg-ink-900 shadow-lift dark:border-ink-900">
+          <AnimatePresence mode="popLayout">
+            <motion.img
+              key={current.slug}
+              src={familyImg(current.slug, 500)} alt={current.name}
+              initial={{ opacity: 0, scale: 1.25, rotate: -8 }}
+              animate={{ opacity: 1, scale: 1, rotate: 0 }}
+              exit={{ opacity: 0, scale: 0.9, rotate: 8 }}
+              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </AnimatePresence>
+          <div className="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/10 to-transparent" aria-hidden="true" />
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={current.slug}
+              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.35 }}
+              className="absolute inset-x-2 bottom-[16%] text-center"
+            >
+              <p className="font-display text-[12px] font-semibold leading-tight text-white sm:text-[15px]">{current.name}</p>
+              <p className="mt-0.5 hidden font-mono text-[9px] uppercase tracking-wider text-white/70 sm:block">
+                {current.children.length} services
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* live status pill */}
+      <span className="absolute bottom-[6%] left-0 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-white px-3 py-1 text-[11.5px] font-semibold text-emerald-600 shadow-soft dark:border-white/10 dark:bg-ink-800">
+        <span className="relative flex h-2 w-2">
+          <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+          <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+        </span>
+        All systems normal
+      </span>
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -86,43 +215,25 @@ export default function Home() {
             </motion.div>
           </div>
 
-          {/* live-looking infra panel */}
+          {/* animated orbit of solutions & services */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.94 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.7, delay: 0.18 }}
+            initial={{ opacity: 0, scale: 0.9, rotate: -10 }} animate={{ opacity: 1, scale: 1, rotate: 0 }}
+            transition={{ duration: 0.9, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             className="relative"
           >
-            <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-lift dark:border-white/10 dark:bg-ink-800">
-              <div className="mb-4 flex items-center justify-between">
-                <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400">
-                  Managed infrastructure · live
-                </span>
-                <span className="flex items-center gap-1.5 text-[11.5px] font-semibold text-emerald-500">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                  </span>
-                  All systems normal
-                </span>
-              </div>
-
-              <NetworkGraphic className="mx-auto h-48 w-full max-w-[280px]" />
-
-              <div className="mt-4 grid grid-cols-3 gap-2 border-t border-slate-100 pt-4 dark:border-white/10">
-                {[
-                  { k: 'Uptime', v: '99.94%', tone: 'text-emerald-500' },
-                  { k: 'Open P1', v: '0', tone: 'text-slate-800 dark:text-white' },
-                  { k: 'Avg response', v: '11 min', tone: 'text-brand-500' },
-                ].map((s) => (
-                  <div key={s.k} className="text-center">
-                    <p className={`font-display text-lg font-bold tabular-nums ${s.tone}`}>{s.v}</p>
-                    <p className="font-mono text-[10px] uppercase tracking-wider text-slate-400">{s.k}</p>
-                  </div>
-                ))}
-              </div>
+            <HeroOrbit />
+            <div className="mx-auto -mt-2 grid max-w-[400px] grid-cols-3 gap-2 rounded-2xl border border-slate-200 bg-white/95 p-3.5 shadow-lift backdrop-blur dark:border-white/10 dark:bg-ink-800/95">
+              {[
+                { k: 'Uptime', v: '99.94%', tone: 'text-emerald-500' },
+                { k: 'Open P1', v: '0', tone: 'text-slate-800 dark:text-white' },
+                { k: 'Avg response', v: '11 min', tone: 'text-brand-500' },
+              ].map((x) => (
+                <div key={x.k} className="text-center">
+                  <p className={`font-display text-lg font-bold tabular-nums ${x.tone}`}>{x.v}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-wider text-slate-400">{x.k}</p>
+                </div>
+              ))}
             </div>
-            <p className="mt-2.5 text-center text-[11.5px] text-slate-400">
-              Example dashboard — clients get the live version inside the portal.
-            </p>
           </motion.div>
         </div>
       </section>
@@ -152,9 +263,9 @@ export default function Home() {
             {[...partners, ...partners].map((p, i) => (
               <div
                 key={i}
-                className="flex shrink-0 items-center gap-2.5 rounded-xl border border-slate-200 bg-white px-5 py-3 dark:border-white/10 dark:bg-white/[0.03]"
+                className="flex shrink-0 items-center gap-3 rounded-xl border border-slate-200 bg-white px-5 py-3.5 dark:border-white/10 dark:bg-white/[0.03]"
               >
-                <span className="h-2.5 w-2.5 rounded-sm" style={{ background: p.color }} aria-hidden="true" />
+                <PartnerLogo partner={p} size={24} />
                 <span className="whitespace-nowrap font-display text-[15px] font-semibold text-slate-700 dark:text-slate-200">
                   {p.name}
                 </span>
@@ -181,6 +292,7 @@ export default function Home() {
             <StaggerItem key={p.title}>
               <Link to={p.to} className="group block h-full">
                 <div className="px-card px-card-hover h-full">
+                  <CardImage src={familyImg(iconFamily[p.icon], 700)} alt={p.title} className="h-36" />
                   <IconBadge>{icons[p.icon]}</IconBadge>
                   <h3 className="mt-4 font-display text-[17px] font-semibold text-slate-900 dark:text-white">{p.title}</h3>
                   <p className="px-body mt-2">{p.desc}</p>
@@ -207,6 +319,7 @@ export default function Home() {
               <StaggerItem key={f.slug}>
                 <Link to={`/solutions/${f.slug}`} className="group block h-full">
                   <div className="px-card px-card-hover flex h-full flex-col">
+                    <CardImage src={familyImg(f.slug, 800)} alt={f.name} className="h-44" />
                     <div className="flex items-start justify-between gap-3">
                       <IconBadge size="lg">{icons[f.icon]}</IconBadge>
                       <span className="font-mono text-[10.5px] uppercase tracking-wider text-slate-400">
@@ -237,39 +350,30 @@ export default function Home() {
           <SectionHead eyebrow="Who we serve" title="Industries" sub="Every industry carries its own compliance and uptime expectations." />
           <ArrowLink to="/industries">All industries</ArrowLink>
         </div>
-        <Stagger className="mt-9 flex flex-wrap gap-2.5">
+        <Stagger className="mt-9 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
           {industries.map((i) => (
             <StaggerItem key={i.slug}>
-              <Link
-                to={`/industries/${i.slug}`}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-[14.5px] font-medium text-slate-700 transition-all hover:-translate-y-0.5 hover:border-brand-400 hover:text-brand-600 hover:shadow-soft dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-200"
-              >
-                {i.name}
-                <ArrowRightOutlined className="text-[10px] text-slate-400" />
-              </Link>
+              <ImageTile to={`/industries/${i.slug}`} src={industryImg(i.slug, 700)} label={i.name} sub={i.compliance[0]} />
             </StaggerItem>
           ))}
         </Stagger>
       </section>
 
       {/* ── 7. PROCESS ──────────────────────────────────────────── */}
-      <section className="border-y border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
+      <PhotoSection image={img(photos.teamMonitors, 1920)}>
         <div className="px-container px-section">
-          <SectionHead
+          <DarkHead
             eyebrow="How we work" title="Assess → Design → Deploy → Manage"
             sub="This is a real sequence — each step has a defined deliverable that you receive."
           />
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {processSteps.map((s, i) => (
               <Reveal key={s.n} delay={i * 0.09}>
-                <div className="relative h-full">
-                  {i < processSteps.length - 1 && (
-                    <span className="absolute -right-3 top-7 hidden h-px w-6 bg-gradient-to-r from-brand-300 to-transparent lg:block" aria-hidden="true" />
-                  )}
-                  <span className="font-display text-4xl font-bold text-brand-200 dark:text-brand-500/30">{s.n}</span>
-                  <h3 className="mt-1 font-display text-lg font-semibold text-slate-900 dark:text-white">{s.title}</h3>
-                  <p className="px-body mt-2">{s.desc}</p>
-                  <p className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-brand-50 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-brand-600 dark:bg-brand-500/10 dark:text-brand-300">
+                <div className="h-full rounded-2xl border border-white/15 bg-white/[0.07] p-6 backdrop-blur-md transition-colors hover:bg-white/[0.12]">
+                  <span className="font-display text-4xl font-bold text-brand-400">{s.n}</span>
+                  <h3 className="mt-1 font-display text-lg font-semibold text-white">{s.title}</h3>
+                  <p className="mt-2 text-[0.97rem] leading-relaxed text-white/75">{s.desc}</p>
+                  <p className="mt-3 inline-flex items-center gap-1.5 rounded-md bg-brand-500/25 px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider text-brand-100">
                     <ThunderboltFilled /> {s.out}
                   </p>
                 </div>
@@ -277,7 +381,7 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* ── 8. FEATURED CASE STUDY ──────────────────────────────── */}
       <section className="px-container px-section">
@@ -294,13 +398,18 @@ export default function Home() {
                   <Button type="primary" size="large">Read full case study <ArrowRightOutlined /></Button>
                 </Link>
               </div>
-              <div className="grid gap-px bg-slate-200 dark:bg-white/10 sm:grid-cols-3 lg:grid-cols-1">
+              <div className="flex flex-col">
+                <div className="relative h-56 overflow-hidden lg:h-auto lg:min-h-[220px] lg:flex-1">
+                  <img src={caseImg(caseStudies[0].slug, 1000)} alt={caseStudies[0].title} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+                </div>
+                <div className="grid gap-px bg-slate-200 dark:bg-white/10 sm:grid-cols-3">
                 {caseStudies[0].metrics.map((m) => (
-                  <div key={m.label} className="flex flex-col justify-center bg-slate-50 p-7 dark:bg-ink-800">
+                  <div key={m.label} className="flex flex-col justify-center bg-slate-50 p-5 dark:bg-ink-800">
                     <p className="font-display text-3xl font-bold text-brand-600 dark:text-brand-300">{m.value}</p>
                     <p className="mt-1 text-[13.5px] text-slate-500 dark:text-slate-400">{m.label}</p>
                   </div>
                 ))}
+                </div>
               </div>
             </div>
           </div>
@@ -308,9 +417,9 @@ export default function Home() {
       </section>
 
       {/* ── 9. TESTIMONIALS ─────────────────────────────────────── */}
-      <section className="border-y border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
+      <PhotoSection image={img(photos.whiteboard, 1920)} overlay="from-ink-900/95 via-brand-900/85 to-ink-900/90">
         <div className="px-container px-section">
-          <SectionHead eyebrow="Client voices" title="What our clients say" center />
+          <DarkHead eyebrow="Client voices" title="What our clients say" center />
           <Reveal className="mx-auto mt-10 max-w-3xl">
             <Carousel autoplay autoplaySpeed={5200} dots={{ className: 'px-dots' }} className="pb-8">
               {testimonials.map((t) => (
@@ -319,18 +428,18 @@ export default function Home() {
                     <div className="mb-4 flex justify-center gap-1 text-amber-400">
                       {[0, 1, 2, 3, 4].map((i) => <StarFilled key={i} />)}
                     </div>
-                    <p className="font-display text-xl leading-relaxed text-slate-800 dark:text-slate-100 sm:text-[1.4rem]">
+                    <p className="font-display text-xl leading-relaxed text-white sm:text-[1.4rem]">
                       “{t.text}”
                     </p>
-                    <p className="mt-5 font-semibold text-slate-900 dark:text-white">{t.by}</p>
-                    <p className="text-[13.5px] text-slate-500 dark:text-slate-400">{t.role} · {t.industry}</p>
+                    <p className="mt-5 font-semibold text-white">{t.by}</p>
+                    <p className="text-[13.5px] text-white/60">{t.role} · {t.industry}</p>
                   </div>
                 </div>
               ))}
             </Carousel>
           </Reveal>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* ── 10. CLIENT LOGO WALL ────────────────────────────────── */}
       <section className="px-container px-section">
@@ -366,6 +475,7 @@ export default function Home() {
               <StaggerItem key={p.slug}>
                 <Link to={`/blog/${p.slug}`} className="group block h-full">
                   <article className="px-card px-card-hover flex h-full flex-col">
+                    <CardImage src={postImg(p.slug, 700)} alt={p.title} />
                     <div className="flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-wider text-slate-400">
                       <Tag color="red" className="!m-0">{p.cat}</Tag>
                       <span>{p.read}</span>
@@ -409,11 +519,14 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <div className="mt-8 rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.03]">
+            <div className="mt-8 flex items-center gap-4 rounded-2xl border border-slate-200 bg-slate-50 p-5 dark:border-white/10 dark:bg-white/[0.03]">
+              <img src={img(photos.helpdesk, 240)} alt="" aria-hidden="true" loading="lazy" className="hidden h-16 w-16 shrink-0 rounded-xl object-cover sm:block" />
+              <div className="min-w-0">
               <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">Prefer to talk?</p>
               <div className="mt-2 flex flex-wrap gap-x-6 gap-y-1.5 text-[15px] font-semibold text-slate-800 dark:text-slate-100">
                 {company.phones.map((p) => <a key={p} href={`tel:${p}`} className="hover:text-brand-600">{p}</a>)}
                 <a href={`mailto:${company.email}`} className="hover:text-brand-600">{company.email}</a>
+              </div>
               </div>
             </div>
           </Reveal>

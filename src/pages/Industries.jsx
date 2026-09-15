@@ -6,7 +6,8 @@ import { industries, findIndustry } from '../data/industries';
 import { solutionFamilies, findFamily } from '../data/solutions';
 import { caseStudies } from '../data/proof';
 import { Reveal, Stagger, StaggerItem, SectionHead } from '../components/ui';
-import { PageHero, CTABand } from '../components/blocks';
+import { PageHero, CTABand, CardImage, FeatureImage } from '../components/blocks';
+import { industryImg, familyImg, caseImg } from '../data/images';
 
 export function IndustriesHub() {
   return (
@@ -23,6 +24,7 @@ export function IndustriesHub() {
             <StaggerItem key={i.slug}>
               <Link to={`/industries/${i.slug}`} className="group block h-full">
                 <div className="px-card px-card-hover flex h-full flex-col">
+                  <CardImage src={industryImg(i.slug, 800)} alt={i.name} className="h-48" />
                   <h2 className="font-display text-[17px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">
                     {i.name}
                   </h2>
@@ -64,8 +66,11 @@ export function IndustryDetail() {
 
       {/* challenges */}
       <section className="px-container px-section">
+        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
+        <FeatureImage src={industryImg(ind.slug, 1200)} alt={ind.name} />
+        <div>
         <SectionHead eyebrow="Reality check" title={`Typical IT challenges in ${ind.name}`} />
-        <Stagger className="mt-8 grid gap-4 md:grid-cols-3">
+        <Stagger className="mt-8 grid gap-4">
           {ind.challenges.map((c) => (
             <StaggerItem key={c}>
               <div className="h-full rounded-2xl border border-amber-200 bg-amber-50/60 p-5 dark:border-amber-500/25 dark:bg-amber-500/5">
@@ -75,6 +80,8 @@ export function IndustryDetail() {
             </StaggerItem>
           ))}
         </Stagger>
+        </div>
+        </div>
       </section>
 
       {/* compliance */}
@@ -102,8 +109,9 @@ export function IndustryDetail() {
               <div className="mt-6 space-y-3">
                 {fits.map((f) => (
                   <Link key={f.slug} to={`/solutions/${f.slug}`} className="group block">
-                    <div className="px-card px-card-hover flex items-center justify-between gap-4 !p-5">
-                      <div className="min-w-0">
+                    <div className="px-card px-card-hover flex items-center justify-between gap-4 !p-4">
+                      <img src={familyImg(f.slug, 300)} alt="" aria-hidden="true" loading="lazy" className="h-16 w-20 shrink-0 rounded-xl object-cover" />
+                      <div className="min-w-0 flex-1">
                         <h3 className="font-display text-[16px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white">{f.name}</h3>
                         <p className="px-body mt-1 line-clamp-2">{f.blurb}</p>
                       </div>
@@ -126,6 +134,7 @@ export function IndustryDetail() {
               <Reveal key={c.slug}>
                 <Link to={`/case-studies/${c.slug}`} className="group block h-full">
                   <div className="px-card px-card-hover h-full">
+                    <CardImage src={caseImg(c.slug, 900)} alt={c.title} className="h-48" />
                     <Tag color="red">{ind.name}</Tag>
                     <h3 className="mt-3 font-display text-lg font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white">{c.title}</h3>
                     <p className="px-body mt-2">{c.result}</p>

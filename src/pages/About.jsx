@@ -7,7 +7,8 @@ import { leadership, milestones } from '../data/people';
 import { certifications } from '../data/proof';
 import { industries } from '../data/industries';
 import { Reveal, Stagger, StaggerItem, SectionHead, Counter, IconBadge } from '../components/ui';
-import { PageHero, CTABand, TickList } from '../components/blocks';
+import { PageHero, CTABand, TickList, FeatureImage, PhotoSection, DarkHead, ImageTile } from '../components/blocks';
+import { img, photos, industryImg } from '../data/images';
 
 /* =================== ABOUT =================== */
 export function About() {
@@ -49,6 +50,7 @@ export function About() {
           </Reveal>
 
           <Reveal delay={0.1}>
+            <FeatureImage src={img(photos.officeTeam, 1000)} alt="ProXinet team working together" className="mb-10" />
             <div className="px-card">
               <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">At a glance</p>
               <div className="mt-5 grid grid-cols-2 gap-5">
@@ -75,32 +77,28 @@ export function About() {
       </section>
 
       {/* values */}
-      <section className="border-y border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
+      <PhotoSection image={img(photos.highFive, 1920)}>
         <div className="px-container px-section">
-          <SectionHead eyebrow="What we stand for" title="Core values" />
+          <DarkHead eyebrow="What we stand for" title="Core values" />
           <Stagger className="mt-9 grid gap-4 md:grid-cols-3">
             {values.map((v) => (
               <StaggerItem key={v.title}>
-                <div className="px-card h-full">
-                  <h3 className="font-display text-[16.5px] font-semibold text-slate-900 dark:text-white">{v.title}</h3>
-                  <p className="px-body mt-2">{v.desc}</p>
+                <div className="h-full rounded-2xl border border-white/15 bg-white/[0.07] p-6 backdrop-blur-md transition-colors hover:bg-white/[0.12]">
+                  <h3 className="font-display text-[16.5px] font-semibold text-white">{v.title}</h3>
+                  <p className="mt-2 text-[0.97rem] leading-relaxed text-white/75">{v.desc}</p>
                 </div>
               </StaggerItem>
             ))}
           </Stagger>
         </div>
-      </section>
+      </PhotoSection>
 
       {/* industries served */}
       <section className="px-container px-section">
         <SectionHead eyebrow="Reach" title="Industries we serve" />
-        <div className="mt-8 flex flex-wrap gap-2.5">
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
           {industries.map((i) => (
-            <Link key={i.slug} to={`/industries/${i.slug}`}>
-              <span className="inline-block rounded-xl border border-slate-200 px-4 py-2 text-[14.5px] font-medium text-slate-700 transition-colors hover:border-brand-400 hover:text-brand-600 dark:border-white/10 dark:text-slate-200">
-                {i.name}
-              </span>
-            </Link>
+            <ImageTile key={i.slug} to={`/industries/${i.slug}`} src={industryImg(i.slug, 700)} label={i.name} />
           ))}
         </div>
       </section>
@@ -157,6 +155,14 @@ export function Story() {
         crumbs={[{ label: 'About', to: '/about' }, { label: 'Our Story' }]}
       />
       <section className="px-container px-section">
+        <Reveal className="mx-auto mb-14 max-w-4xl">
+          <div className="grid gap-4 sm:grid-cols-3">
+            {[photos.hardwareRepair, photos.teamMonitors, photos.dcEngineer].map((p, i) => (
+              <img key={p} src={img(p, 700)} alt="" aria-hidden="true" loading="lazy"
+                className={`aspect-[4/3] w-full rounded-2xl object-cover shadow-soft ${i === 1 ? 'sm:-translate-y-4' : ''}`} />
+            ))}
+          </div>
+        </Reveal>
         <Reveal className="mx-auto max-w-3xl">
           <Timeline
             mode="left"
@@ -216,9 +222,9 @@ export function Process() {
         </Stagger>
       </section>
 
-      <section className="border-t border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
+      <PhotoSection image={img(photos.nocDesk, 1920)}>
         <div className="px-container px-section">
-          <SectionHead eyebrow="Governance" title="Support delivery framework" sub="ITIL-aligned — these four pillars apply to every managed account." />
+          <DarkHead eyebrow="Governance" title="Support delivery framework" sub="ITIL-aligned — these four pillars apply to every managed account." />
           <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-4">
             {[
               { t: 'Governance', d: 'SLA-based delivery, 24/7 support and a standardised incident process.' },
@@ -227,15 +233,15 @@ export function Process() {
               { t: 'Information security', d: 'Data confidentiality, regulatory compliance and perimeter-to-endpoint protection.' },
             ].map((x) => (
               <Reveal key={x.t}>
-                <div className="px-card h-full">
-                  <h3 className="font-display text-[16px] font-semibold text-slate-900 dark:text-white">{x.t}</h3>
-                  <p className="px-body mt-2">{x.d}</p>
+                <div className="h-full rounded-2xl border border-white/15 bg-white/[0.07] p-6 backdrop-blur-md transition-colors hover:bg-white/[0.12]">
+                  <h3 className="font-display text-[16px] font-semibold text-white">{x.t}</h3>
+                  <p className="mt-2 text-[0.97rem] leading-relaxed text-white/75">{x.d}</p>
                 </div>
               </Reveal>
             ))}
           </div>
         </div>
-      </section>
+      </PhotoSection>
 
       <CTABand />
     </>
