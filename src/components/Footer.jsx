@@ -28,7 +28,7 @@ export default function Footer() {
     <footer className="mt-auto border-t border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-900">
       {/* newsletter strip */}
       <div className="border-b border-slate-200 dark:border-white/10">
-        <div className="px-container flex flex-col items-start justify-between gap-5 py-8 md:flex-row md:items-center">
+        <div className="px-container flex flex-col items-start justify-between gap-5 py-6 md:flex-row md:items-center">
           <div>
             <h3 className="font-display text-lg font-semibold text-slate-900 dark:text-white">
               Monthly IT digest — practical, vendor-neutral
@@ -49,25 +49,13 @@ export default function Footer() {
       </div>
 
       {/* main grid */}
-      <div className="px-container grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr]">
+      <div className="px-container grid gap-8 py-10 gap-x-8 md:grid-cols-2 lg:grid-cols-[1.5fr_1.1fr_1fr_.9fr]">
         <div>
           <Logo />
-          <p className="mt-4 max-w-xs text-sm leading-relaxed text-slate-500 dark:text-slate-400">
+          <p className="mt-4 max-w-[34ch] text-sm leading-relaxed text-slate-500 dark:text-slate-400">
             Your end-to-end IT infrastructure partner — cloud, security, data center, backup and network.
             Designed, deployed and managed 24/7.
           </p>
-          <div className="mt-5 space-y-3 text-sm">
-            {company.offices.map((o) => (
-              <div key={o.label} className="flex gap-2.5 text-slate-500 dark:text-slate-400">
-                <EnvironmentOutlined className="mt-1 shrink-0 text-brand-500" />
-                <span>
-                  <span className="block font-mono text-[10.5px] uppercase tracking-wider text-slate-400">{o.label}</span>
-                  {o.line}
-                </span>
-              </div>
-            ))}
-
-          </div>
           <div className="mt-5 flex gap-2">
             {[
               { i: <LinkedinFilled />, h: company.social.linkedin, l: 'LinkedIn' },
@@ -82,6 +70,22 @@ export default function Footer() {
                 {s.i}
               </a>
             ))}
+          </div>
+        </div>
+
+        <div>
+          <p className="mb-3.5 font-mono text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">Offices</p>
+          <div className="space-y-3 text-sm">
+            {company.offices.map((o) => (
+              <div key={o.label} className="flex gap-2.5 text-slate-500 dark:text-slate-400">
+                <EnvironmentOutlined className="mt-1 shrink-0 text-brand-500" />
+                <span>
+                  <span className="block font-mono text-[10.5px] uppercase tracking-wider text-slate-400">{o.label}</span>
+                  {o.line}
+                </span>
+              </div>
+            ))}
+
           </div>
         </div>
 
@@ -120,7 +124,7 @@ export default function Footer() {
 
       {/* certifications row */}
       <div className="border-t border-slate-200 dark:border-white/10">
-        <div className="px-container flex flex-wrap items-center gap-x-6 gap-y-3 py-5">
+        <div className="px-container flex flex-wrap items-center gap-x-6 gap-y-2.5 py-3.5">
           <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400">Credentials</span>
           {certifications.map((c) => (
             <span key={c.name} className="flex items-center gap-1.5 text-[12.5px] text-slate-500 dark:text-slate-400">
@@ -132,7 +136,7 @@ export default function Footer() {
 
       {/* legal bar */}
       <div className="border-t border-slate-200 dark:border-white/10">
-        <div className="px-container flex flex-col items-center justify-between gap-3 py-5 text-[12.5px] text-slate-500 sm:flex-row dark:text-slate-400">
+        <div className="px-container flex flex-col items-center justify-between gap-3 py-3.5 text-[12.5px] text-slate-500 sm:flex-row dark:text-slate-400">
           <span>© {new Date().getFullYear()} {company.name}. All rights reserved.</span>
           <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <Link className="hover:text-brand-600" to="/legal/privacy-policy">Privacy Policy</Link>

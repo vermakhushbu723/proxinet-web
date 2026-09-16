@@ -265,8 +265,10 @@ export function Certifications() {
           {certifications.map((c) => (
             <StaggerItem key={c.name}>
               <div className="px-card h-full">
-                <SafetyCertificateOutlined className="text-2xl text-brand-500" />
-                <h3 className="mt-3 font-display text-[16.5px] font-semibold text-slate-900 dark:text-white">{c.name}</h3>
+                <div className="flex items-center gap-3">
+                  <SafetyCertificateOutlined className="text-2xl text-brand-500" />
+                  <h3 className="font-display text-[16.5px] font-semibold leading-tight text-slate-900 dark:text-white">{c.name}</h3>
+                </div>
                 <p className="px-body mt-1.5">{c.desc}</p>
                 <Tag color="green" className="!mt-3">{c.status}</Tag>
               </div>

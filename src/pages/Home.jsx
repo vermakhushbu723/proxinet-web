@@ -54,7 +54,7 @@ function HeroOrbit() {
 
   return (
     <div
-      className="relative mx-auto aspect-square w-full max-w-[520px] select-none"
+      className="relative mx-auto aspect-square w-full max-w-[400px] select-none"
       onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
     >
       {/* soft glow behind everything */}
@@ -159,7 +159,14 @@ export default function Home() {
         <Glow className="-left-24 top-0" color="rgba(214,43,31,.30)" size={480} />
         <Glow className="right-0 top-40" color="rgba(232,118,63,.20)" size={380} />
 
-        <div className="px-container relative grid items-center gap-10 pb-14 pt-6 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:pb-20 lg:pt-8">
+        {/* right-half hero photo, faded into the page background on its left edge */}
+        <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[52%] md:block" aria-hidden="true">
+          <img src={img(photos.datacenter, 1600)} alt="" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white via-white/75 to-white/30 dark:from-ink-900 dark:via-ink-900/75 dark:to-ink-900/35" />
+          <div className="absolute inset-0 bg-gradient-to-t from-white/70 to-transparent dark:from-ink-900/70" />
+        </div>
+
+        <div className="px-container relative grid items-center gap-8 pb-10 pt-4 lg:grid-cols-[1.15fr_1fr] lg:gap-10 lg:pb-12 lg:pt-5">
           <div>
             <motion.div
               initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
@@ -183,7 +190,7 @@ export default function Home() {
 
             <motion.p
               initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.14 }}
-              className="px-lead mt-6 max-w-xl"
+              className="px-lead mt-5 max-w-xl"
             >
               Cloud, cyber security, data center, backup and network — from a single partner.
               Operating out of Noida and New Delhi for 200+ clients, from manufacturing to BFSI.
@@ -191,7 +198,7 @@ export default function Home() {
 
             <motion.div
               initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.22 }}
-              className="mt-8 flex flex-col gap-3 sm:flex-row"
+              className="mt-6 flex flex-col gap-3 sm:flex-row"
             >
               <Link to="/book-assessment">
                 <Button type="primary" size="large" className="!h-12 !px-7 !text-[15px]">
@@ -205,7 +212,7 @@ export default function Home() {
 
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.3 }}
-              className="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-[13.5px] text-slate-500 dark:text-slate-400"
+              className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[13.5px] text-slate-500 dark:text-slate-400"
             >
               {['Vendor-neutral advice', 'Written assessment summary', 'No obligation'].map((t) => (
                 <span key={t} className="flex items-center gap-1.5">
@@ -293,8 +300,10 @@ export default function Home() {
               <Link to={p.to} className="group block h-full">
                 <div className="px-card px-card-hover h-full">
                   <CardImage src={familyImg(iconFamily[p.icon], 700)} alt={p.title} className="h-36" />
-                  <IconBadge>{icons[p.icon]}</IconBadge>
-                  <h3 className="mt-4 font-display text-[17px] font-semibold text-slate-900 dark:text-white">{p.title}</h3>
+                  <div className="flex items-center gap-3">
+                    <IconBadge size="sm">{icons[p.icon]}</IconBadge>
+                    <h3 className="font-display text-[17px] font-semibold text-slate-900 dark:text-white">{p.title}</h3>
+                  </div>
                   <p className="px-body mt-2">{p.desc}</p>
                   <span className="mt-4 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-brand-600 dark:text-brand-300">
                     View solution
@@ -319,15 +328,18 @@ export default function Home() {
               <StaggerItem key={f.slug}>
                 <Link to={`/solutions/${f.slug}`} className="group block h-full">
                   <div className="px-card px-card-hover flex h-full flex-col">
-                    <CardImage src={familyImg(f.slug, 800)} alt={f.name} className="h-44" />
-                    <div className="flex items-start justify-between gap-3">
-                      <IconBadge size="lg">{icons[f.icon]}</IconBadge>
-                      <span className="font-mono text-[10.5px] uppercase tracking-wider text-slate-400">
+                    <CardImage src={familyImg(f.slug, 800)} alt={f.name} className="h-40">
+                      <span className="absolute right-3 top-3 rounded-full bg-ink-900/70 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-white backdrop-blur">
                         {f.children.length} services
                       </span>
+                    </CardImage>
+                    <div className="flex items-center gap-2.5">
+                      <IconBadge size="sm">{icons[f.icon]}</IconBadge>
+                      <div className="min-w-0 flex-1">
+                        <h3 className="truncate font-display text-[15.5px] font-semibold leading-tight text-slate-900 dark:text-white">{f.name}</h3>
+                        <p className="mt-0.5 truncate font-mono text-[9.5px] uppercase tracking-[0.08em] text-brand-500">{f.tag}</p>
+                      </div>
                     </div>
-                    <h3 className="mt-4 font-display text-lg font-semibold text-slate-900 dark:text-white">{f.name}</h3>
-                    <p className="mt-1 font-mono text-[11px] uppercase tracking-wider text-brand-500">{f.tag}</p>
                     <p className="px-body mt-3 flex-1">{f.blurb}</p>
                     <ul className="mt-4 space-y-1.5 border-t border-slate-100 pt-4 dark:border-white/10">
                       {f.children.slice(0, 3).map((c) => (
@@ -451,8 +463,17 @@ export default function Home() {
         <Stagger className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" gap={0.04}>
           {clientLogos.map((c) => (
             <StaggerItem key={c.name}>
-              <div className="flex h-20 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center transition-colors hover:border-brand-300 dark:border-white/10 dark:bg-white/[0.03]">
-                <span className="text-[13.5px] font-semibold text-slate-500 dark:text-slate-400">{c.name}</span>
+              <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft dark:border-white/10 dark:bg-white/[0.03]">
+                <img
+                  src={industryImg(c.industry, 200)} alt="" aria-hidden="true" loading="lazy"
+                  className="h-12 w-12 shrink-0 rounded-lg object-cover"
+                />
+                <span className="min-w-0">
+                  <span className="block truncate text-[13.5px] font-semibold text-slate-700 dark:text-slate-200">{c.name}</span>
+                  <span className="block truncate font-mono text-[10.5px] uppercase tracking-wider text-slate-400">
+                    {industries.find((i) => i.slug === c.industry)?.name}
+                  </span>
+                </span>
               </div>
             </StaggerItem>
           ))}

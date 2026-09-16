@@ -6,7 +6,7 @@ import { caseStudies, findCase, clientLogos, partners, testimonials, certificati
 import { industries } from '../data/industries';
 import { Reveal, Stagger, StaggerItem, SectionHead, Counter } from '../components/ui';
 import { PageHero, CTABand, TickList, CardImage } from '../components/blocks';
-import { caseImg } from '../data/images';
+import { caseImg, industryImg } from '../data/images';
 import PartnerLogo from '../components/PartnerLogo';
 
 const sampleNote = (
@@ -45,8 +45,17 @@ export function Clients() {
           <Stagger className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" gap={0.04}>
             {list.map((c) => (
               <StaggerItem key={c.name}>
-                <div className="flex h-24 items-center justify-center rounded-xl border border-slate-200 bg-white px-4 text-center transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft dark:border-white/10 dark:bg-white/[0.03]">
-                  <span className="text-[14px] font-semibold text-slate-500 dark:text-slate-400">{c.name}</span>
+                <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft dark:border-white/10 dark:bg-white/[0.03]">
+                  <img
+                    src={industryImg(c.industry, 200)} alt="" aria-hidden="true" loading="lazy"
+                    className="h-14 w-14 shrink-0 rounded-lg object-cover"
+                  />
+                  <span className="min-w-0">
+                    <span className="block truncate text-[14px] font-semibold text-slate-700 dark:text-slate-200">{c.name}</span>
+                    <span className="block truncate font-mono text-[10.5px] uppercase tracking-wider text-slate-400">
+                      {industries.find((i) => i.slug === c.industry)?.name}
+                    </span>
+                  </span>
                 </div>
               </StaggerItem>
             ))}
@@ -262,8 +271,10 @@ export function Partners() {
             {certifications.map((c) => (
               <StaggerItem key={c.name}>
                 <div className="px-card h-full">
-                  <SafetyCertificateOutlined className="text-2xl text-brand-500" />
-                  <h3 className="mt-3 font-display text-[16px] font-semibold text-slate-900 dark:text-white">{c.name}</h3>
+                  <div className="flex items-center gap-3">
+                    <SafetyCertificateOutlined className="text-2xl text-brand-500" />
+                    <h3 className="font-display text-[16px] font-semibold leading-tight text-slate-900 dark:text-white">{c.name}</h3>
+                  </div>
                   <p className="px-body mt-1">{c.desc}</p>
                   <Tag color="green" className="!mt-3">{c.status}</Tag>
                 </div>

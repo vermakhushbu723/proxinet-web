@@ -36,8 +36,10 @@ export function ToolsHub() {
               <Link to={t.to} className="group block h-full">
                 <div className="px-card px-card-hover flex h-full flex-col">
                   <CardImage src={toolImg(t.to, 800)} alt={t.t} />
-                  <IconBadge size="lg">{t.icon}</IconBadge>
-                  <h2 className="mt-4 font-display text-[17px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">{t.t}</h2>
+                  <div className="flex items-center gap-3">
+                    <IconBadge size="sm">{t.icon}</IconBadge>
+                    <h2 className="font-display text-[17px] font-semibold leading-tight text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">{t.t}</h2>
+                  </div>
                   <p className="px-body mt-2 flex-1">{t.d}</p>
                   <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand-600 dark:text-brand-300">
                     Open tool <ArrowRightOutlined className="text-[10px] transition-transform group-hover:translate-x-1" />
