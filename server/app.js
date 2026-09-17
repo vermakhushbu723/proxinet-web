@@ -12,11 +12,12 @@ const app = express();
 
 app.set('trust proxy', 1);
 app.disable('x-powered-by');
-app.use(helmet({ crossOriginResourcePolicy: { policy: 'same-site' } }));
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } })); // API responses readable from any allowed origin
 app.use(cors({
   origin: (origin, cb) => {
     // same-origin requests (the site calling its own /api) send no Origin header
-    if (!origin || env.corsOrigins.length === 0 || env.corsOrigins.includes(origin)) return cb(null, true);
+    // CORS_ORIGIN=* (or empty) allows every origin; admin routes still require a Bearer token
+    if (!origin || env.corsOrigins.length === 0 || env.corsOrigins.includes('*') || env.corsOrigins.includes(origin)) return cb(null, true);
     return cb(null, false);
   },
 }));

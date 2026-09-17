@@ -367,14 +367,18 @@ test('DELETE /api/admin/data clears all submissions but keeps the admin', async 
 });
 
 /* ============================== hardening ============================== */
-test('CORS allows configured origins only', async () => {
-  const allowed = (process.env.CORS_ORIGIN || '').split(',')[0].trim();
-  if (allowed) {
-    const ok = await api('GET', '/api/health', { headers: { Origin: allowed } });
-    assert.equal(ok.headers.get('access-control-allow-origin'), allowed);
+test('CORS follows CORS_ORIGIN (* = every origin, list = only those)', async () => {
+  const list = (process.env.CORS_ORIGIN || '').split(',').map((s) => s.trim()).filter(Boolean);
+  const other = await api('GET', '/api/health', { headers: { Origin: 'https://another-site.example' } });
+  if (list.length === 0 || list.includes('*')) {
+    assert.equal(other.headers.get('access-control-allow-origin'), 'https://another-site.example');
+  } else {
+    const ok = await api('GET', '/api/health', { headers: { Origin: list[0] } });
+    assert.equal(ok.headers.get('access-control-allow-origin'), list[0]);
+    assert.equal(other.headers.get('access-control-allow-origin'), null);
   }
-  const evil = await api('GET', '/api/health', { headers: { Origin: 'https://evil.example' } });
-  assert.equal(evil.headers.get('access-control-allow-origin'), null);
+  const noToken = await api('GET', '/api/admin/stats', { headers: { Origin: 'https://another-site.example' } });
+  assert.equal(noToken.status, 401, 'admin data still needs a login token from any origin');
 });
 
 test('security headers are set', async () => {

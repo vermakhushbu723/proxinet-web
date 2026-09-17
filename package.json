@@ -5,9 +5,9 @@
   "type": "module",
   "description": "ProXinet Technologies - Advanced website (React + Tailwind + Ant Design)",
   "scripts": {
-    "dev": "concurrently -k -n web,api -c red,blue \"vite\" \"node --watch server/index.js\"",
+    "dev": "concurrently -k -n web,api -c red,blue \"vite\" \"node --watch-path=server --watch-preserve-output server/index.js\"",
     "dev:web": "vite",
-    "dev:api": "node --watch server/index.js",
+    "dev:api": "node --watch-path=server --watch-preserve-output server/index.js",
     "start:api": "node server/index.js",
     "seed": "node server/seed/run.js",
     "test:api": "node --test --test-concurrency=1 \"server/tests/*.test.js\"",
