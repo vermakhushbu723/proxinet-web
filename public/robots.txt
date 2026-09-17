@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /portal/
+Disallow: /admin
 
 Sitemap: https://proxinet.in/sitemap.xml

@@ -5,23 +5,43 @@
   "type": "module",
   "description": "ProXinet Technologies - Advanced website (React + Tailwind + Ant Design)",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -k -n web,api -c red,blue \"vite\" \"node --watch server/index.js\"",
+    "dev:web": "vite",
+    "dev:api": "node --watch server/index.js",
+    "start:api": "node server/index.js",
+    "seed": "node server/seed/run.js",
+    "test:api": "node --test --test-concurrency=1 \"server/tests/*.test.js\"",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "admin:create": "node server/scripts/create-admin.js"
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.1",
     "antd": "^5.21.6",
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.7.0",
     "framer-motion": "^11.11.17",
+    "helmet": "^8.3.0",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.10.1",
+    "multer": "^2.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.28.0"
   },
   "devDependencies": {
+    "@vitejs/plugin-basic-ssl": "^1.2.0",
     "@vitejs/plugin-react": "^4.3.3",
     "autoprefixer": "^10.4.20",
+    "concurrently": "^10.0.5",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.15",
     "vite": "^5.4.11"
+  },
+  "engines": {
+    "node": ">=18.18"
   }
 }

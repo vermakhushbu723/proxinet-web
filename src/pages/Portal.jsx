@@ -16,6 +16,7 @@ import { PageHero } from '../components/blocks';
 import { company } from '../data/company';
 import Logo from '../components/Logo';
 import { img, photos } from '../data/images';
+import { submitForm, showSubmitError } from '../api/public';
 
 /* ---------------- demo data ---------------- */
 const tickets = [
@@ -204,6 +205,8 @@ export function PortalDashboard() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [newTicket, setNewTicket] = useState(false);
+  const [ticketSaving, setTicketSaving] = useState(false);
+  const [ticketForm] = Form.useForm();
 
   const go = (key) => { setSection(key); setMobileOpen(false); };
   const current = navItems.find((n) => n.key === section);
@@ -412,8 +415,19 @@ export function PortalDashboard() {
         open={newTicket} onCancel={() => setNewTicket(false)} footer={null} title="Raise a ticket" destroyOnClose
       >
         <Form
-          layout="vertical" requiredMark={false}
-          onFinish={(v) => { console.info('TICKET →', v); message.success('Ticket created — the SLA timer has started.'); setNewTicket(false); }}
+          form={ticketForm} layout="vertical" requiredMark={false}
+          onFinish={async (v) => {
+            setTicketSaving(true);
+            try {
+              const r = await submitForm('tickets', { ...v, client: 'Auto Components Mfg.' });
+              message.success(`Ticket ${r.code} created — the SLA timer has started.`);
+              setNewTicket(false);
+            } catch (err) {
+              showSubmitError(err, ticketForm);
+            } finally {
+              setTicketSaving(false);
+            }
+          }}
         >
           <Form.Item name="subject" label="Subject" rules={[{ required: true, message: 'Subject is required' }]}>
             <Input size="large" placeholder="What is the issue?" />
@@ -437,7 +451,7 @@ export function PortalDashboard() {
           <Form.Item name="desc" label="Description" rules={[{ required: true, message: 'Please add some detail' }]}>
             <Input.TextArea rows={4} placeholder="When it started, how many users are affected, any error message…" />
           </Form.Item>
-          <Button type="primary" size="large" htmlType="submit" block>Create ticket</Button>
+          <Button type="primary" size="large" htmlType="submit" block loading={ticketSaving}>Create ticket</Button>
         </Form>
       </Modal>
     </div>

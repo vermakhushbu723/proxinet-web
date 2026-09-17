@@ -8,6 +8,7 @@ import {
 import { company } from '../data/company';
 import { certifications } from '../data/proof';
 import Logo from './Logo';
+import { subscribeEmail, showSubmitError } from '../api/public';
 
 // Only links that are NOT already in the navbar menus
 const supportLinks = [
@@ -18,10 +19,21 @@ const supportLinks = [
 
 export default function Footer() {
   const [email, setEmail] = React.useState('');
-  const subscribe = () => {
+  const [saving, setSaving] = React.useState(false);
+  const subscribe = async () => {
     if (!/^\S+@\S+\.\S+$/.test(email)) return message.error('Please enter a valid email address.');
-    message.success('Subscribed — the monthly IT digest will arrive in your inbox.');
-    setEmail('');
+    setSaving(true);
+    try {
+      const r = await subscribeEmail(email);
+      if (r.alreadySubscribed) message.info('This email is already subscribed.');
+      else message.success('Subscribed — the monthly IT digest will arrive in your inbox.');
+      setEmail('');
+    } catch (err) {
+      showSubmitError(err);
+    } finally {
+      setSaving(false);
+    }
+    return undefined;
   };
 
   return (
@@ -43,7 +55,7 @@ export default function Footer() {
               onChange={(e) => setEmail(e.target.value)} onPressEnter={subscribe}
               aria-label="Email address for newsletter"
             />
-            <Button size="large" type="primary" onClick={subscribe}>Subscribe</Button>
+            <Button size="large" type="primary" onClick={subscribe} loading={saving}>Subscribe</Button>
           </div>
         </div>
       </div>

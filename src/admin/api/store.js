@@ -1,0 +1,102 @@
+/**
+ * Admin data layer — every read and write goes to the Express/MongoDB API.
+ * Mutations broadcast a change so all mounted screens (list, bell, dashboard) refetch.
+ */
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { request } from '../../api/http';
+import { adminRequest } from './auth';
+
+/* ---------------- change notifications ---------------- */
+const listeners = new Set();
+export const onChange = (fn) => { listeners.add(fn); return () => listeners.delete(fn); };
+const mutate = async (promise) => {
+  const result = await promise;
+  listeners.forEach((fn) => fn());
+  return result;
+};
+
+const C = (col, rest = '') => `/admin/collections/${col}${rest}`;
+
+/* ---------------- reads ---------------- */
+export const listRecords = (col) => adminRequest('GET', C(col, '?limit=1000'));
+export const getRecord = (col, id) => adminRequest('GET', C(col, `/${id}`));
+export const getStats = () =>
+  adminRequest('GET', `/admin/stats?tz=${encodeURIComponent(Intl.DateTimeFormat().resolvedOptions().timeZone || 'Asia/Kolkata')}`);
+export const getUnread = () => adminRequest('GET', '/admin/unread');
+export const getHealth = () => request('GET', '/health');
+
+/* ---------------- writes ---------------- */
+export const updateRecord = (col, id, patch) => mutate(adminRequest('PATCH', C(col, `/${id}`), patch));
+export const updateMany = (col, ids, patch) => mutate(adminRequest('PATCH', C(col), { ids, ...patch }));
+export const addNote = (col, id, text) => mutate(adminRequest('POST', C(col, `/${id}/notes`), { text }));
+export const replyToChat = (id, text) => mutate(adminRequest('POST', C('chats', `/${id}/reply`), { text }));
+
+export function removeRecords(col, ids) {
+  const list = Array.isArray(ids) ? ids : [ids];
+  return mutate(list.length === 1
+    ? adminRequest('DELETE', C(col, `/${list[0]}`))
+    : adminRequest('POST', C(col, '/bulk-delete'), { ids: list }));
+}
+
+export const resetDemoData = () => mutate(adminRequest('POST', '/admin/demo-data'));
+export const clearAllData = () => mutate(adminRequest('DELETE', '/admin/data'));
+
+/* ---------------- downloads ---------------- */
+function saveBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+export async function downloadResume(applicationId, filename = 'resume') {
+  const res = await adminRequest('GET', C('applications', `/${applicationId}/resume`));
+  saveBlob(await res.blob(), filename);
+}
+
+export async function downloadBackup() {
+  const data = await adminRequest('GET', '/admin/export');
+  saveBlob(new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }), `proxinet-backup-${new Date().toISOString().slice(0, 10)}.json`);
+}
+
+/* ---------------- React hooks ---------------- */
+/**
+ * Runs `fetcher` on mount, whenever `deps` change, after any admin mutation,
+ * and every `poll` ms while the tab is visible.
+ */
+export function useApi(fetcher, deps = [], { poll = 0 } = {}) {
+  const [state, setState] = useState({ data: undefined, loading: true, error: null });
+  const fetcherRef = useRef(fetcher);
+  fetcherRef.current = fetcher;
+
+  const load = useCallback(async () => {
+    try {
+      const data = await fetcherRef.current();
+      setState({ data, loading: false, error: null });
+    } catch (error) {
+      setState((s) => ({ ...s, loading: false, error }));
+    }
+  }, []);
+
+  useEffect(() => {
+    setState({ data: undefined, loading: true, error: null });
+    load();
+    const off = onChange(load);
+    const timer = poll ? setInterval(() => { if (document.visibilityState === 'visible') load(); }, poll) : null;
+    return () => {
+      off();
+      if (timer) clearInterval(timer);
+    };
+  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return { ...state, reload: load };
+}
+
+export function useCollection(col) {
+  const r = useApi(() => listRecords(col), [col], { poll: 20000 });
+  return { rows: r.data?.items || [], loading: r.loading, error: r.error, reload: r.reload };
+}

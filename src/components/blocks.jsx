@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { Reveal, Glow, SectionHead } from './ui';
 import { company } from '../data/company';
 import { heroImageFor, img, photos } from '../data/images';
+import { submitForm, showSubmitError } from '../api/public';
 
 /* ------------------------------------------------------------------ *
  *  Page hero — the standard top of every inner page
@@ -207,6 +208,7 @@ export function LeadForm({ compact = false, defaultIntent, onDone }) {
   const [step, setStep] = useState(0);
   const [data, setData] = useState({ intent: defaultIntent || '', size: '', timeline: '' });
   const [done, setDone] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [form] = Form.useForm();
 
   if (done) {
@@ -228,12 +230,18 @@ export function LeadForm({ compact = false, defaultIntent, onDone }) {
     setTimeout(() => setStep((s) => Math.min(s + 1, 2)), 180);
   };
 
-  const submit = (vals) => {
-    // In production: POST to the CRM (Zoho/HubSpot) and trigger the auto-response email/SMS.
-    console.info('LEAD →', { ...data, ...vals });
-    message.success('Your request has been submitted.');
-    setDone(true);
-    onDone?.({ ...data, ...vals });
+  const submit = async (vals) => {
+    setSaving(true);
+    try {
+      await submitForm('leads', { ...data, ...vals, message: vals.message || '' });
+      message.success('Your request has been submitted.');
+      setDone(true);
+      onDone?.({ ...data, ...vals });
+    } catch (err) {
+      showSubmitError(err, form);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const Choice = ({ label, active, onClick }) => (
@@ -307,7 +315,7 @@ export function LeadForm({ compact = false, defaultIntent, onDone }) {
             </Form.Item>
             <div className="flex gap-3">
               <Button size="large" onClick={() => setStep(1)}>Back</Button>
-              <Button size="large" type="primary" htmlType="submit" className="flex-1">Submit request</Button>
+              <Button size="large" type="primary" htmlType="submit" className="flex-1" loading={saving}>Submit request</Button>
             </div>
             <p className="mt-3 text-center text-[12px] text-slate-400">
               Your details are used only for this enquiry. <Link className="underline" to="/legal/privacy-policy">Privacy policy</Link>

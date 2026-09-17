@@ -6,6 +6,7 @@ import { posts, findPost, glossary, faqs, whitepapers } from '../data/resources'
 import { Reveal, Stagger, StaggerItem, SectionHead, ArrowLink } from '../components/ui';
 import { PageHero, CTABand, CardImage } from '../components/blocks';
 import { img, photos, postImg } from '../data/images';
+import { submitForm, showSubmitError } from '../api/public';
 
 const fmt = (d) => new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -178,12 +179,20 @@ export function BlogPost() {
 export function Whitepapers() {
   const [active, setActive] = useState(null);
   const [form] = Form.useForm();
+  const [saving, setSaving] = useState(false);
 
-  const submit = (v) => {
-    console.info('GATED DOWNLOAD →', { asset: active?.title, ...v });
-    message.success(`"${active.title}" has been sent to your email.`);
-    setActive(null);
-    form.resetFields();
+  const submit = async (v) => {
+    setSaving(true);
+    try {
+      await submitForm('downloads', { name: v.name, email: v.email, company: v.company || '', asset: active?.title });
+      message.success(`"${active.title}" has been sent to your email.`);
+      setActive(null);
+      form.resetFields();
+    } catch (err) {
+      showSubmitError(err, form);
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -225,7 +234,7 @@ export function Whitepapers() {
           <Form.Item name="company" label="Company">
             <Input size="large" placeholder="Company name" />
           </Form.Item>
-          <Button type="primary" size="large" htmlType="submit" block icon={<DownloadOutlined />}>Send me the PDF</Button>
+          <Button type="primary" size="large" htmlType="submit" block icon={<DownloadOutlined />} loading={saving}>Send me the PDF</Button>
         </Form>
       </Modal>
 

@@ -116,3 +116,61 @@ These are placeholders and must be replaced:
 - PWA manifest + service worker
 - Schema.org markup (Organization, LocalBusiness, Service, FAQPage)
 - SSR or pre-rendering for SEO (a Next.js migration or `vite-plugin-ssr`)
+
+
+## Backend (Express + MongoDB)
+
+Everything submitted on the website is stored in MongoDB and managed from the admin panel at `/admin`.
+
+### Run locally
+```bash
+cp .env.example .env      # fill MONGODB_URI, JWT_SECRET, ADMIN_EMAIL, ADMIN_PASSWORD
+npm install
+npm run seed              # optional: load demo records (replaces existing submissions)
+npm run dev               # website on :5173 + API on :5000 (Vite proxies /api)
+```
+
+| Script | What it does |
+|---|---|
+| `npm run dev` | website + API together |
+| `npm run dev:api` / `npm run start:api` | API only (watch / plain) |
+| `npm run seed` | replace all submissions with demo data (admin accounts are kept) |
+| `npm run test:api` | 34 API tests against a separate `<db>_test` database (dropped afterwards) |
+
+If Node reports `querySrv ECONNREFUSED` for `mongodb+srv`, add `DNS_SERVERS=8.8.8.8,1.1.1.1` to `.env`.
+
+### Structure
+```
+api/index.js            Vercel serverless entry (wraps the Express app)
+server/
+├── app.js              Express app: helmet, CORS, JSON limits, sanitising, routes, errors
+├── index.js            local server (npm run dev:api)
+├── config/env.js       environment variables
+├── db/connect.js       cached Mongoose connection (safe for serverless)
+├── models/             one Mongoose model per form + Admin + counters (LD-1042 style codes)
+├── collections.js      registry: which fields visitors may set, search & filter fields
+├── routes/public.js    website form endpoints (rate limited)
+├── routes/auth.js      login, me, change password (JWT + bcrypt)
+├── routes/admin.js     admin CRUD, bulk actions, notes, chat reply, resume download, stats, export, demo/clear
+├── services/           dashboard stats, GridFS resume storage
+├── seed/               demo data + seeding
+└── tests/api.test.js   full API test suite
+```
+
+### API
+Public (website): `POST /api/leads`, `/assessments`, `/tickets`, `/downloads`, `/tool-reports`, `/procurement`,
+`/subscribers`, `/applications` (multipart, `resume` ≤ 2 MB PDF/DOC/DOCX), `/chats`, `/chats/:id/messages`, `GET /api/health`.
+
+Auth: `POST /api/auth/login`, `GET /api/auth/me`, `POST /api/auth/change-password`.
+
+Admin (Bearer token), where `:key` is one of `leads, assessments, tickets, chats, downloads, toolReports, subscribers, applications, procurement`:
+`GET /api/admin/collections/:key?q=&status=&filter=&unread=1&limit=&page=` ·
+`GET|PATCH|DELETE /api/admin/collections/:key/:id` · `PATCH /api/admin/collections/:key` (bulk) ·
+`POST /api/admin/collections/:key/bulk-delete` · `POST /api/admin/collections/:key/:id/notes` ·
+`POST /api/admin/collections/chats/:id/reply` · `GET /api/admin/collections/applications/:id/resume` ·
+`GET /api/admin/stats` · `GET /api/admin/unread` · `GET /api/admin/export` · `POST /api/admin/demo-data` · `DELETE /api/admin/data`.
+
+### Deploy on Vercel
+1. Project → Settings → Environment Variables: add `MONGODB_URI`, `MONGODB_DB`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`.
+2. MongoDB Atlas → Network Access: allow Vercel to connect (e.g. `0.0.0.0/0`, since Vercel IPs are dynamic).
+3. Deploy — `vercel.json` routes `/api/*` to the serverless function and everything else to the SPA.

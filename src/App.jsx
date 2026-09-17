@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { lazy, Suspense, useEffect, useMemo, useState } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { ConfigProvider, App as AntApp, FloatButton } from 'antd';
+import { ConfigProvider, App as AntApp, FloatButton, Spin } from 'antd';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 
 import { lightTheme, darkTheme } from './theme/antdTheme';
@@ -26,6 +26,9 @@ import { Contact, BookAssessment, Careers, Procurement } from './pages/Contact';
 import { PortalLogin, PortalDashboard, StatusPage } from './pages/Portal';
 import { Sitemap, LegalPage, NotFound } from './pages/Misc';
 
+// Admin panel lives in src/admin and is loaded only when /admin is opened
+const AdminApp = lazy(() => import('./admin/AdminApp'));
+
 /* Page transition wrapper — starts from a visible resting state */
 function Page({ children }) {
   const reduce = useReducedMotion();
@@ -45,6 +48,14 @@ function Page({ children }) {
 function Shell() {
   const loc = useLocation();
   const isPortalLogin = loc.pathname === '/portal/login';
+
+  if (loc.pathname.startsWith('/admin')) {
+    return (
+      <Suspense fallback={<div className="grid min-h-screen place-items-center"><Spin size="large" /></div>}>
+        <AdminApp />
+      </Suspense>
+    );
+  }
 
   // Client dashboard uses its own admin-style layout (sidebar + header), not the website chrome
   if (loc.pathname.startsWith('/portal/dashboard')) return <PortalDashboard />;

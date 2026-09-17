@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 import { company } from '../data/company';
 import { jobs, findJob } from '../data/people';
+import { submitForm, submitApplication, showSubmitError } from '../api/public';
 import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge } from '../components/ui';
 import { PageHero, CTABand, LeadForm, TickList, PhotoSection, DarkHead, FeatureImage } from '../components/blocks';
 import { img, photos } from '../data/images';
@@ -97,11 +98,24 @@ export function Contact() {
 /* =================== BOOK ASSESSMENT =================== */
 export function BookAssessment() {
   const [done, setDone] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [form] = Form.useForm();
 
-  const submit = (v) => {
-    console.info('ASSESSMENT BOOKING →', v);
-    setDone(true);
+  const submit = async (v) => {
+    setSaving(true);
+    try {
+      await submitForm('assessments', {
+        name: v.name, company: v.company, email: v.email, phone: v.phone, focus: v.focus, mode: v.mode,
+        date: v.date?.format?.('YYYY-MM-DD') ?? v.date,
+        time: v.time?.format?.('HH:mm') ?? v.time,
+        context: v.context || '',
+      });
+      setDone(true);
+    } catch (err) {
+      showSubmitError(err, form);
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (done) {
@@ -205,10 +219,10 @@ export function BookAssessment() {
                   ]}
                 />
               </Form.Item>
-              <Form.Item name="notes" label="Context (optional)">
+              <Form.Item name="context" label="Context (optional)">
                 <Input.TextArea rows={3} placeholder="Current setup, a specific concern, or a deadline…" />
               </Form.Item>
-              <Button type="primary" size="large" htmlType="submit" block>Request this slot</Button>
+              <Button type="primary" size="large" htmlType="submit" block loading={saving}>Request this slot</Button>
               <p className="mt-3 text-center text-[12px] text-slate-400">
                 Your details are used only for this booking. <Link className="underline" to="/legal/privacy-policy">Privacy policy</Link>
               </p>
@@ -223,6 +237,7 @@ export function BookAssessment() {
 /* =================== CAREERS =================== */
 export function Careers() {
   const [applied, setApplied] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [form] = Form.useForm();
 
   return (
@@ -301,7 +316,21 @@ export function Careers() {
               <div className="px-card">
                 <Form
                   form={form} layout="vertical" requiredMark={false}
-                  onFinish={(v) => { console.info('APPLICATION →', v); setApplied(true); }}
+                  onFinish={async (v) => {
+                    setSaving(true);
+                    try {
+                      await submitApplication({
+                        name: v.name, email: v.email, phone: v.phone, role: v.role,
+                        roleTitle: jobs.find((j) => j.slug === v.role)?.title || 'General / talent database',
+                        message: v.message || '',
+                      }, v.resume?.[0]?.originFileObj);
+                      setApplied(true);
+                    } catch (err) {
+                      showSubmitError(err, form);
+                    } finally {
+                      setSaving(false);
+                    }
+                  }}
                 >
                   <div className="grid gap-x-4 sm:grid-cols-2">
                     <Form.Item name="name" label="Full name" rules={[{ required: true, message: 'Name is required' }]}>
@@ -320,7 +349,11 @@ export function Careers() {
                       />
                     </Form.Item>
                   </div>
-                  <Form.Item label="Resume (PDF, max 2 MB)" required>
+                  <Form.Item
+                    name="resume" label="Resume (PDF, max 2 MB)" valuePropName="fileList"
+                    getValueFromEvent={(e) => (Array.isArray(e) ? e : e?.fileList)}
+                    rules={[{ required: true, message: 'Please attach your resume' }]}
+                  >
                     <Upload beforeUpload={() => false} maxCount={1} accept=".pdf,.doc,.docx">
                       <Button icon={<UploadOutlined />} size="large">Select file</Button>
                     </Upload>
@@ -328,7 +361,7 @@ export function Careers() {
                   <Form.Item name="message" label="Cover note (optional)">
                     <Input.TextArea rows={3} placeholder="Why are you a good fit for this role?" />
                   </Form.Item>
-                  <Button type="primary" size="large" htmlType="submit" block>Submit application</Button>
+                  <Button type="primary" size="large" htmlType="submit" block loading={saving}>Submit application</Button>
                 </Form>
               </div>
             )}
@@ -342,6 +375,8 @@ export function Careers() {
 /* =================== PROCUREMENT PACK =================== */
 export function Procurement() {
   const [sent, setSent] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [procForm] = Form.useForm();
   const docs = [
     'Company profile PDF — CIN, GST and Udyam registration',
     'ISO 27001:2022 and ISO 9001:2015 certificates',
@@ -382,7 +417,20 @@ export function Procurement() {
               <>
                 <h2 className="px-h3 mb-1 text-slate-900 dark:text-white">Request the pack</h2>
                 <p className="px-body mb-5">We send it only to a verified business email address.</p>
-                <Form layout="vertical" requiredMark={false} onFinish={(v) => { console.info('PROCUREMENT →', v); setSent(true); }}>
+                <Form
+                  form={procForm} layout="vertical" requiredMark={false}
+                  onFinish={async (v) => {
+                    setSaving(true);
+                    try {
+                      await submitForm('procurement', v);
+                      setSent(true);
+                    } catch (err) {
+                      showSubmitError(err, procForm);
+                    } finally {
+                      setSaving(false);
+                    }
+                  }}
+                >
                   <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Name is required' }]}>
                     <Input size="large" />
                   </Form.Item>
@@ -399,7 +447,7 @@ export function Procurement() {
                         .map((v) => ({ value: v, label: v }))}
                     />
                   </Form.Item>
-                  <Button type="primary" size="large" htmlType="submit" block icon={<DownloadOutlined />}>Request pack</Button>
+                  <Button type="primary" size="large" htmlType="submit" block icon={<DownloadOutlined />} loading={saving}>Request pack</Button>
                 </Form>
               </>
             )}

@@ -121,6 +121,8 @@ a { color: inherit; text-decoration: none; }
 /* --- antd overrides --- */
 .ant-menu-horizontal { border-bottom: none !important; }
 .ant-drawer-body { padding: 0 !important; }
+/* admin record drawer keeps its inner spacing */
+.px-admin-drawer .ant-drawer-body { padding: 20px !important; }
 .ant-collapse-header { align-items: center !important; }
 .ant-steps-item-title { font-family: 'Sora', sans-serif !important; }
 .dark .ant-typography { color: var(--px-text) !important; }

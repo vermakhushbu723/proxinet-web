@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge } from '../components/ui';
 import { PageHero, CTABand, CardImage } from '../components/blocks';
 import { toolImg } from '../data/images';
+import { submitForm, showSubmitError } from '../api/public';
 
 const inr = (n) => '₹' + Math.round(n).toLocaleString('en-IN');
 
@@ -58,12 +59,21 @@ export function ToolsHub() {
 /* Shared result-email capture */
 function EmailResult({ label = 'Email me the result' }) {
   const [sent, setSent] = useState(false);
+  const [saving, setSaving] = useState(false);
   const [email, setEmail] = useState('');
-  const send = () => {
+  const send = async () => {
     if (!/^\S+@\S+\.\S+$/.test(email)) return message.error('Please enter a valid email address.');
-    console.info('TOOL RESULT →', email);
-    setSent(true);
-    message.success('The detailed report has been sent to your email.');
+    setSaving(true);
+    try {
+      await submitForm('toolReports', { email, tool: document.querySelector('h1')?.textContent || window.location.pathname });
+      setSent(true);
+      message.success('The detailed report has been sent to your email.');
+    } catch (err) {
+      showSubmitError(err);
+    } finally {
+      setSaving(false);
+    }
+    return undefined;
   };
   if (sent) return <Alert type="success" showIcon message="Report sent — please check your inbox." className="!mt-5" />;
   return (
@@ -71,7 +81,7 @@ function EmailResult({ label = 'Email me the result' }) {
       <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">{label}</p>
       <div className="mt-2.5 flex gap-2">
         <Input placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} onPressEnter={send} prefix={<MailOutlined className="text-slate-400" />} />
-        <Button type="primary" onClick={send}>Send</Button>
+        <Button type="primary" onClick={send} loading={saving}>Send</Button>
       </div>
     </div>
   );

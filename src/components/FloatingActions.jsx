@@ -7,6 +7,7 @@ import {
 } from '@ant-design/icons';
 import { AnimatePresence, motion } from 'framer-motion';
 import { company } from '../data/company';
+import { startChat, sendChatMessage } from '../api/public';
 
 /* ---------------- AI-style assistant (scripted demo) ---------------- */
 const quickReplies = [
@@ -39,6 +40,17 @@ function Assistant({ open, onClose }) {
   ]);
   const [val, setVal] = useState('');
   const boxRef = React.useRef(null);
+  const chatIdRef = React.useRef(null);
+  // Saves messages in order without blocking the conversation UI
+  const queueRef = React.useRef(Promise.resolve());
+  const save = (from, text) => {
+    queueRef.current = queueRef.current
+      .then(async () => {
+        if (!chatIdRef.current) chatIdRef.current = (await startChat(text)).id;
+        else await sendChatMessage(chatIdRef.current, from, text);
+      })
+      .catch(() => { /* chat keeps working even if logging fails */ });
+  };
 
   useEffect(() => {
     boxRef.current?.scrollTo({ top: boxRef.current.scrollHeight, behavior: 'smooth' });
@@ -47,9 +59,14 @@ function Assistant({ open, onClose }) {
   const send = (text) => {
     const t = (text ?? val).trim();
     if (!t) return;
+    save('me', t);
     setMsgs((m) => [...m, { from: 'me', text: t }]);
     setVal('');
-    setTimeout(() => setMsgs((m) => [...m, { from: 'bot', ...answer(t) }]), 420);
+    setTimeout(() => {
+      const reply = answer(t);
+      save('bot', reply.text);
+      setMsgs((m) => [...m, { from: 'bot', ...reply }]);
+    }, 420);
   };
 
   return (
