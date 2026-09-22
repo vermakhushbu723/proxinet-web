@@ -174,3 +174,23 @@ Admin (Bearer token), where `:key` is one of `leads, assessments, tickets, chats
 1. Project → Settings → Environment Variables: add `MONGODB_URI`, `MONGODB_DB`, `JWT_SECRET`, `ADMIN_EMAIL`, `ADMIN_PASSWORD`.
 2. MongoDB Atlas → Network Access: allow Vercel to connect (e.g. `0.0.0.0/0`, since Vercel IPs are dynamic).
 3. Deploy — `vercel.json` routes `/api/*` to the serverless function and everything else to the SPA.
+
+## Client portal (`/portal/login` → `/portal/dashboard`)
+
+Each managed-services client signs in with their own account and sees only their own data.
+
+| Section | Data | Admin screen that manages it |
+|---|---|---|
+| Overview | uptime, avg response, SLA compliance, open tickets, renewals | Admin → Client portal → Clients (metrics) |
+| Tickets | raise tickets, reply in the thread, see team replies & status | Admin → Tickets (reply from the ticket drawer) |
+| Assets | inventory, warranty countdown, status | Admin → Client portal → Assets |
+| Licences | renewal dates; "Request renewal quote" opens a Licensing ticket | Admin → Client portal → Licences |
+| Reports & Docs | downloadable files + a live SLA report (CSV) | Admin → Client portal → Documents (upload) |
+| Escalation | escalation matrix and coverage | Admin → Client portal → Clients (escalation) |
+| Search | tickets, assets, licences, documents | — |
+
+Client APIs live under `/api/portal/*` (client JWT, `role: client`); admin management under
+`/api/admin/clients|assets|licences|documents` and `POST /api/admin/tickets/:id/reply`.
+Admin and client tokens are not interchangeable. `npm run seed:portal` creates two demo clients
+(set `PORTAL_DEMO_PASSWORD` to choose their password). Code: `src/portal/`, `server/routes/portal.js`,
+`server/routes/adminPortal.js`, `server/models/portal.js`, tests in `server/tests/portal.test.js`.

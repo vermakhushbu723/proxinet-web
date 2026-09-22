@@ -15,6 +15,8 @@ import Subscribers from './pages/Subscribers';
 import Applications from './pages/Applications';
 import ProcurementRequests from './pages/ProcurementRequests';
 import Settings from './pages/Settings';
+import Clients from './pages/Clients';
+import { AssetsPage, LicencesPage, DocumentsPage } from './pages/PortalItems';
 
 function RequireAuth({ children }) {
   const loc = useLocation();
@@ -59,6 +61,10 @@ export default function AdminApp() {
         <Route path="subscribers" element={<Subscribers />} />
         <Route path="applications" element={<Applications />} />
         <Route path="procurement" element={<ProcurementRequests />} />
+        <Route path="clients" element={<Clients />} />
+        <Route path="client-assets" element={<AssetsPage />} />
+        <Route path="client-licences" element={<LicencesPage />} />
+        <Route path="client-documents" element={<DocumentsPage />} />
         <Route path="settings" element={<Settings />} />
         <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
       </Route>

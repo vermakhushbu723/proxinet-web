@@ -15,8 +15,9 @@ const sourceOf = (req) => String(req.body?.source || req.get('referer') || '').r
 
 const created = (res, doc) => res.status(201).json({ ok: true, id: String(doc._id), code: doc.code });
 
-/* Generic form endpoints: leads, assessments, tickets, downloads, tool-reports, procurement */
-['leads', 'assessments', 'tickets', 'downloads', 'toolReports', 'procurement'].forEach((key) => {
+/* Generic form endpoints: leads, assessments, downloads, tool-reports, procurement
+   (support tickets are created through the authenticated client portal — /api/portal/tickets) */
+['leads', 'assessments', 'downloads', 'toolReports', 'procurement'].forEach((key) => {
   const cfg = collections[key];
   router.post(`/${cfg.route}`, publicLimiter, ah(async (req, res) => {
     const doc = new cfg.model({ ...pick(req.body, cfg.publicFields), source: sourceOf(req) });

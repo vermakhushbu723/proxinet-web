@@ -7,6 +7,8 @@ import { withDb, sanitize, notFound, errorHandler } from './middleware/index.js'
 import publicRoutes from './routes/public.js';
 import authRoutes from './routes/auth.js';
 import adminRoutes from './routes/admin.js';
+import portalRoutes from './routes/portal.js';
+import adminPortalRoutes from './routes/adminPortal.js';
 
 const app = express();
 
@@ -31,7 +33,9 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api', withDb);
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminPortalRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/portal', portalRoutes);
 app.use('/api', publicRoutes);
 
 app.use('/api', notFound);

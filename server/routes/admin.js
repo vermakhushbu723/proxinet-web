@@ -32,6 +32,8 @@ function workflowPatch(cfg, body = {}) {
     patch.status = body.status;
   }
   if (body.read !== undefined) patch.read = Boolean(body.read);
+  // tickets record when they were resolved (used by the client SLA report); other models ignore it
+  if (body.status !== undefined) patch.resolvedAt = ['Resolved', 'Closed'].includes(body.status) ? new Date() : null;
   if (!Object.keys(patch).length) throw new HttpError(400, 'Nothing to update — send status and/or read');
   return patch;
 }

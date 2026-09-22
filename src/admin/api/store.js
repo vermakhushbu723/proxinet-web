@@ -100,3 +100,23 @@ export function useCollection(col) {
   const r = useApi(() => listRecords(col), [col], { poll: 20000 });
   return { rows: r.data?.items || [], loading: r.loading, error: r.error, reload: r.reload };
 }
+
+/* ---------------- client portal management ---------------- */
+export const listClients = () => adminRequest('GET', '/admin/clients');
+export const createClient = (data) => mutate(adminRequest('POST', '/admin/clients', data));
+export const updateClient = (id, data) => mutate(adminRequest('PATCH', `/admin/clients/${id}`, data));
+export const resetClientPassword = (id, password) => mutate(adminRequest('POST', `/admin/clients/${id}/password`, password ? { password } : {}));
+export const deleteClient = (id) => mutate(adminRequest('DELETE', `/admin/clients/${id}`));
+
+/** kind: 'assets' | 'licences' | 'documents' */
+export const listPortalItems = (kind, client) => adminRequest('GET', `/admin/${kind}${client ? `?client=${client}` : ''}`);
+export const createPortalItem = (kind, data) => mutate(adminRequest('POST', `/admin/${kind}`, data));
+export const updatePortalItem = (kind, id, data) => mutate(adminRequest('PATCH', `/admin/${kind}/${id}`, data));
+export const deletePortalItem = (kind, id) => mutate(adminRequest('DELETE', `/admin/${kind}/${id}`));
+export async function downloadClientDocument(id, filename) {
+  const res = await adminRequest('GET', `/admin/documents/${id}/download`);
+  saveBlob(await res.blob(), filename);
+}
+
+/** Reply on a portal ticket — visible to the client in their ticket thread. */
+export const replyToTicket = (id, { text, status, owner }) => mutate(adminRequest('POST', `/admin/tickets/${id}/reply`, { text, status, owner }));

@@ -32,7 +32,7 @@ router.post('/login', loginLimiter, ah(async (req, res) => {
 
   admin.lastLoginAt = new Date();
   await admin.save();
-  const token = jwt.sign({ sub: String(admin._id), email: admin.email, name: admin.name }, env.jwtSecret, { expiresIn: env.jwtExpiresIn });
+  const token = jwt.sign({ sub: String(admin._id), email: admin.email, name: admin.name, role: 'admin' }, env.jwtSecret, { expiresIn: env.jwtExpiresIn });
   res.json({ token, admin: publicAdmin(admin) });
 }));
 

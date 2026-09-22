@@ -118,13 +118,14 @@ test('POST /api/assessments validates date/time and stores context', async () =>
   assert.ok(bad.data.fields.date);
 });
 
-test('POST /api/tickets validates priority', async () => {
-  const ok = await api('POST', '/api/tickets', { body: { subject: 'VPN down', pri: 'P1', cat: 'Network', desc: 'Branch VPN drops', client: 'Auto Components Mfg.' } });
-  assert.equal(ok.status, 201);
-  created.ticket = ok.data.id;
-  const bad = await api('POST', '/api/tickets', { body: { subject: 'x', pri: 'P9', desc: 'y' } });
-  assert.equal(bad.status, 400);
-  assert.ok(bad.data.fields.pri);
+test('tickets: no anonymous public endpoint; model validates priority', async () => {
+  // Support tickets are raised from the authenticated client portal (see portal.test.js)
+  assert.equal((await api('POST', '/api/tickets', { body: { subject: 'x', desc: 'y' } })).status, 404);
+  const { Ticket } = await import('../models/index.js');
+  const t = await new Ticket({ subject: 'VPN down', pri: 'P1', cat: 'Network', desc: 'Branch VPN drops', client: 'Auto Components Mfg.' }).save();
+  assert.match(t.code, /^TK-/);
+  created.ticket = String(t._id);
+  await assert.rejects(new Ticket({ subject: 'x', pri: 'P9', desc: 'y' }).validate(), /pri/);
 });
 
 test('POST /api/downloads, /api/tool-reports, /api/procurement create records', async () => {

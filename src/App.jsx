@@ -23,11 +23,14 @@ import {
   ServerSizing, WifiEstimator, TCOCalculator,
 } from './pages/Tools';
 import { Contact, BookAssessment, Careers, Procurement } from './pages/Contact';
-import { PortalLogin, PortalDashboard, StatusPage } from './pages/Portal';
+import { StatusPage } from './pages/Portal';
+import PortalLogin from './portal/PortalLogin';
 import { Sitemap, LegalPage, NotFound } from './pages/Misc';
 
 // Admin panel lives in src/admin and is loaded only when /admin is opened
 const AdminApp = lazy(() => import('./admin/AdminApp'));
+// Client portal dashboard (src/portal) — also loaded on demand
+const PortalApp = lazy(() => import('./portal/PortalApp'));
 
 /* Page transition wrapper — starts from a visible resting state */
 function Page({ children }) {
@@ -58,7 +61,13 @@ function Shell() {
   }
 
   // Client dashboard uses its own admin-style layout (sidebar + header), not the website chrome
-  if (loc.pathname.startsWith('/portal/dashboard')) return <PortalDashboard />;
+  if (loc.pathname.startsWith('/portal/dashboard')) {
+    return (
+      <Suspense fallback={<div className="grid min-h-screen place-items-center"><Spin size="large" /></div>}>
+        <PortalApp />
+      </Suspense>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col pb-14 sm:pb-0">
@@ -130,7 +139,6 @@ function Shell() {
 
             {/* Portal */}
             <Route path="/portal/login" element={<PortalLogin />} />
-            <Route path="/portal/dashboard" element={<PortalDashboard />} />
             <Route path="/status" element={<StatusPage />} />
 
             {/* System */}

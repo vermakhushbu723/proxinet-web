@@ -5,7 +5,7 @@ import {
   MailOutlined, PhoneOutlined, WhatsAppOutlined, DeleteOutlined, FileTextOutlined, DownloadOutlined,
   EyeInvisibleOutlined, RobotOutlined, UserOutlined, CustomerServiceOutlined, SendOutlined,
 } from '@ant-design/icons';
-import { updateRecord, removeRecords, addNote, replyToChat, downloadResume } from '../api/store';
+import { updateRecord, removeRecords, addNote, replyToChat, downloadResume, replyToTicket } from '../api/store';
 import { StatusDot } from './StatusTag';
 import { fmtDateTime, timeAgo } from '../utils';
 
@@ -94,6 +94,58 @@ function Conversation({ record }) {
   );
 }
 
+/* Portal ticket thread: client updates ↔ team replies (the client sees team replies in their portal) */
+function TicketThread({ record }) {
+  const [text, setText] = useState('');
+  const [status, setStatus] = useState(undefined);
+  const [owner, setOwner] = useState(record.owner || '');
+  const [busy, setBusy] = useState(false);
+  const send = async () => {
+    if (!text.trim()) return;
+    setBusy(true);
+    try {
+      await replyToTicket(record.id, { text: text.trim(), status, owner });
+      setText('');
+      setStatus(undefined);
+      message.success('Reply sent — the client sees it in their portal');
+    } catch (err) {
+      fail(err);
+    } finally {
+      setBusy(false);
+    }
+  };
+  const updates = record.updates || [];
+  return (
+    <div>
+      <p className="m-0 mb-2 text-[12px] font-semibold text-slate-600 dark:text-slate-300">Conversation with client</p>
+      {record.clientId ? null : <p className="m-0 mb-2 text-[11.5px] text-slate-400">Not linked to a portal account — replies are saved for your team only.</p>}
+      <div className="space-y-2 rounded-xl bg-slate-50 p-3 dark:bg-white/[0.03]">
+        {updates.length === 0 && <p className="m-0 text-center text-[12px] text-slate-400">No updates yet</p>}
+        {updates.map((u, i) => {
+          const team = u.from === 'team';
+          return (
+            <div key={i} className={`flex ${team ? 'justify-end' : 'justify-start'}`}>
+              <div className={`max-w-[85%] rounded-2xl px-3 py-1.5 text-[12.5px] leading-relaxed ${team ? 'rounded-br-sm bg-brand-500 text-white' : 'rounded-bl-sm border border-slate-200 bg-white text-slate-700 dark:border-white/10 dark:bg-ink-800 dark:text-slate-200'}`}>
+                <span className="whitespace-pre-wrap">{u.text}</span>
+                <span className={`mt-1 block text-[10.5px] ${team ? 'text-white/70' : 'text-slate-400'}`}>{u.by || (team ? 'Team' : 'Client')} · {timeAgo(u.at)}</span>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+      <Input.TextArea className="!mt-2" rows={2} value={text} onChange={(e) => setText(e.target.value)} maxLength={3000} placeholder="Reply to the client…" />
+      <div className="mt-2 flex flex-wrap items-center gap-2">
+        <Select
+          allowClear placeholder="Keep status" value={status} onChange={setStatus} style={{ minWidth: 130 }}
+          options={['Open', 'In progress', 'Resolved', 'Closed'].map((s) => ({ value: s, label: s }))}
+        />
+        <Input value={owner} onChange={(e) => setOwner(e.target.value)} placeholder="Assigned engineer" style={{ maxWidth: 170 }} />
+        <Button type="primary" icon={<SendOutlined />} loading={busy} disabled={!text.trim()} onClick={send} className="ms-auto">Reply</Button>
+      </div>
+    </div>
+  );
+}
+
 export default function RecordDrawer({ col, cfg, record, onClose }) {
   const [note, setNote] = useState('');
   const [saving, setSaving] = useState(false);
@@ -164,6 +216,8 @@ export default function RecordDrawer({ col, cfg, record, onClose }) {
               items={cfg.fields.map(([k, label, type]) => ({ key: k, label, children: <FieldValue type={type} value={r[k]} record={r} /> }))}
             />
           )}
+
+          {cfg.thread && <TicketThread key={r.id} record={r} />}
 
           <Descriptions
             size="small" column={1} labelStyle={{ width: 120 }}

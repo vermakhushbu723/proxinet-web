@@ -33,6 +33,17 @@ export const Ticket = submissionModel({
     subject: req(200, 'Subject'),
     pri: { type: String, enum: ['P1', 'P2', 'P3', 'P4'], default: 'P3' },
     cat: str(40, { default: 'Other' }), desc: req(5000, 'Description'), client: str(160),
+    clientId: { type: Schema.Types.ObjectId, ref: 'Client', default: null, index: true },
+    owner: str(80),
+    updates: {
+      type: [new Schema({
+        from: { type: String, enum: ['client', 'team'], required: true },
+        by: str(120), text: { type: String, trim: true, required: true, maxlength: 3000 },
+        at: { type: Date, default: Date.now },
+      }, { _id: false })],
+      default: [],
+    },
+    resolvedAt: { type: Date, default: null },
   },
 });
 

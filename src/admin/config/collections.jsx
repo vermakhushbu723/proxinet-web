@@ -50,7 +50,7 @@ export const collections = {
 
   tickets: {
     title: 'Support Tickets', nav: 'Tickets', singular: 'ticket', path: '/admin/tickets', group: 'Inbox',
-    icon: <CustomerServiceOutlined />, formName: 'Client portal — raise a ticket',
+    icon: <CustomerServiceOutlined />, formName: 'Client portal tickets',
     statuses: { Open: 'red', 'In progress': 'gold', Resolved: 'green', Closed: 'default' },
     primary: (r) => r.subject, secondary: (r) => r.client,
     search: ['subject', 'client', 'desc', 'cat'],
@@ -59,7 +59,8 @@ export const collections = {
       { title: 'Priority', dataIndex: 'pri', render: (v) => <Tag color={{ P1: 'red', P2: 'orange', P3: 'gold', P4: 'default' }[v]}>{v}</Tag> },
       { title: 'Category', dataIndex: 'cat', responsive: ['lg'] },
     ],
-    fields: [['subject', 'Subject'], ['client', 'Client'], ['pri', 'Priority'], ['cat', 'Category'], ['desc', 'Description', 'long']],
+    fields: [['subject', 'Subject'], ['client', 'Client'], ['pri', 'Priority'], ['cat', 'Category'], ['owner', 'Assigned to'], ['desc', 'Description', 'long']],
+    thread: true,
   },
 
   chats: {

@@ -3,7 +3,8 @@ import { NavLink, Link, Outlet, useLocation, useNavigate } from 'react-router-do
 import { Button, Badge, Drawer, Dropdown, Avatar, Empty, notification } from 'antd';
 import {
   DashboardOutlined, SettingOutlined, MenuFoldOutlined, MenuUnfoldOutlined, BellOutlined,
-  SunOutlined, MoonOutlined, LogoutOutlined, GlobalOutlined,
+  SunOutlined, MoonOutlined, LogoutOutlined, GlobalOutlined, TeamOutlined, DesktopOutlined,
+  SafetyCertificateOutlined, FolderOpenOutlined,
 } from '@ant-design/icons';
 import Logo from '../../components/Logo';
 import { useTheme } from '../../components/ui';
@@ -13,6 +14,14 @@ import { logout, getSession } from '../api/auth';
 import { timeAgo } from '../utils';
 
 const POLL_MS = 15000;
+
+// Data the admin manages for each client's portal (/portal/dashboard)
+const PORTAL_NAV = [
+  ['/admin/clients', <TeamOutlined key="c" />, 'Clients'],
+  ['/admin/client-assets', <DesktopOutlined key="a" />, 'Assets'],
+  ['/admin/client-licences', <SafetyCertificateOutlined key="l" />, 'Licences'],
+  ['/admin/client-documents', <FolderOpenOutlined key="d" />, 'Documents'],
+];
 
 function SideNav({ collapsed, counts, onNavigate }) {
   const item = (to, icon, label, count) => (
@@ -51,6 +60,10 @@ function SideNav({ collapsed, counts, onNavigate }) {
               item(collections[k].path, collections[k].icon, collections[k].nav, counts[k] || 0))}
           </div>
         ))}
+        <div className="space-y-0.5">
+          {!collapsed && <p className="m-0 mb-1 px-2.5 text-[10.5px] font-semibold uppercase tracking-wide text-slate-400">Client portal</p>}
+          {PORTAL_NAV.map(([to, icon, label]) => item(to, icon, label, 0))}
+        </div>
         <div className="space-y-0.5 border-t border-slate-200 pt-3 dark:border-white/10">
           {item('/admin/settings', <SettingOutlined />, 'Settings', 0)}
         </div>

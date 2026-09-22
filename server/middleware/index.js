@@ -38,12 +38,33 @@ export function requireAdmin(req, _res, next) {
   const token = header.startsWith('Bearer ') ? header.slice(7) : null;
   if (!token) return next(new HttpError(401, 'Authentication required'));
   try {
-    req.admin = jwt.verify(token, env.jwtSecret);
+    const payload = jwt.verify(token, env.jwtSecret);
+    if (payload.role === 'client') return next(new HttpError(403, 'Admin access required'));
+    req.admin = payload;
     return next();
   } catch {
     return next(new HttpError(401, 'Session expired — please sign in again'));
   }
 }
+
+/** Client-portal token (role: client). Loads the client and rejects deactivated accounts. */
+export const requireClient = ah(async (req, _res, next) => {
+  const header = req.headers.authorization || '';
+  const token = header.startsWith('Bearer ') ? header.slice(7) : null;
+  if (!token) throw new HttpError(401, 'Please sign in to the client portal');
+  let payload;
+  try {
+    payload = jwt.verify(token, env.jwtSecret);
+  } catch {
+    throw new HttpError(401, 'Session expired — please sign in again');
+  }
+  if (payload.role !== 'client') throw new HttpError(403, 'Client portal access required');
+  const { Client } = await import('../models/portal.js');
+  const client = await Client.findById(payload.sub);
+  if (!client || !client.active) throw new HttpError(401, 'This portal account is no longer active');
+  req.client = client;
+  next();
+});
 
 export const validId = (id) => mongoose.isValidObjectId(id);
 
