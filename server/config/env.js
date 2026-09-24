@@ -21,4 +21,18 @@ export const env = {
   port: Number(process.env.PORT) || 5000,
   corsOrigins: (process.env.CORS_ORIGIN || '').split(',').map((s) => s.trim()).filter(Boolean),
   isProd: process.env.NODE_ENV === 'production',
+  siteUrl: (process.env.SITE_URL || '').replace(/\/+$/, ''),
+  // Renewal reminders
+  remindDays: Number(process.env.RENEWAL_REMIND_DAYS) || 5,
+  reminderTz: process.env.REMINDER_TZ || 'Asia/Kolkata',
+  reminderHour: Number(process.env.REMINDER_HOUR ?? 9),
+  reminderEmailTo: (process.env.REMINDER_EMAIL_TO || process.env.ADMIN_EMAIL || '').trim(),
+  cronSecret: process.env.CRON_SECRET || '',
+  smtp: {
+    host: process.env.SMTP_HOST || '',
+    port: Number(process.env.SMTP_PORT) || 587,
+    user: process.env.SMTP_USER || '',
+    pass: process.env.SMTP_PASS || '',
+    from: process.env.MAIL_FROM || '',
+  },
 };

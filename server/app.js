@@ -9,6 +9,7 @@ import authRoutes from './routes/auth.js';
 import adminRoutes from './routes/admin.js';
 import portalRoutes from './routes/portal.js';
 import adminPortalRoutes from './routes/adminPortal.js';
+import renewalRoutes from './routes/renewals.js';
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api', withDb);
 app.use('/api/auth', authRoutes);
+app.use('/api', renewalRoutes);
 app.use('/api/admin', adminPortalRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/portal', portalRoutes);

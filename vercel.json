@@ -9,5 +9,11 @@
       "source": "/(.*)",
       "destination": "/index.html"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/cron/renewal-reminders",
+      "schedule": "30 3 * * *"
+    }
   ]
 }

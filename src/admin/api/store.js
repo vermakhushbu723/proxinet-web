@@ -120,3 +120,14 @@ export async function downloadClientDocument(id, filename) {
 
 /** Reply on a portal ticket — visible to the client in their ticket thread. */
 export const replyToTicket = (id, { text, status, owner }) => mutate(adminRequest('POST', `/admin/tickets/${id}/reply`, { text, status, owner }));
+
+/* ---------------- customer renewals ---------------- */
+export const listRenewals = () => adminRequest('GET', '/admin/renewals');
+export const getRenewalReminders = () => adminRequest('GET', '/admin/renewals/reminders');
+export const sendRenewalReminderEmail = () => adminRequest('POST', '/admin/renewals/reminders/send');
+export const createRenewal = (data) => mutate(adminRequest('POST', '/admin/renewals', data));
+export const importRenewals = (items) => mutate(adminRequest('POST', '/admin/renewals/import', { items }));
+export const updateRenewal = (id, data) => mutate(adminRequest('PATCH', `/admin/renewals/${id}`, data));
+export const addRenewalNote = (id, text, contacted = false) => mutate(adminRequest('POST', `/admin/renewals/${id}/notes`, { text, contacted }));
+export const renewRenewal = (id, data) => mutate(adminRequest('POST', `/admin/renewals/${id}/renew`, data));
+export const deleteRenewal = (id) => mutate(adminRequest('DELETE', `/admin/renewals/${id}`));

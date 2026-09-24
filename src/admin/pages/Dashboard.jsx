@@ -3,9 +3,10 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Alert, Button, Empty, Skeleton, Tag } from 'antd';
 import {
   InboxOutlined, UserAddOutlined, CalendarOutlined, CustomerServiceOutlined,
-  TrophyOutlined, ArrowRightOutlined, ThunderboltOutlined,
+  TrophyOutlined, ArrowRightOutlined, ThunderboltOutlined, SyncOutlined,
 } from '@ant-design/icons';
-import { useApi, getStats } from '../api/store';
+import { useApi, getStats, getRenewalReminders } from '../api/store';
+import { fmtYmd, daysText } from '../renewals/shared';
 import { collections, collectionKeys } from '../config/collections';
 import { ColumnChart, BarList } from '../components/Charts';
 import Panel, { PageHeader, cardCls } from '../components/Panel';
@@ -31,6 +32,7 @@ const localDate = (ymd) => new Date(`${ymd}T12:00:00`);
 export default function Dashboard() {
   const nav = useNavigate();
   const { data: stats, loading, error, reload } = useApi(getStats, [], { poll: 30000 });
+  const { data: renewals } = useApi(getRenewalReminders, []);
 
   const s = useMemo(() => {
     if (!stats) return null;
@@ -115,6 +117,28 @@ export default function Dashboard() {
             </Panel>
 
             <div className="min-w-0 space-y-4">
+              <Panel
+                title={`Renewals due${renewals?.items?.length ? ` (${renewals.items.length})` : ''}`}
+                extra={<Link to="/admin/renewals" className="text-[12.5px] text-brand-600">All renewals <ArrowRightOutlined className="text-[10px]" /></Link>}
+              >
+                {!renewals?.items?.length ? <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={`No plan ends in the next ${renewals?.remindDays || 5} days`} /> : (
+                  <ul className="m-0 list-none space-y-2.5 p-0">
+                    {renewals.items.slice(0, 5).map((r) => (
+                      <li key={r.id}>
+                        <Link to={`/admin/renewals?view=due&id=${r.id}`} className="flex items-center gap-3">
+                          <span className="grid h-8 w-8 shrink-0 place-items-center rounded-md bg-orange-50 text-orange-600 dark:bg-white/5"><SyncOutlined /></span>
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-[13px] font-medium text-slate-800 dark:text-slate-100">{r.customer}</span>
+                            <span className="block truncate text-[11.5px] text-slate-500">{r.description} · ends {fmtYmd(r.endDate)}</span>
+                          </span>
+                          <Tag color={r.daysLeft < 0 ? 'red' : 'volcano'} className="!m-0">{daysText(r.daysLeft)}</Tag>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </Panel>
+
               <Panel title="Lead pipeline" extra={<span className="flex items-center gap-1.5 text-[12px] text-slate-500"><TrophyOutlined /> {s.winRate}% win rate</span>}>
                 <BarList items={s.pipeline} onClick={() => nav('/admin/leads')} />
               </Panel>

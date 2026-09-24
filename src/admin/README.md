@@ -29,3 +29,18 @@ Website forms submit through `src/api/public.js`; the backend lives in `/server`
 | Newsletter | footer | `POST /api/subscribers` | Subscribers |
 | Apply (with resume) | /careers | `POST /api/applications` (multipart) | Applications |
 | Request the pack | /procurement | `POST /api/procurement` | Procurement |
+
+## Customer renewals (`/admin/renewals`)
+
+Tracks every product/subscription sold (customer, description, qty, PO no, invoice no, start/end date,
+last sale and purchase price) and reminds the admin to contact the customer before it expires.
+
+- **Reminders** start `RENEWAL_REMIND_DAYS` (default 5) days before the end date and repeat **every day**
+  until the record is marked *Renewed* or *Not renewing* (expired-but-open plans keep reminding):
+  daily popup on opening the panel, bell + sidebar badge, dashboard panel, and an optional daily email digest
+  (set `SMTP_*` / `REMINDER_EMAIL_TO`; on Vercel the cron in `vercel.json` calls `/api/cron/renewal-reminders` with `CRON_SECRET`).
+- **Renew** closes the current term and opens the next one (customer, contact and product carry over).
+- **Import**: save the Excel sheet as CSV — columns are matched by header name, month rows like "Oct Renewal" are skipped.
+
+API: `GET/POST /api/admin/renewals`, `PATCH/DELETE /api/admin/renewals/:id`, `POST /:id/notes`, `POST /:id/renew`,
+`POST /api/admin/renewals/import`, `GET /api/admin/renewals/reminders`, `POST /api/admin/renewals/reminders/send`.

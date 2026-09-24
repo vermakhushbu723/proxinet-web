@@ -2,6 +2,7 @@ import app from './app.js';
 import { env } from './config/env.js';
 import { connectDB, disconnectDB } from './db/connect.js';
 import { ensureAdmin } from './routes/auth.js';
+import { startReminderScheduler } from './services/renewals.js';
 
 // Open the port immediately — requests that arrive before MongoDB is ready simply wait
 // for the connection (withDb middleware) instead of being refused.
@@ -15,6 +16,7 @@ server.headersTimeout = 66_000;
 connectDB()
   .then(() => ensureAdmin())
   .then(() => console.log(`[api] MongoDB connected (db: ${env.dbName})`))
+  .then(() => startReminderScheduler())
   .catch((err) => console.error('[api] MongoDB connection failed (will retry on next request):', err.message));
 
 // Graceful shutdown so `node --watch` restarts don't cut requests mid-flight
