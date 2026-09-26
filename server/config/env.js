@@ -35,4 +35,16 @@ export const env = {
     pass: process.env.SMTP_PASS || '',
     from: process.env.MAIL_FROM || '',
   },
+  // MAIL_DRY_RUN=1 builds emails without delivering them (testing)
+  mailDryRun: process.env.MAIL_DRY_RUN === '1',
+  sms: {
+    provider: process.env.SMS_PROVIDER || '', // fast2sms | twilio | webhook | log
+    fast2smsKey: process.env.FAST2SMS_API_KEY || '',
+    twilioSid: process.env.TWILIO_ACCOUNT_SID || '',
+    twilioToken: process.env.TWILIO_AUTH_TOKEN || '',
+    twilioFrom: process.env.TWILIO_FROM || '',
+    twilioWhatsapp: process.env.TWILIO_WHATSAPP === '1',
+    webhookUrl: process.env.SMS_WEBHOOK_URL || '',
+    webhookToken: process.env.SMS_WEBHOOK_TOKEN || '',
+  },
 };

@@ -30,7 +30,7 @@ export default function RenewalReminderModal({ data }) {
       ]}
     >
       <p className="mt-0 text-[13px] text-slate-500">
-        These plans end within {data?.remindDays || 5} days (or have already expired without renewal). Contact the customers today.
+        These plans are due for a renewal reminder today{data?.expired ? ` (${data.expired} already expired without renewal)` : ''}. Contact the customers today.
       </p>
       <ul className="m-0 max-h-[50vh] list-none space-y-2 overflow-y-auto p-0">
         {items.map((r) => (

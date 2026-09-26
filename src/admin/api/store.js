@@ -124,10 +124,21 @@ export const replyToTicket = (id, { text, status, owner }) => mutate(adminReques
 /* ---------------- customer renewals ---------------- */
 export const listRenewals = () => adminRequest('GET', '/admin/renewals');
 export const getRenewalReminders = () => adminRequest('GET', '/admin/renewals/reminders');
-export const sendRenewalReminderEmail = () => adminRequest('POST', '/admin/renewals/reminders/send');
 export const createRenewal = (data) => mutate(adminRequest('POST', '/admin/renewals', data));
 export const importRenewals = (items) => mutate(adminRequest('POST', '/admin/renewals/import', { items }));
 export const updateRenewal = (id, data) => mutate(adminRequest('PATCH', `/admin/renewals/${id}`, data));
 export const addRenewalNote = (id, text, contacted = false) => mutate(adminRequest('POST', `/admin/renewals/${id}/notes`, { text, contacted }));
 export const renewRenewal = (id, data) => mutate(adminRequest('POST', `/admin/renewals/${id}/renew`, data));
 export const deleteRenewal = (id) => mutate(adminRequest('DELETE', `/admin/renewals/${id}`));
+
+/* ---------------- renewal reminder team & schedule ---------------- */
+export const listTeam = () => adminRequest('GET', '/admin/renewal-team');
+export const createTeamMember = (data) => mutate(adminRequest('POST', '/admin/renewal-team', data));
+export const updateTeamMember = (id, data) => mutate(adminRequest('PATCH', `/admin/renewal-team/${id}`, data));
+export const deleteTeamMember = (id) => mutate(adminRequest('DELETE', `/admin/renewal-team/${id}`));
+export const testTeamMember = (id) => mutate(adminRequest('POST', `/admin/renewal-team/${id}/test`));
+export const getReminderSettings = () => adminRequest('GET', '/admin/renewal-settings');
+export const saveReminderSettings = (data) => mutate(adminRequest('PUT', '/admin/renewal-settings', data));
+export const getReminderSchedule = (days = 30) => adminRequest('GET', `/admin/renewals/schedule?days=${days}`);
+export const listReminderLog = () => adminRequest('GET', '/admin/renewals/notifications');
+export const runRemindersNow = () => mutate(adminRequest('POST', '/admin/renewals/reminders/send'));

@@ -4,7 +4,7 @@ import { Button, Badge, Drawer, Dropdown, Avatar, Empty, notification } from 'an
 import {
   DashboardOutlined, SettingOutlined, MenuFoldOutlined, MenuUnfoldOutlined, BellOutlined,
   SunOutlined, MoonOutlined, LogoutOutlined, GlobalOutlined, TeamOutlined, DesktopOutlined,
-  SafetyCertificateOutlined, FolderOpenOutlined, SyncOutlined,
+  SafetyCertificateOutlined, FolderOpenOutlined, SyncOutlined, UsergroupAddOutlined, FieldTimeOutlined,
 } from '@ant-design/icons';
 import Logo from '../../components/Logo';
 import { useTheme } from '../../components/ui';
@@ -65,6 +65,8 @@ function SideNav({ collapsed, counts, renewalsDue = 0, onNavigate }) {
         <div className="space-y-0.5">
           {!collapsed && <p className="m-0 mb-1 px-2.5 text-[10.5px] font-semibold uppercase tracking-wide text-slate-400">Sales</p>}
           {item('/admin/renewals', <SyncOutlined />, 'Renewals', renewalsDue)}
+          {item('/admin/renewal-team', <UsergroupAddOutlined />, 'Reminder team', 0)}
+          {item('/admin/renewal-schedule', <FieldTimeOutlined />, 'Reminder schedule', 0)}
         </div>
         <div className="space-y-0.5">
           {!collapsed && <p className="m-0 mb-1 px-2.5 text-[10.5px] font-semibold uppercase tracking-wide text-slate-400">Client portal</p>}

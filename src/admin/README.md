@@ -44,3 +44,12 @@ last sale and purchase price) and reminds the admin to contact the customer befo
 
 API: `GET/POST /api/admin/renewals`, `PATCH/DELETE /api/admin/renewals/:id`, `POST /:id/notes`, `POST /:id/renew`,
 `POST /api/admin/renewals/import`, `GET /api/admin/renewals/reminders`, `POST /api/admin/renewals/reminders/send`.
+
+### Reminder team & schedule
+- **Sales → Reminder team** (`/admin/renewal-team`): employees (name, designation, mobile, email) who get reminders by
+  email and SMS/WhatsApp; per-person email/SMS switches and a "send test" button. A renewal can be assigned to specific
+  people (Renewals → Edit → "Send reminder to"); unassigned renewals go to every active member.
+- **Sales → Reminder schedule** (`/admin/renewal-schedule`): default rule (daily from N days before expiry, or only on
+  chosen days before), send time, after-expiry behaviour, email/SMS switches, a calendar of upcoming reminders and the
+  delivery log. A renewal can override the rule with its own days before expiry or exact dates.
+- SMS: set `SMS_PROVIDER` (fast2sms | twilio | webhook) and its keys in `.env` — see `.env.example`.

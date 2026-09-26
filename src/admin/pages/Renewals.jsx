@@ -11,8 +11,8 @@ import {
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import {
-  useApi, listRenewals, getRenewalReminders, sendRenewalReminderEmail, createRenewal, importRenewals, updateRenewal,
-  addRenewalNote, renewRenewal, deleteRenewal,
+  useApi, listRenewals, getRenewalReminders, runRemindersNow, createRenewal, importRenewals, updateRenewal,
+  addRenewalNote, renewRenewal, deleteRenewal, listTeam,
 } from '../api/store';
 import Panel, { PageHeader, cardCls } from '../components/Panel';
 import StatusTag from '../components/StatusTag';
@@ -25,18 +25,39 @@ const fail = (err) => message.error(err?.message || 'Action failed');
 const STATUSES = Object.keys(STATUS_COLORS);
 
 /* ---------------- add / edit / renew form ---------------- */
-const toForm = (r) => ({ ...r, startDate: r.startDate ? dayjs(r.startDate) : null, endDate: r.endDate ? dayjs(r.endDate) : null });
+const toForm = (r) => ({
+  ...r,
+  startDate: r.startDate ? dayjs(r.startDate) : null,
+  endDate: r.endDate ? dayjs(r.endDate) : null,
+  reminder: { mode: r.reminder?.mode || 'default', days: r.reminder?.days || [], dates: (r.reminder?.dates || []).map((d) => dayjs(d)) },
+  notify: r.notify || [],
+});
 const fromForm = (v) => ({
   ...v,
   startDate: v.startDate ? v.startDate.format('YYYY-MM-DD') : '',
   endDate: v.endDate ? v.endDate.format('YYYY-MM-DD') : '',
   salePrice: v.salePrice ?? null,
   purchasePrice: v.purchasePrice ?? null,
+  ...(v.reminder ? {
+    reminder: {
+      mode: v.reminder.mode || 'default',
+      days: (v.reminder.days || []).map(Number).filter((n) => Number.isInteger(n) && n >= 0),
+      dates: (v.reminder.dates || []).map((d) => d.format('YYYY-MM-DD')),
+    },
+  } : {}),
 });
 
-function RenewalForm({ state, onClose }) {
+/** Team members as Select options (for "who gets this renewal's reminders"). */
+export function useTeamOptions() {
+  const { data } = useApi(listTeam);
+  return (data?.items || []).filter((m) => m.active).map((m) => ({ value: m.id, label: m.designation ? `${m.name} · ${m.designation}` : m.name }));
+}
+
+function RenewalForm({ state, onClose, settingsText }) {
   const [form] = Form.useForm();
   const [busy, setBusy] = useState(false);
+  const team = useTeamOptions();
+  const remMode = Form.useWatch(['reminder', 'mode'], form);
   const { mode, record } = state || {};
 
   useEffect(() => {
@@ -48,10 +69,12 @@ function RenewalForm({ state, onClose }) {
       const months = record.startDate ? Math.max(1, Math.round(dayjs(record.endDate).diff(dayjs(record.startDate), 'month', true))) : 12;
       form.setFieldsValue({
         startDate: start, endDate: start.add(months, 'month').subtract(1, 'day'), qty: record.qty, poNo: '', invoiceNo: '',
-        salePrice: record.salePrice, purchasePrice: record.purchasePrice, priceBasis: record.priceBasis, plusGst: record.plusGst,
+        salePrice: record.salePrice, purchasePrice: record.purchasePrice, vendor: record.vendor, priceBasis: record.priceBasis, plusGst: record.plusGst,
       });
     } else {
-      form.setFieldsValue(record ? toForm(record) : { qty: 1, priceBasis: 'Total', plusGst: true, status: 'Active' });
+      form.setFieldsValue(record ? toForm(record) : {
+        qty: 1, priceBasis: 'Total', plusGst: true, status: 'Active', reminder: { mode: 'default', days: [], dates: [] }, notify: [],
+      });
     }
   }, [state]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -135,9 +158,45 @@ function RenewalForm({ state, onClose }) {
         <div className="grid gap-x-3 sm:grid-cols-2">
           <Form.Item name="salePrice" label="Last sale price (₹)"><InputNumber min={0} className="!w-full" placeholder="30000" /></Form.Item>
           <Form.Item name="purchasePrice" label="Last purchase price (₹)"><InputNumber min={0} className="!w-full" placeholder="20800" /></Form.Item>
+        </div>
+        <Form.Item name="vendor" label="Vendor (purchased from)"><Input placeholder="e.g. Ingram Micro / Redington / OEM name" /></Form.Item>
+        <div className="grid gap-x-3 sm:grid-cols-2">
           <Form.Item name="priceBasis" label="Price is"><Segmented block options={['Total', 'Per unit']} /></Form.Item>
           <Form.Item name="plusGst" label="+ GST extra" valuePropName="checked"><Switch /></Form.Item>
         </div>
+        {!renew && (
+          <>
+            <p className="m-0 mb-2 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Reminder</p>
+            <Form.Item name={['reminder', 'mode']} label="When to remind" className="!mb-3">
+              <Segmented
+                block
+                options={[
+                  { value: 'default', label: 'Default schedule' },
+                  { value: 'days', label: 'Custom days before' },
+                  { value: 'dates', label: 'Custom dates' },
+                ]}
+              />
+            </Form.Item>
+            {(!remMode || remMode === 'default') && <p className="-mt-1 mb-4 text-[12px] text-slate-500">{settingsText || 'Follows Reminder schedule'} — change it in Reminder schedule.</p>}
+            {remMode === 'days' && (
+              <Form.Item
+                name={['reminder', 'days']} label="Days before expiry (0 = on the expiry day)"
+                rules={[{ required: true, type: 'array', min: 1, message: 'Add at least one number' }]}
+                normalize={(v) => (v || []).map((x) => Number(x)).filter((n) => Number.isInteger(n) && n >= 0 && n <= 365)}
+              >
+                <Select mode="tags" tokenSeparators={[',', ' ']} placeholder="e.g. 30, 15, 7, 1, 0" options={[60, 30, 15, 10, 7, 5, 3, 2, 1, 0].map((d) => ({ value: d, label: d === 0 ? 'On expiry day' : `${d} days before` }))} />
+              </Form.Item>
+            )}
+            {remMode === 'dates' && (
+              <Form.Item name={['reminder', 'dates']} label="Reminder dates" rules={[{ required: true, type: 'array', min: 1, message: 'Pick at least one date' }]}>
+                <DatePicker multiple className="!w-full" format="D MMM YYYY" placeholder="Pick one or more dates" />
+              </Form.Item>
+            )}
+            <Form.Item name="notify" label="Send reminder to" extra="Leave empty to notify every active team member.">
+              <Select mode="multiple" allowClear options={team} placeholder={team.length ? 'All team members' : 'Add people in Reminder team first'} optionFilterProp="label" />
+            </Form.Item>
+          </>
+        )}
       </Form>
     </Drawer>
   );
@@ -145,6 +204,7 @@ function RenewalForm({ state, onClose }) {
 
 /* ---------------- detail drawer: contact, status, follow-up log ---------------- */
 function RenewalDetail({ record, rows, remindDays, onClose, onEdit, onRenew }) {
+  const team = useTeamOptions();
   const [text, setText] = useState('');
   const [contacted, setContacted] = useState(true);
   const [busy, setBusy] = useState(false);
@@ -173,7 +233,7 @@ function RenewalDetail({ record, rows, remindDays, onClose, onEdit, onRenew }) {
         </span>
       )}
     >
-      {isOpen(r) && r.daysLeft <= remindDays && (
+      {isOpen(r) && (r.remindToday || r.daysLeft < 0) && (
         <Alert
           className="!mb-4" type={r.daysLeft < 0 ? 'error' : 'warning'} showIcon
           message={r.daysLeft < 0 ? `This plan expired on ${fmtYmd(r.endDate)} and is not renewed yet` : `${daysText(r.daysLeft)} — contact the customer for renewal`}
@@ -198,9 +258,15 @@ function RenewalDetail({ record, rows, remindDays, onClose, onEdit, onRenew }) {
         <Descriptions.Item label="End date"><span className="flex flex-wrap items-center gap-2">{fmtYmd(r.endDate)} <DaysTag r={r} remindDays={remindDays} /></span></Descriptions.Item>
         <Descriptions.Item label="Last sale price">{fmtPrice(r.salePrice, r)}</Descriptions.Item>
         <Descriptions.Item label="Last purchase price">{fmtPrice(r.purchasePrice, r)}</Descriptions.Item>
+        <Descriptions.Item label="Vendor" span={2}>{r.vendor || '—'}</Descriptions.Item>
+        <Descriptions.Item label="Reminder rule" span={2}>{r.ruleText || '—'}</Descriptions.Item>
+        <Descriptions.Item label="Next reminder">{isOpen(r) ? (r.nextReminder ? fmtYmd(r.nextReminder) : 'None scheduled') : 'Stopped (closed)'}</Descriptions.Item>
+        <Descriptions.Item label="Sent to">
+          {r.notify?.length ? r.notify.map((id) => team.find((t) => t.value === id)?.label || 'Removed member').join(', ') : 'All team members'}
+        </Descriptions.Item>
         {prev && <Descriptions.Item label="Previous term" span={2}>{prev.code} · {fmtYmd(prev.startDate)} – {fmtYmd(prev.endDate)}</Descriptions.Item>}
         {next && <Descriptions.Item label="Renewed as" span={2}>{next.code} · till {fmtYmd(next.endDate)}</Descriptions.Item>}
-        {r.lastRemindedOn && <Descriptions.Item label="Last email reminder" span={2}>{fmtYmd(r.lastRemindedOn)}</Descriptions.Item>}
+        {r.lastRemindedOn && <Descriptions.Item label="Last reminder sent" span={2}>{fmtYmd(r.lastRemindedOn)}</Descriptions.Item>}
       </Descriptions>
 
       <p className="m-0 mb-2 text-[13px] font-semibold text-slate-900 dark:text-white">Follow-up log</p>
@@ -267,7 +333,7 @@ function ImportModal({ open, onClose }) {
       <p className="mt-0 text-[13px] text-slate-600 dark:text-slate-300">
         In Excel use <b>File → Save As → CSV (Comma delimited)</b>, then choose the file. Columns are matched by name:
         Customer Name, Description, Qty, PO No, Invoice No, Start Date, End Date, Last Sale Price, Last Purchase Price
-        (optional: Contact, Phone, Email, Serial). Month rows such as “Oct Renewal” are skipped.
+        (optional: Vendor, Contact, Phone, Email, Serial). Month rows such as “Oct Renewal” are skipped.
       </p>
       <Upload accept=".csv,text/csv" beforeUpload={read} showUploadList={false} maxCount={1}>
         <Button icon={<UploadOutlined />}>Choose CSV file</Button>
@@ -310,7 +376,7 @@ function exportRenewals(rows) {
     ['description', 'Description'], ['serialNo', 'Serial'], ['qty', 'Qty'], ['poNo', 'PO No'], ['invoiceNo', 'Invoice No'],
     ['startDate', 'Start Date'], ['endDate', 'End Date'], ['daysLeft', 'Days Left'],
     ['salePrice', 'Last Sale Price', (v, r) => fmtPrice(v, r).replace('₹', '')], ['purchasePrice', 'Last Purchase Price', (v, r) => fmtPrice(v, r).replace('₹', '')],
-    ['status', 'Status'],
+    ['vendor', 'Vendor'], ['nextReminder', 'Next Reminder'], ['status', 'Status'],
   ];
   const esc = (v) => { const s = v == null ? '' : String(v); return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s; };
   const csv = [cols.map((c) => c[1]).join(','), ...rows.map((r) => cols.map(([k, , f]) => esc(f ? f(r[k], r) : r[k])).join(','))].join('\n');
@@ -360,6 +426,11 @@ export default function Renewals() {
 
   const rows = data?.items || [];
   const remindDays = data?.remindDays || 5;
+  const settings = data?.settings;
+  const settingsText = settings && (settings.mode === 'daily'
+    ? `Default: daily from ${settings.windowDays} days before expiry at ${settings.sendTime}`
+    : `Default: ${settings.days.map((d) => (d === 0 ? 'expiry day' : `${d}d before`)).join(', ')} at ${settings.sendTime}`);
+  const attention = (r) => isOpen(r) && (r.remindToday || r.daysLeft < 0);
   const today = data?.today || dayjs().format('YYYY-MM-DD');
   const openId = params.get('id');
   const detail = openId ? rows.find((r) => r.id === openId) : null;
@@ -369,7 +440,7 @@ export default function Renewals() {
   const counts = useMemo(() => {
     const open = rows.filter(isOpen);
     return {
-      due: open.filter((r) => r.daysLeft >= 0 && r.daysLeft <= remindDays).length,
+      due: open.filter((r) => r.remindToday).length,
       expired: open.filter((r) => r.daysLeft < 0).length,
       month: open.filter((r) => r.endDate.startsWith(monthKey)).length,
       open: open.length,
@@ -379,16 +450,16 @@ export default function Renewals() {
   const filtered = useMemo(() => {
     const byView = {
       upcoming: (r) => isOpen(r),
-      due: (r) => isOpen(r) && r.daysLeft <= remindDays,
+      due: (r) => attention(r),
       month: (r) => r.endDate.startsWith(monthKey),
       expired: (r) => isOpen(r) && r.daysLeft < 0,
       closed: (r) => !isOpen(r),
       all: () => true,
     }[view];
     const needle = q.trim().toLowerCase();
-    return rows.filter(byView).filter((r) => !needle || [r.code, r.customer, r.contactName, r.phone, r.email, r.description, r.serialNo, r.poNo, r.invoiceNo]
+    return rows.filter(byView).filter((r) => !needle || [r.code, r.customer, r.contactName, r.phone, r.email, r.description, r.serialNo, r.poNo, r.invoiceNo, r.vendor]
       .some((v) => String(v || '').toLowerCase().includes(needle)));
-  }, [rows, view, q, remindDays, monthKey]);
+  }, [rows, view, q, monthKey]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // group rows by the month the plan ends — like the "Oct Renewal" bands in the Excel sheet
   const tableData = useMemo(() => {
@@ -408,7 +479,7 @@ export default function Renewals() {
     return out;
   }, [filtered]);
 
-  const COLS = 13;
+  const COLS = 15;
   const cell = (render) => ({
     onCell: (r) => (r.group ? { colSpan: 0 } : {}),
     render: (v, r) => (r.group ? null : render(v, r)),
@@ -434,6 +505,13 @@ export default function Renewals() {
     { title: 'Remaining', dataIndex: 'daysLeft', width: 125, ...cell((_, r) => <DaysTag r={r} remindDays={remindDays} />) },
     { title: 'Last Sale Price', dataIndex: 'salePrice', width: 150, ...cell((v, r) => fmtPrice(v, r)) },
     { title: 'Last Purchase Price', dataIndex: 'purchasePrice', width: 150, ...cell((v, r) => fmtPrice(v, r)) },
+    { title: 'Vendor', dataIndex: 'vendor', width: 150, ...cell((v) => v || '—') },
+    {
+      title: 'Next reminder', dataIndex: 'nextReminder', width: 130,
+      ...cell((v, r) => (!isOpen(r) ? <span className="text-slate-400">—</span> : r.remindToday
+        ? <Tag color="orange" className="!m-0">Today</Tag>
+        : <span className="whitespace-nowrap">{v ? fmtYmd(v) : '—'}{r.reminder?.mode && r.reminder.mode !== 'default' && <Tooltip title={r.ruleText}><Tag className="!ms-1 !me-0">custom</Tag></Tooltip>}</span>)),
+    },
     { title: 'Status', dataIndex: 'status', width: 105, ...cell((v) => <StatusTag color={STATUS_COLORS[v]}>{v}</StatusTag>) },
     {
       key: 'a', width: 80, fixed: 'right',
@@ -472,9 +550,10 @@ export default function Renewals() {
   const sendNow = async () => {
     setSending(true);
     try {
-      const r = await sendRenewalReminderEmail();
-      if (r.sent) message.success(`Reminder email sent to ${r.to}`);
-      else message.info(r.reason);
+      const r = await runRemindersNow();
+      if (r.sent) message.success(`${r.sent} reminder message${r.sent === 1 ? '' : 's'} sent — see Reminder schedule → Delivery log`);
+      else if (r.results?.length) message.warning(`Nothing delivered: ${r.results[0].error || 'check email / SMS setup'}`);
+      else message.info(r.reason || 'Nothing to send');
     } catch (e) { fail(e); } finally { setSending(false); }
   };
 
@@ -484,7 +563,7 @@ export default function Renewals() {
     <>
       <PageHeader
         title="Customer renewals"
-        sub={`${rows.length} plans tracked · reminders start ${remindDays} days before the end date and repeat daily until renewed`}
+        sub={`${rows.length} plans tracked${settingsText ? ` · ${settingsText}` : ''}`}
         extra={(
           <>
             <Tooltip title="Refresh"><Button icon={<ReloadOutlined />} onClick={reload} /></Tooltip>
@@ -513,15 +592,15 @@ export default function Renewals() {
             </ul>
           )}
           action={(
-            <Tooltip title={rem?.emailConfigured ? 'Emails today’s list to the admin (it is also sent automatically every morning)' : 'Set SMTP_HOST / REMINDER_EMAIL_TO in .env to enable email reminders'}>
-              <Button size="small" icon={<SendOutlined />} loading={sending} onClick={sendNow}>Email list</Button>
+            <Tooltip title="Sends today's reminders to the team by email / SMS now (they also go automatically at the scheduled time)">
+              <Button size="small" icon={<SendOutlined />} loading={sending} onClick={sendNow}>Send to team now</Button>
             </Tooltip>
           )}
         />
       )}
 
       <div className="mb-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        <Kpi label={`Ending in ${remindDays} days`} value={counts.due} sub="call these customers now" tone={counts.due ? 'orange' : ''} active={view === 'due'} onClick={() => setView('due')} />
+        <Kpi label="Reminding today" value={counts.due} sub="call these customers now" tone={counts.due ? 'orange' : ''} active={view === 'due'} onClick={() => setView('due')} />
         <Kpi label="Expired, not renewed" value={counts.expired} sub="follow up or mark Not renewing" tone={counts.expired ? 'red' : ''} active={view === 'expired'} onClick={() => setView('expired')} />
         <Kpi label={`Ending in ${dayjs(today).format('MMMM')}`} value={counts.month} sub="open renewals this month" active={view === 'month'} onClick={() => setView('month')} />
         <Kpi label="Open renewals" value={counts.open} sub="active or contacted" active={view === 'upcoming'} onClick={() => setView('upcoming')} />
@@ -535,10 +614,10 @@ export default function Renewals() {
         </div>
         <Table
           rowKey="id" size="small" loading={loading} dataSource={tableData} columns={columns} pagination={false}
-          scroll={{ x: 1700 }} sticky
+          scroll={{ x: 1980 }} sticky
           locale={{ emptyText: <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description={rows.length ? 'Nothing in this view' : 'No renewals yet — add one or import your Excel sheet'} /> }}
           onRow={(r) => (r.group ? {} : { onClick: () => setDetail(r.id), className: 'cursor-pointer' })}
-          rowClassName={(r) => (!r.group && isOpen(r) && r.daysLeft <= remindDays ? (r.daysLeft < 0 ? 'bg-red-50/60 dark:bg-red-500/[0.06]' : 'bg-orange-50/60 dark:bg-orange-500/[0.06]') : '')}
+          rowClassName={(r) => (!r.group && attention(r) ? (r.daysLeft < 0 ? 'bg-red-50/60 dark:bg-red-500/[0.06]' : 'bg-orange-50/60 dark:bg-orange-500/[0.06]') : '')}
         />
       </Panel>
 
@@ -546,7 +625,7 @@ export default function Renewals() {
         record={detail} rows={rows} remindDays={remindDays} onClose={() => setDetail(null)}
         onEdit={(r) => setFormState({ mode: 'edit', record: r })} onRenew={(r) => setFormState({ mode: 'renew', record: r })}
       />
-      <RenewalForm state={formState} onClose={() => setFormState(null)} />
+      <RenewalForm state={formState} onClose={() => setFormState(null)} settingsText={settingsText} />
       <ImportModal open={importOpen} onClose={() => setImportOpen(false)} />
     </>
   );

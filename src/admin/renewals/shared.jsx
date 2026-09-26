@@ -92,7 +92,8 @@ export function parseCsv(text) {
 // normalised header text → our field (first match wins, so specific names come first)
 const HEADERS = [
   [/^(sno|srno|sl|slno|no)$/, null],
-  [/vendor|oem|brand|remark/, null],
+  [/vendor|supplier|distributor|purchasedfrom/, 'vendor'],
+  [/oem|brand|remark/, null],
   [/purchase/, 'purchasePrice'],
   [/sale|selling/, 'salePrice'],
   [/^(pono|po|ponumber|purchaseorder)/, 'poNo'],
@@ -148,7 +149,7 @@ export function rowsToRenewals(rows) {
     const priceText = `${raw.salePrice || ''} ${raw.purchasePrice || ''}`;
     items.push({
       customer: raw.customer, description: raw.description || '—', contactName: raw.contactName || '', email: raw.email || '',
-      phone: raw.phone || '', serialNo: raw.serialNo || '', qty: Math.max(1, parseInt(raw.qty, 10) || 1),
+      phone: raw.phone || '', serialNo: raw.serialNo || '', vendor: raw.vendor || '', qty: Math.max(1, parseInt(raw.qty, 10) || 1),
       poNo: raw.poNo || '', invoiceNo: raw.invoiceNo || '', startDate: startDate || '', endDate,
       salePrice: parseMoney(raw.salePrice), purchasePrice: parseMoney(raw.purchasePrice),
       priceBasis: /per\s*unit/i.test(priceText) ? 'Per unit' : 'Total',
