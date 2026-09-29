@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Button, Form, Input, Select, DatePicker, TimePicker, Result, Steps, Tag, message, Upload, Alert } from 'antd';
+import { Link, Navigate } from 'react-router-dom';
+import { Button, Form, Input, Select, Result, Tag, Upload, Alert } from 'antd';
 import {
-  PhoneOutlined, MailOutlined, EnvironmentOutlined, WhatsAppOutlined,
-  ClockCircleOutlined, CalendarOutlined, UploadOutlined, CheckCircleFilled, DownloadOutlined,
+  PhoneOutlined, MailOutlined, EnvironmentOutlined, WhatsAppOutlined, UploadOutlined,
 } from '@ant-design/icons';
 import { company } from '../data/company';
-import { jobs, findJob } from '../data/people';
-import { submitForm, submitApplication, showSubmitError } from '../api/public';
+import { jobs } from '../data/people';
+import { submitApplication, showSubmitError } from '../api/public';
 import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge } from '../components/ui';
-import { PageHero, CTABand, LeadForm, TickList, PhotoSection, DarkHead, FeatureImage } from '../components/blocks';
-import { img, photos } from '../data/images';
+import { PageHero, LeadForm, TickList } from '../components/blocks';
 
 /* =================== CONTACT =================== */
 export function Contact() {
@@ -20,7 +18,7 @@ export function Contact() {
     <>
       <PageHero
         eyebrow="Contact" title="Let's talk"
-        sub="Fill the form, call us, or leave a WhatsApp message — all three land in the same queue."
+        sub="Fill the form, call us, or send a WhatsApp message — we reply within two working hours."
         crumbs={[{ label: 'Contact' }]}
       />
 
@@ -70,18 +68,6 @@ export function Contact() {
                 </div>
               ))}
 
-              {/* map placeholder — swap for a real iframe embed in production */}
-              <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-white/10">
-                <div className="flex h-52 items-center justify-center bg-gradient-to-br from-brand-50 to-slate-100 dark:from-brand-500/10 dark:to-ink-800">
-                  <div className="text-center">
-                    <EnvironmentOutlined className="text-3xl text-brand-500" />
-                    <p className="mt-2 font-display font-semibold text-slate-700 dark:text-slate-200">Noida · Sector 3</p>
-                    <p className="mt-0.5 text-[12.5px] text-slate-500">
-                      Google Maps embed goes here in the production build
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
           </Reveal>
 
@@ -96,142 +82,9 @@ export function Contact() {
 }
 
 /* =================== BOOK ASSESSMENT =================== */
+// The separate booking form was retired — enquiries go through the Contact page form.
 export function BookAssessment() {
-  const [done, setDone] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [form] = Form.useForm();
-
-  const submit = async (v) => {
-    setSaving(true);
-    try {
-      await submitForm('assessments', {
-        name: v.name, company: v.company, email: v.email, phone: v.phone, focus: v.focus, mode: v.mode,
-        date: v.date?.format?.('YYYY-MM-DD') ?? v.date,
-        time: v.time?.format?.('HH:mm') ?? v.time,
-        context: v.context || '',
-      });
-      setDone(true);
-    } catch (err) {
-      showSubmitError(err, form);
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  if (done) {
-    return (
-      <div className="px-container px-section">
-        <Result
-          status="success"
-          title="Your assessment slot request is in"
-          subTitle="Our team confirms within two working hours and sends a calendar invite."
-          extra={[
-            <Link key="h" to="/"><Button type="primary" size="large">Back to home</Button></Link>,
-            <Link key="r" to="/resources/whitepapers"><Button size="large">Browse guides meanwhile</Button></Link>,
-          ]}
-        />
-      </div>
-    );
-  }
-
-  return (
-    <>
-      <PageHero
-        eyebrow="Free assessment" title="30 minutes. An honest review. Zero obligation."
-        sub="We review your current setup and hand you a written summary — whether or not you engage us, the report is yours."
-        crumbs={[{ label: 'Book Assessment' }]}
-      />
-
-      <section className="px-container grid gap-10 px-section lg:grid-cols-[1fr_1.1fr]">
-        <Reveal>
-          <h2 className="px-h3 text-slate-900 dark:text-white">What the assessment covers</h2>
-          <TickList
-            className="mt-5"
-            items={[
-              'Complete asset inventory — servers, endpoints and network devices',
-              'EOL / EOSL exposure list with risk ranking',
-              'Backup and DR readiness score — whether RPO and RTO are defined at all',
-              'Security gap analysis — endpoint, email, access and patching',
-              'Licence and warranty status review',
-              'Prioritised 90-day action plan with indicative budget',
-            ]}
-          />
-
-          <h2 className="px-h3 mt-10 text-slate-900 dark:text-white">How it works</h2>
-          <Steps
-            className="!mt-5" direction="vertical" current={-1}
-            items={[
-              { title: 'You request a slot', description: 'Fill the form below with your preferred date and time.' },
-              { title: 'We confirm', description: 'A confirmation and calendar invite by call or email within two working hours.' },
-              { title: '30-minute session', description: 'Onsite or by video call — we go through your current setup and pain points.' },
-              { title: 'Written summary', description: 'Findings and prioritised recommendations in your inbox within two working days.' },
-            ]}
-          />
-
-          <Alert
-            className="!mt-8" type="success" showIcon
-            message="No sales pressure"
-            description="After the assessment you can take it forward or not. Either way, the report is yours to keep."
-          />
-        </Reveal>
-
-        <Reveal delay={0.1}>
-          <div className="px-card lg:sticky lg:top-24">
-            <h2 className="px-h3 mb-1 text-slate-900 dark:text-white">Book a slot</h2>
-            <p className="px-body mb-5">All the fields take about 30 seconds.</p>
-            <Form form={form} layout="vertical" onFinish={submit} requiredMark={false}>
-              <div className="grid gap-x-4 sm:grid-cols-2">
-                <Form.Item name="name" label="Full name" rules={[{ required: true, message: 'Name is required' }]}>
-                  <Input size="large" placeholder="Your name" />
-                </Form.Item>
-                <Form.Item name="company" label="Company" rules={[{ required: true, message: 'Company is required' }]}>
-                  <Input size="large" placeholder="Company name" />
-                </Form.Item>
-                <Form.Item name="email" label="Work email" rules={[{ required: true, type: 'email', message: 'Enter a valid email address' }]}>
-                  <Input size="large" placeholder="you@company.com" />
-                </Form.Item>
-                <Form.Item name="phone" label="Phone" rules={[{ required: true, message: 'Phone number is required' }]}>
-                  <Input size="large" placeholder="98XXXXXXXX" />
-                </Form.Item>
-              </div>
-              <Form.Item name="focus" label="Focus area" rules={[{ required: true, message: 'Select an area' }]}>
-                <Select
-                  size="large" placeholder="Which area?"
-                  options={['Full infrastructure review', 'Cyber security', 'Cloud migration', 'Backup & DR', 'Network / Wi-Fi', 'Managed IT / AMC']
-                    .map((v) => ({ value: v, label: v }))}
-                />
-              </Form.Item>
-              <div className="grid gap-x-4 sm:grid-cols-2">
-                <Form.Item name="date" label="Preferred date" rules={[{ required: true, message: 'Choose a date' }]}>
-                  <DatePicker size="large" className="w-full" suffixIcon={<CalendarOutlined />} />
-                </Form.Item>
-                <Form.Item name="time" label="Preferred time" rules={[{ required: true, message: 'Choose a time' }]}>
-                  <TimePicker size="large" className="w-full" format="h:mm a" minuteStep={30} suffixIcon={<ClockCircleOutlined />} />
-                </Form.Item>
-              </div>
-              <Form.Item name="mode" label="Meeting mode" initialValue="video">
-                <Select
-                  size="large"
-                  options={[
-                    { value: 'video', label: 'Video call (Teams / Google Meet)' },
-                    { value: 'onsite', label: 'Onsite visit (Delhi NCR)' },
-                    { value: 'phone', label: 'Phone call' },
-                  ]}
-                />
-              </Form.Item>
-              <Form.Item name="context" label="Context (optional)">
-                <Input.TextArea rows={3} placeholder="Current setup, a specific concern, or a deadline…" />
-              </Form.Item>
-              <Button type="primary" size="large" htmlType="submit" block loading={saving}>Request this slot</Button>
-              <p className="mt-3 text-center text-[12px] text-slate-400">
-                Your details are used only for this booking. <Link className="underline" to="/legal/privacy-policy">Privacy policy</Link>
-              </p>
-            </Form>
-          </div>
-        </Reveal>
-      </section>
-    </>
-  );
+  return <Navigate to="/contact" replace />;
 }
 
 /* =================== CAREERS =================== */
@@ -277,30 +130,6 @@ export function Careers() {
           ))}
         </Stagger>
       </section>
-
-      <PhotoSection image={img(photos.officeTeam, 1920)}>
-        <div className="px-container px-section">
-          <DarkHead eyebrow="Life at ProXinet" title="What the work is like" />
-          <div className="mt-9 grid gap-4 md:grid-cols-3">
-            {[
-              { t: 'Real ownership', d: 'A small team means you work directly with the client rather than hiding behind a ticket queue.' },
-              { t: 'OEM certifications sponsored', d: 'Azure, Fortinet, VMware, Veeam — the company covers exam costs.' },
-              { t: 'Rotation across practices', d: 'Moving from network into security or cloud is possible if that is where your interest lies.' },
-              { t: 'Documented processes', d: 'ITIL-aligned — no guesswork, every task has a defined process.' },
-              { t: 'Escalation support', d: 'You are never on your own — L2, L3 and OEM support are always available.' },
-              { t: 'Delhi NCR base', d: 'Offices in Noida and New Ashok Nagar, with hybrid options on selected roles.' },
-            ].map((x) => (
-              <Reveal key={x.t}>
-                <div className="h-full rounded-2xl border border-white/15 bg-white/[0.07] p-6 backdrop-blur-md transition-colors hover:bg-white/[0.12]">
-                  <CheckCircleFilled className="text-lg text-brand-400" />
-                  <h3 className="mt-2.5 font-display text-[16px] font-semibold text-white">{x.t}</h3>
-                  <p className="mt-1.5 text-[0.97rem] leading-relaxed text-white/75">{x.d}</p>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </PhotoSection>
 
       <section id="apply" className="px-container px-section">
         <div className="mx-auto max-w-2xl">
@@ -374,9 +203,6 @@ export function Careers() {
 
 /* =================== PROCUREMENT PACK =================== */
 export function Procurement() {
-  const [sent, setSent] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [procForm] = Form.useForm();
   const docs = [
     'Company profile PDF — CIN, GST and Udyam registration',
     'ISO 27001:2022 and ISO 9001:2015 certificates',
@@ -411,50 +237,15 @@ export function Procurement() {
         </Reveal>
         <Reveal delay={0.1}>
           <div className="px-card lg:sticky lg:top-24">
-            {sent ? (
-              <Result status="success" title="Request received" subTitle="The pack will be emailed to you within one working day." />
-            ) : (
-              <>
-                <h2 className="px-h3 mb-1 text-slate-900 dark:text-white">Request the pack</h2>
-                <p className="px-body mb-5">We send it only to a verified business email address.</p>
-                <Form
-                  form={procForm} layout="vertical" requiredMark={false}
-                  onFinish={async (v) => {
-                    setSaving(true);
-                    try {
-                      await submitForm('procurement', v);
-                      setSent(true);
-                    } catch (err) {
-                      showSubmitError(err, procForm);
-                    } finally {
-                      setSaving(false);
-                    }
-                  }}
-                >
-                  <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Name is required' }]}>
-                    <Input size="large" />
-                  </Form.Item>
-                  <Form.Item name="company" label="Company" rules={[{ required: true, message: 'Company is required' }]}>
-                    <Input size="large" />
-                  </Form.Item>
-                  <Form.Item name="email" label="Work email" rules={[{ required: true, type: 'email', message: 'Enter a valid email address' }]}>
-                    <Input size="large" />
-                  </Form.Item>
-                  <Form.Item name="purpose" label="Purpose" initialValue="Vendor registration">
-                    <Select
-                      size="large"
-                      options={['Vendor registration', 'Tender / RFP submission', 'Compliance audit', 'Other']
-                        .map((v) => ({ value: v, label: v }))}
-                    />
-                  </Form.Item>
-                  <Button type="primary" size="large" htmlType="submit" block icon={<DownloadOutlined />} loading={saving}>Request pack</Button>
-                </Form>
-              </>
-            )}
+            <h2 className="px-h3 mb-1 text-slate-900 dark:text-white">Request the pack</h2>
+            <p className="px-body mb-5">Email us from your business address and we send the pack within one working day.</p>
+            <a href={`mailto:${company.email}?subject=${encodeURIComponent('Vendor onboarding pack request')}`} className="block">
+              <Button type="primary" size="large" block icon={<MailOutlined />}>Email {company.email}</Button>
+            </a>
+            <Link to="/contact" className="mt-2 block"><Button size="large" block>Or use the contact form</Button></Link>
           </div>
         </Reveal>
       </section>
-      <CTABand />
     </>
   );
 }

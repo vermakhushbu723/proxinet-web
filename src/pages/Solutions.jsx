@@ -1,17 +1,14 @@
 import React from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { Button, Tag, Collapse, Steps } from 'antd';
+import { Button, Steps } from 'antd';
 import {
   CloudOutlined, SafetyOutlined, DatabaseOutlined, CloudDownloadOutlined,
   WifiOutlined, TeamOutlined, VideoCameraOutlined, ArrowRightOutlined,
-  WarningOutlined, FileTextOutlined, DownloadOutlined,
 } from '@ant-design/icons';
 import { solutionFamilies, findFamily, findChild } from '../data/solutions';
-import { industries } from '../data/industries';
-import { caseStudies } from '../data/proof';
 import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge, ArrowLink } from '../components/ui';
 import { PageHero, CTABand, TickList, CardImage, FeatureImage } from '../components/blocks';
-import { familyImg, solutionImg, caseImg } from '../data/images';
+import { familyImg, solutionImg } from '../data/images';
 
 const icons = {
   cloud: <CloudOutlined />, shield: <SafetyOutlined />, server: <DatabaseOutlined />,
@@ -72,43 +69,18 @@ export function SolutionFamily() {
   const f = findFamily(family);
   if (!f) return <Navigate to="/solutions" replace />;
 
-  const related = caseStudies.filter((c) => c.tech.includes(f.slug)).slice(0, 2);
-
   return (
     <>
       <PageHero
         eyebrow={f.tag} title={f.name} sub={f.hero}
         crumbs={[{ label: 'Solutions', to: '/solutions' }, { label: f.name }]}
       >
-        <div className="flex flex-wrap gap-3">
-          <Link to="/book-assessment"><Button type="primary" size="large">Book free assessment</Button></Link>
-          <Link to="/contact"><Button size="large">Talk to an engineer</Button></Link>
-        </div>
+        <Link to="/contact"><Button type="primary" size="large">Get A Quote</Button></Link>
       </PageHero>
 
-      {/* pains */}
-      <section className="px-container px-section">
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
-        <FeatureImage src={familyImg(f.slug, 1200)} alt={f.name} />
-        <div>
-        <SectionHead eyebrow="Sound familiar?" title="Are you running into these?" />
-        <Stagger className="mt-8 grid gap-4">
-          {f.pains.map((p) => (
-            <StaggerItem key={p}>
-              <div className="rounded-2xl border border-amber-200 bg-amber-50/60 p-5 dark:border-amber-500/25 dark:bg-amber-500/5">
-                <WarningOutlined className="text-lg text-amber-500" />
-                <p className="mt-2.5 text-[15px] font-medium text-slate-700 dark:text-slate-200">{p}</p>
-              </div>
-            </StaggerItem>
-          ))}
-        </Stagger>
-        </div>
-        </div>
-      </section>
-
       {/* children */}
-      <section className="border-y border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
-        <div className="px-container px-section">
+      <section className="px-container px-section">
+        <div>
           <SectionHead eyebrow="Services" title={`What ${f.name} includes`} />
           <Stagger className="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             {f.children.map((c) => (
@@ -131,29 +103,6 @@ export function SolutionFamily() {
         </div>
       </section>
 
-      {related.length > 0 && (
-        <section className="px-container px-section">
-          <SectionHead eyebrow="Proof" title="Related case studies" />
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {related.map((c) => (
-              <Reveal key={c.slug}>
-                <Link to={`/case-studies/${c.slug}`} className="group block h-full">
-                  <div className="px-card px-card-hover h-full">
-                    <CardImage src={caseImg(c.slug, 900)} alt={c.title} className="h-48" />
-                    <Tag color="red">{c.industry.replace(/-/g, ' ')}</Tag>
-                    <h3 className="mt-3 font-display text-lg font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white">{c.title}</h3>
-                    <p className="px-body mt-2">{c.challenge.slice(0, 150)}…</p>
-                    <p className="mt-4 font-display text-2xl font-bold text-brand-600 dark:text-brand-300">
-                      {c.metric.value} <span className="text-[13px] font-normal text-slate-500">{c.metric.label}</span>
-                    </p>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-      )}
-
       <CTABand />
     </>
   );
@@ -167,15 +116,6 @@ export function SolutionDetail() {
   if (!f || !c) return <Navigate to="/solutions" replace />;
 
   const siblings = f.children.filter((x) => x.slug !== slug).slice(0, 4);
-  const fitIndustries = industries.filter((i) => i.fits.includes(f.slug)).slice(0, 4);
-  const related = caseStudies.filter((x) => x.tech.includes(f.slug))[0];
-
-  const faqs = [
-    { q: `How long does a ${c.name} deployment take?`, a: 'It depends on scope — a typical mid-size deployment runs two to six weeks. After the assessment you receive a phased timeline with a date against every milestone.' },
-    { q: 'Will it integrate with our existing setup?', a: 'Yes. During the design phase we inventory the current environment and identify integration points, so a rip-and-replace is not needed.' },
-    { q: 'What support follows the deployment?', a: 'It runs under an AMC or managed services plan — SLA-backed response, monitoring and monthly reporting. Complete documentation is included in the handover.' },
-    { q: 'How is pricing decided?', a: 'On scale (users, sites, devices), coverage hours and the licensing model. After the assessment you receive an itemised BOQ and a commercial proposal.' },
-  ];
 
   return (
     <>
@@ -183,10 +123,7 @@ export function SolutionDetail() {
         eyebrow={f.name} title={c.name} sub={c.blurb}
         crumbs={[{ label: 'Solutions', to: '/solutions' }, { label: f.name, to: `/solutions/${f.slug}` }, { label: c.name }]}
       >
-        <div className="flex flex-wrap gap-3">
-          <Link to="/book-assessment"><Button type="primary" size="large">Book assessment</Button></Link>
-          <Button size="large" icon={<DownloadOutlined />}>Download datasheet</Button>
-        </div>
+        <Link to="/contact"><Button type="primary" size="large">Get A Quote</Button></Link>
       </PageHero>
 
       <div className="px-container grid gap-12 px-section lg:grid-cols-[1fr_320px]">
@@ -213,63 +150,11 @@ export function SolutionDetail() {
               ]}
             />
           </Reveal>
-
-          {/* industries */}
-          {fitIndustries.length > 0 && (
-            <Reveal className="mt-12">
-              <h2 className="px-h3 text-slate-900 dark:text-white">Best fit for these industries</h2>
-              <div className="mt-5 flex flex-wrap gap-2.5">
-                {fitIndustries.map((i) => (
-                  <Link key={i.slug} to={`/industries/${i.slug}`}>
-                    <span className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-[14px] font-medium text-slate-700 transition-colors hover:border-brand-400 hover:text-brand-600 dark:border-white/10 dark:bg-white/[0.03] dark:text-slate-200">
-                      {i.name} <ArrowRightOutlined className="text-[10px] text-slate-400" />
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </Reveal>
-          )}
-
-          {/* case study */}
-          {related && (
-            <Reveal className="mt-12">
-              <h2 className="px-h3 text-slate-900 dark:text-white">Related case study</h2>
-              <Link to={`/case-studies/${related.slug}`} className="group mt-5 block">
-                <div className="px-card px-card-hover flex flex-wrap items-center justify-between gap-5">
-                  <img src={caseImg(related.slug, 300)} alt="" aria-hidden="true" loading="lazy" className="h-20 w-28 shrink-0 rounded-xl object-cover" />
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-display text-[17px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white">{related.title}</h3>
-                    <p className="px-body mt-1.5">{related.result.slice(0, 130)}…</p>
-                  </div>
-                  <p className="shrink-0 font-display text-3xl font-bold text-brand-600 dark:text-brand-300">{related.metric.value}</p>
-                </div>
-              </Link>
-            </Reveal>
-          )}
-
-          {/* FAQ */}
-          <Reveal className="mt-12">
-            <h2 className="px-h3 text-slate-900 dark:text-white">FAQs</h2>
-            <Collapse
-              className="!mt-5" bordered={false} accordion
-              items={faqs.map((q, i) => ({ key: i, label: <span className="font-medium">{q.q}</span>, children: <p className="px-body">{q.a}</p> }))}
-            />
-          </Reveal>
         </div>
 
         {/* sticky sidebar */}
         <aside className="lg:sticky lg:top-24 lg:h-fit">
           <div className="px-card">
-            <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">Get started</p>
-            <h3 className="mt-2 font-display text-lg font-semibold text-slate-900 dark:text-white">
-              Talk to us about {c.name}
-            </h3>
-            <p className="px-body mt-2">A 30-minute call — no sales pitch, just your scenario and the options.</p>
-            <Link to="/book-assessment" className="mt-4 block"><Button type="primary" block size="large">Book a call</Button></Link>
-            <Link to="/contact" className="mt-2 block"><Button block size="large">Send enquiry</Button></Link>
-          </div>
-
-          <div className="px-card mt-4">
             <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">More in {f.name}</p>
             <ul className="mt-3 space-y-2">
               {siblings.map((s) => (
@@ -281,13 +166,6 @@ export function SolutionDetail() {
               ))}
             </ul>
             <ArrowLink to={`/solutions/${f.slug}`} className="mt-4 !text-[13.5px]">All {f.name}</ArrowLink>
-          </div>
-
-          <div className="px-card mt-4">
-            <FileTextOutlined className="text-lg text-brand-500" />
-            <p className="mt-2 font-display font-semibold text-slate-900 dark:text-white">Need the datasheet?</p>
-            <p className="px-body mt-1">A two-page PDF covering scope, deliverables and a typical timeline.</p>
-            <Button className="mt-3" block icon={<DownloadOutlined />}>Download PDF</Button>
           </div>
         </aside>
       </div>

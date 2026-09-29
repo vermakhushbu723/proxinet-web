@@ -43,7 +43,7 @@ export const services = [
     hero: 'Our engineer at your office, working as part of your team.',
     deliverables: ['Skill-matched engineer profiles', 'Background-verified staff', 'Backup resource guarantee', 'Performance review cadence', 'Knowledge documentation'], faqs: [] },
   { slug: 'infrastructure-assessment', name: 'Infrastructure Assessment', icon: 'audit',
-    blurb: 'A free 30-minute review, or a full paid audit — from inventory to risk register.',
+    blurb: 'A complete audit of your IT setup — from inventory to risk register.',
     hero: 'An honest report, not a sales pitch.',
     deliverables: ['Complete asset inventory', 'EOL and EOSL exposure list', 'Security gap analysis', 'Backup and DR readiness score', 'Prioritised action plan'], faqs: [] },
   { slug: 'procurement-licensing', name: 'Procurement & Licensing', icon: 'shop',

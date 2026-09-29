@@ -92,7 +92,7 @@ export default function PortalLogin() {
           </Form>
 
           <p className="m-0 mt-5 text-center text-[13px] text-slate-500">
-            Not a client yet? <Link to="/book-assessment" className="font-semibold text-brand-600 dark:text-brand-300">Book a free assessment</Link>
+            Not a client yet? <Link to="/contact" className="font-semibold text-brand-600 dark:text-brand-300">Contact us</Link>
           </p>
         </div>
       </div>

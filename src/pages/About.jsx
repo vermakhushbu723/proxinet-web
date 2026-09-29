@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Timeline, Tag, Steps } from 'antd';
-import { SafetyCertificateOutlined, LinkedinFilled, ThunderboltFilled, CheckCircleFilled } from '@ant-design/icons';
-import { company, values, stats, processSteps } from '../data/company';
+import { Button, Timeline, Tag } from 'antd';
+import { SafetyCertificateOutlined, LinkedinFilled, ThunderboltFilled } from '@ant-design/icons';
+import { company, values } from '../data/company';
 import { leadership, milestones } from '../data/people';
 import { certifications } from '../data/proof';
-import { industries } from '../data/industries';
-import { Reveal, Stagger, StaggerItem, SectionHead, Counter, IconBadge } from '../components/ui';
-import { PageHero, CTABand, TickList, FeatureImage, PhotoSection, DarkHead, ImageTile } from '../components/blocks';
-import { img, photos, industryImg } from '../data/images';
+import { Reveal, Stagger, StaggerItem } from '../components/ui';
+import { PageHero, CTABand, FeatureImage, PhotoSection, DarkHead } from '../components/blocks';
+import { img, photos } from '../data/images';
 
 /* =================== ABOUT =================== */
 export function About() {
@@ -52,18 +51,8 @@ export function About() {
           <Reveal delay={0.1}>
             <FeatureImage src={img(photos.officeTeam, 1000)} alt="ProXinet team working together" className="mb-10" />
             <div className="px-card">
-              <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">At a glance</p>
-              <div className="mt-5 grid grid-cols-2 gap-5">
-                {stats.slice(0, 4).map((s) => (
-                  <div key={s.label}>
-                    <p className="font-display text-2xl font-bold text-brand-600 dark:text-brand-300">
-                      <Counter to={s.value} suffix={s.suffix} decimals={s.decimals || 0} />
-                    </p>
-                    <p className="mt-0.5 text-[13px] text-slate-500 dark:text-slate-400">{s.label}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-6 space-y-3 border-t border-slate-100 pt-5 dark:border-white/10">
+              <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">Our offices</p>
+              <div className="mt-4 space-y-3">
                 {company.offices.map((o) => (
                   <div key={o.label}>
                     <p className="font-mono text-[10.5px] uppercase tracking-wider text-slate-400">{o.label}</p>
@@ -92,16 +81,6 @@ export function About() {
           </Stagger>
         </div>
       </PhotoSection>
-
-      {/* industries served */}
-      <section className="px-container px-section">
-        <SectionHead eyebrow="Reach" title="Industries we serve" />
-        <div className="mt-8 grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3">
-          {industries.map((i) => (
-            <ImageTile key={i.slug} to={`/industries/${i.slug}`} src={industryImg(i.slug, 700)} label={i.name} />
-          ))}
-        </div>
-      </section>
 
       <CTABand />
     </>

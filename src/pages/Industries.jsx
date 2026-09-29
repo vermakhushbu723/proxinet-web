@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { Button, Tag } from 'antd';
+import { Button } from 'antd';
 import { ArrowRightOutlined, SafetyCertificateOutlined, WarningOutlined } from '@ant-design/icons';
 import { industries, findIndustry } from '../data/industries';
 import { solutionFamilies, findFamily } from '../data/solutions';
-import { caseStudies } from '../data/proof';
 import { Reveal, Stagger, StaggerItem, SectionHead } from '../components/ui';
 import { PageHero, CTABand, CardImage, FeatureImage } from '../components/blocks';
-import { industryImg, familyImg, caseImg } from '../data/images';
+import { industryImg, familyImg } from '../data/images';
 
 export function IndustriesHub() {
   return (
@@ -53,7 +52,6 @@ export function IndustryDetail() {
   if (!ind) return <Navigate to="/industries" replace />;
 
   const fits = ind.fits.map(findFamily).filter(Boolean);
-  const cases = caseStudies.filter((c) => c.industry === slug);
 
   return (
     <>
@@ -61,7 +59,7 @@ export function IndustryDetail() {
         eyebrow="Industry" title={`IT infrastructure for ${ind.name}`} sub={ind.blurb}
         crumbs={[{ label: 'Industries', to: '/industries' }, { label: ind.name }]}
       >
-        <Link to="/book-assessment"><Button type="primary" size="large">Book industry-specific assessment</Button></Link>
+        <Link to="/contact"><Button type="primary" size="large">Get A Quote</Button></Link>
       </PageHero>
 
       {/* challenges */}
@@ -125,39 +123,7 @@ export function IndustryDetail() {
         </div>
       </section>
 
-      {/* case studies */}
-      {cases.length > 0 && (
-        <section className="px-container px-section">
-          <SectionHead eyebrow="Proof" title={`${ind.name} case studies`} />
-          <div className="mt-8 grid gap-5 md:grid-cols-2">
-            {cases.map((c) => (
-              <Reveal key={c.slug}>
-                <Link to={`/case-studies/${c.slug}`} className="group block h-full">
-                  <div className="px-card px-card-hover h-full">
-                    <CardImage src={caseImg(c.slug, 900)} alt={c.title} className="h-48" />
-                    <Tag color="red">{ind.name}</Tag>
-                    <h3 className="mt-3 font-display text-lg font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white">{c.title}</h3>
-                    <p className="px-body mt-2">{c.result}</p>
-                    <div className="mt-5 flex gap-6 border-t border-slate-100 pt-4 dark:border-white/10">
-                      {c.metrics.map((m) => (
-                        <div key={m.label}>
-                          <p className="font-display text-xl font-bold text-brand-600 dark:text-brand-300">{m.value}</p>
-                          <p className="text-[12px] text-slate-500">{m.label}</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <CTABand
-        title={`A focused assessment for ${ind.name}`}
-        sub="Built around your industry's compliance and uptime requirements — 30 minutes, with a written summary."
-      />
+      <CTABand />
     </>
   );
 }

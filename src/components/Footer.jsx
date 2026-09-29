@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Input, Button, message } from 'antd';
 import {
   PhoneOutlined, MailOutlined, EnvironmentOutlined, LinkedinFilled,
   FacebookFilled, TwitterOutlined, InstagramOutlined, SafetyCertificateOutlined,
@@ -8,7 +7,6 @@ import {
 import { company } from '../data/company';
 import { certifications } from '../data/proof';
 import Logo from './Logo';
-import { subscribeEmail, showSubmitError } from '../api/public';
 
 // Only links that are NOT already in the navbar menus
 const supportLinks = [
@@ -18,48 +16,8 @@ const supportLinks = [
 ];
 
 export default function Footer() {
-  const [email, setEmail] = React.useState('');
-  const [saving, setSaving] = React.useState(false);
-  const subscribe = async () => {
-    if (!/^\S+@\S+\.\S+$/.test(email)) return message.error('Please enter a valid email address.');
-    setSaving(true);
-    try {
-      const r = await subscribeEmail(email);
-      if (r.alreadySubscribed) message.info('This email is already subscribed.');
-      else message.success('Subscribed — the monthly IT digest will arrive in your inbox.');
-      setEmail('');
-    } catch (err) {
-      showSubmitError(err);
-    } finally {
-      setSaving(false);
-    }
-    return undefined;
-  };
-
   return (
     <footer className="mt-auto border-t border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-900">
-      {/* newsletter strip */}
-      <div className="border-b border-slate-200 dark:border-white/10">
-        <div className="px-container flex flex-col items-start justify-between gap-5 py-6 md:flex-row md:items-center">
-          <div>
-            <h3 className="font-display text-lg font-semibold text-slate-900 dark:text-white">
-              Monthly IT digest — practical, vendor-neutral
-            </h3>
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              Security advisories, EOL alerts and one useful guide. Just one email a month.
-            </p>
-          </div>
-          <div className="flex w-full max-w-md gap-2">
-            <Input
-              size="large" placeholder="work@company.com" value={email}
-              onChange={(e) => setEmail(e.target.value)} onPressEnter={subscribe}
-              aria-label="Email address for newsletter"
-            />
-            <Button size="large" type="primary" onClick={subscribe} loading={saving}>Subscribe</Button>
-          </div>
-        </div>
-      </div>
-
       {/* main grid */}
       <div className="px-container grid gap-8 py-10 gap-x-8 md:grid-cols-2 lg:grid-cols-[1.5fr_1.1fr_1fr_.9fr]">
         <div>

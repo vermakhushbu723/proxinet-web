@@ -1,12 +1,11 @@
 import React, { useState, useMemo } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { Button, Tag, Segmented, Input, Collapse, Empty, Modal, Form, message } from 'antd';
+import { Button, Tag, Segmented, Input, Collapse, Empty } from 'antd';
 import { SearchOutlined, DownloadOutlined, FileTextOutlined, CalendarOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { posts, findPost, glossary, faqs, whitepapers } from '../data/resources';
-import { Reveal, Stagger, StaggerItem, SectionHead, ArrowLink } from '../components/ui';
+import { Reveal, Stagger, StaggerItem, ArrowLink } from '../components/ui';
 import { PageHero, CTABand, CardImage } from '../components/blocks';
 import { img, photos, postImg } from '../data/images';
-import { submitForm, showSubmitError } from '../api/public';
 
 const fmt = (d) => new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -20,7 +19,7 @@ const wpImgs = [photos.virus, photos.signing, photos.dashboardLaptop, photos.har
 export function ResourcesHub() {
   const cards = [
     { t: 'Blog', d: 'Practical, vendor-neutral articles on infrastructure, security and cloud.', to: '/blog', n: `${posts.length} articles` },
-    { t: 'Whitepapers & Guides', d: 'Gated deep-dives — playbooks, checklists and buyer guides.', to: '/resources/whitepapers', n: `${whitepapers.length} downloads` },
+    { t: 'Whitepapers & Guides', d: 'Playbooks, checklists and buyer guides.', to: '/resources/whitepapers', n: `${whitepapers.length} downloads` },
     { t: 'Glossary', d: 'RPO vs RTO, SAN vs NAS, EDR vs XDR — in plain language.', to: '/resources/glossary', n: `${glossary.length} terms` },
     { t: 'FAQs', d: 'Common questions on engagement, support, commercials and security.', to: '/resources/faq', n: `${faqs.length} questions` },
     { t: 'Tools & Calculators', d: 'Cloud cost, security score, AMC plan selector and sizing tools.', to: '/tools', n: '6 tools' },
@@ -144,11 +143,6 @@ export function BlogPost() {
               <p className="px-lead mt-3">{b.p}</p>
             </Reveal>
           ))}
-          <Reveal className="mt-10 rounded-2xl border border-brand-200 bg-brand-50/60 p-6 dark:border-brand-500/25 dark:bg-brand-500/5">
-            <h3 className="font-display text-lg font-semibold text-slate-900 dark:text-white">Want to apply this to your own setup?</h3>
-            <p className="px-body mt-2">Book a free 30-minute review and we will check these points against your environment.</p>
-            <Link to="/book-assessment" className="mt-4 inline-block"><Button type="primary">Book assessment</Button></Link>
-          </Reveal>
         </article>
 
         <aside className="lg:sticky lg:top-24 lg:h-fit">
@@ -177,24 +171,6 @@ export function BlogPost() {
 
 /* =================== WHITEPAPERS (gated) =================== */
 export function Whitepapers() {
-  const [active, setActive] = useState(null);
-  const [form] = Form.useForm();
-  const [saving, setSaving] = useState(false);
-
-  const submit = async (v) => {
-    setSaving(true);
-    try {
-      await submitForm('downloads', { name: v.name, email: v.email, company: v.company || '', asset: active?.title });
-      message.success(`"${active.title}" has been sent to your email.`);
-      setActive(null);
-      form.resetFields();
-    } catch (err) {
-      showSubmitError(err, form);
-    } finally {
-      setSaving(false);
-    }
-  };
-
   return (
     <>
       <PageHero
@@ -215,28 +191,12 @@ export function Whitepapers() {
                 <h2 className="mt-4 font-display text-[17px] font-semibold text-slate-900 dark:text-white">{w.title}</h2>
                 <p className="px-body mt-2 flex-1">{w.desc}</p>
                 <p className="mt-3 font-mono text-[11px] uppercase tracking-wider text-slate-400">{w.pages} pages · PDF</p>
-                <Button className="mt-4" block icon={<DownloadOutlined />} onClick={() => setActive(w)}>Download free</Button>
+                <Link to="/contact" className="mt-4 block"><Button block icon={<DownloadOutlined />}>Request a copy</Button></Link>
               </div>
             </StaggerItem>
           ))}
         </Stagger>
       </section>
-
-      <Modal open={!!active} onCancel={() => setActive(null)} footer={null} title={active?.title} destroyOnClose>
-        <p className="px-body !mb-5">Enter your email and the PDF arrives in your inbox right away. We do not send spam.</p>
-        <Form form={form} layout="vertical" onFinish={submit} requiredMark={false}>
-          <Form.Item name="name" label="Name" rules={[{ required: true, message: 'Name is required' }]}>
-            <Input size="large" placeholder="Your name" />
-          </Form.Item>
-          <Form.Item name="email" label="Work email" rules={[{ required: true, type: 'email', message: 'Enter a valid email address' }]}>
-            <Input size="large" placeholder="you@company.com" />
-          </Form.Item>
-          <Form.Item name="company" label="Company">
-            <Input size="large" placeholder="Company name" />
-          </Form.Item>
-          <Button type="primary" size="large" htmlType="submit" block icon={<DownloadOutlined />} loading={saving}>Send me the PDF</Button>
-        </Form>
-      </Modal>
 
       <CTABand />
     </>

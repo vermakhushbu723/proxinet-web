@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { Button, Collapse, Tag, Table } from 'antd';
-import { CheckCircleFilled, CloseOutlined, ArrowRightOutlined, CrownFilled } from '@ant-design/icons';
+import { Button, Collapse } from 'antd';
+import { ArrowRightOutlined, CrownFilled } from '@ant-design/icons';
 import { services, findService, slaPlans } from '../data/services';
-import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge } from '../components/ui';
+import { Reveal, Stagger, StaggerItem } from '../components/ui';
 import { PageHero, CTABand, TickList, CardImage, FeatureImage } from '../components/blocks';
 import { serviceImg } from '../data/images';
 
@@ -59,7 +59,7 @@ export function ServiceDetail() {
         crumbs={[{ label: 'Services', to: '/services' }, { label: s.name }]}
       >
         <div className="flex flex-wrap gap-3">
-          <Link to="/book-assessment"><Button type="primary" size="large">Book free assessment</Button></Link>
+          <Link to="/contact"><Button type="primary" size="large">Get A Quote</Button></Link>
           <Link to="/services/plans"><Button size="large">See SLA plans</Button></Link>
         </div>
       </PageHero>
@@ -71,23 +71,6 @@ export function ServiceDetail() {
             <p className="px-lead">{s.blurb}</p>
             <h2 className="px-h3 mt-10 text-slate-900 dark:text-white">What is included</h2>
             <TickList items={s.deliverables} className="mt-5" />
-          </Reveal>
-
-          <Reveal className="mt-12">
-            <h2 className="px-h3 text-slate-900 dark:text-white">How to engage</h2>
-            <div className="mt-5 grid gap-4 sm:grid-cols-3">
-              {[
-                { n: '1', t: 'Assessment', d: 'A free 30-minute review, or a full paid audit.' },
-                { n: '2', t: 'Proposal', d: 'Scope, SLA and commercials — all in writing.' },
-                { n: '3', t: 'Onboarding', d: 'Inventory, access and escalation matrix setup.' },
-              ].map((x) => (
-                <div key={x.n} className="rounded-2xl border border-slate-200 p-5 dark:border-white/10">
-                  <span className="font-display text-2xl font-bold text-brand-200 dark:text-brand-500/40">{x.n}</span>
-                  <p className="mt-1 font-display font-semibold text-slate-900 dark:text-white">{x.t}</p>
-                  <p className="px-body mt-1.5">{x.d}</p>
-                </div>
-              ))}
-            </div>
           </Reveal>
 
           {s.faqs?.length > 0 && (
@@ -103,11 +86,6 @@ export function ServiceDetail() {
 
         <aside className="lg:sticky lg:top-24 lg:h-fit">
           <div className="px-card">
-            <h3 className="font-display text-lg font-semibold text-slate-900 dark:text-white">Talk to us about this service</h3>
-            <p className="px-body mt-2">Speak directly to an engineer — 30 minutes, no obligation.</p>
-            <Link to="/book-assessment" className="mt-4 block"><Button type="primary" block size="large">Book a call</Button></Link>
-          </div>
-          <div className="px-card mt-4">
             <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">Other services</p>
             <ul className="mt-3 space-y-2">
               {others.map((o) => (
@@ -129,14 +107,6 @@ export function ServiceDetail() {
 
 /* =================== SLA PLANS =================== */
 export function SLAPlans() {
-  const rows = slaPlans[0].features.map((f, idx) => ({
-    key: idx,
-    feature: f.k,
-    bronze: slaPlans[0].features[idx].v,
-    silver: slaPlans[1].features[idx].v,
-    gold: slaPlans[2].features[idx].v,
-  }));
-
   return (
     <>
       <PageHero
@@ -180,7 +150,7 @@ export function SLAPlans() {
                     </li>
                   ))}
                 </ul>
-                <Link to="/book-assessment" className="mt-6 block">
+                <Link to="/contact" className="mt-6 block">
                   <Button type={p.highlight ? 'primary' : 'default'} block size="large">Get a quote</Button>
                 </Link>
               </div>
@@ -193,30 +163,7 @@ export function SLAPlans() {
         </p>
       </section>
 
-      {/* comparison table */}
-      <section className="border-t border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
-        <div className="px-container px-section">
-          <SectionHead eyebrow="Side by side" title="Full comparison" />
-          <Reveal className="mt-8 overflow-x-auto">
-            <Table
-              pagination={false} size="middle" dataSource={rows}
-              columns={[
-                { title: 'Feature', dataIndex: 'feature', fixed: 'left', width: 180, render: (t) => <span className="font-medium">{t}</span> },
-                { title: 'Bronze', dataIndex: 'bronze' },
-                { title: <span className="text-brand-600">Silver</span>, dataIndex: 'silver' },
-                { title: 'Gold', dataIndex: 'gold' },
-              ]}
-              scroll={{ x: 700 }}
-            />
-          </Reveal>
-        </div>
-      </section>
-
-      <CTABand
-        title="Not sure which plan fits?"
-        sub="The AMC Plan Selector asks five questions and gives you a recommendation in under a minute."
-        primary={{ label: 'Run AMC Plan Selector', to: '/tools/amc-plan-selector' }}
-      />
+      <CTABand title="Not sure which plan fits?" sub="Tell us your endpoints and sites — we will recommend the right plan." />
     </>
   );
 }

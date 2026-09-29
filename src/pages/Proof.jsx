@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { Button, Tag, Segmented, Empty, Alert } from 'antd';
-import { StarFilled, SafetyCertificateOutlined, CheckCircleFilled, DownloadOutlined, ArrowRightOutlined } from '@ant-design/icons';
-import { caseStudies, findCase, clientLogos, partners, testimonials, certifications } from '../data/proof';
+import { StarFilled, DownloadOutlined } from '@ant-design/icons';
+import { caseStudies, findCase, clientLogos, partners, testimonials } from '../data/proof';
 import { industries } from '../data/industries';
-import { Reveal, Stagger, StaggerItem, SectionHead, Counter } from '../components/ui';
+import { Reveal, Stagger, StaggerItem } from '../components/ui';
 import { PageHero, CTABand, TickList, CardImage } from '../components/blocks';
 import { caseImg, industryImg } from '../data/images';
 import PartnerLogo from '../components/PartnerLogo';
@@ -61,18 +61,6 @@ export function Clients() {
             ))}
           </Stagger>
         )}
-      </section>
-
-      <section className="border-y border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
-        <div className="px-container px-section">
-          <SectionHead eyebrow="Proof" title="Case studies" sub="Every story covers the challenge, the solution and a measurable result." />
-          <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-            {caseStudies.slice(0, 3).map((c) => <CaseCard key={c.slug} c={c} />)}
-          </div>
-          <div className="mt-8 text-center">
-            <Link to="/case-studies"><Button size="large">All case studies <ArrowRightOutlined /></Button></Link>
-          </div>
-        </div>
       </section>
 
       <CTABand />
@@ -137,7 +125,6 @@ export function CaseStudyDetail() {
   const c = findCase(slug);
   if (!c) return <Navigate to="/case-studies" replace />;
   const ind = industries.find((i) => i.slug === c.industry);
-  const more = caseStudies.filter((x) => x.slug !== slug).slice(0, 3);
 
   return (
     <>
@@ -204,21 +191,12 @@ export function CaseStudyDetail() {
                 </div>
               ))}
             </dl>
-            <Link to="/book-assessment" className="mt-5 block">
+            <Link to="/contact" className="mt-5 block">
               <Button type="primary" block size="large">Similar problem? Talk to us</Button>
             </Link>
           </div>
         </aside>
       </div>
-
-      <section className="border-t border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
-        <div className="px-container px-section">
-          <SectionHead eyebrow="More" title="Other case studies" />
-          <div className="mt-8 grid gap-5 md:grid-cols-3">
-            {more.map((m) => <CaseCard key={m.slug} c={m} />)}
-          </div>
-        </div>
-      </section>
 
       <CTABand />
     </>
@@ -230,16 +208,15 @@ export function Partners() {
   return (
     <>
       <PageHero
-        eyebrow="Alliances" title="Partners & Certifications"
-        sub="OEM partnerships and company credentials — everything procurement teams verify, in one place."
+        eyebrow="Alliances" title="Technology Partners"
+        sub="OEM partnerships that give you trained engineers, direct escalation paths and better commercials."
         crumbs={[{ label: 'Partners' }]}
       >
         <Link to="/procurement"><Button type="primary" size="large" icon={<DownloadOutlined />}>Get procurement pack</Button></Link>
       </PageHero>
 
       <section className="px-container px-section">
-        <SectionHead eyebrow="OEM alliances" title="Technology partners" sub="A partner tier means trained engineers, direct escalation paths and better commercials." />
-        <Stagger className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {partners.map((p) => (
             <StaggerItem key={p.name}>
               <div className="px-card px-card-hover h-full">
@@ -264,31 +241,7 @@ export function Partners() {
         </p>
       </section>
 
-      <section className="border-t border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
-        <div className="px-container px-section">
-          <SectionHead eyebrow="Credentials" title="Company certifications" />
-          <Stagger className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {certifications.map((c) => (
-              <StaggerItem key={c.name}>
-                <div className="px-card h-full">
-                  <div className="flex items-center gap-3">
-                    <SafetyCertificateOutlined className="text-2xl text-brand-500" />
-                    <h3 className="font-display text-[16px] font-semibold leading-tight text-slate-900 dark:text-white">{c.name}</h3>
-                  </div>
-                  <p className="px-body mt-1">{c.desc}</p>
-                  <Tag color="green" className="!mt-3">{c.status}</Tag>
-                </div>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        </div>
-      </section>
-
-      <CTABand
-        title="Need our vendor onboarding documents?"
-        sub="Company profile, certificates, insurance, data protection policy and a sample SLA — in one pack."
-        primary={{ label: 'Request procurement pack', to: '/procurement' }}
-      />
+      <CTABand />
     </>
   );
 }

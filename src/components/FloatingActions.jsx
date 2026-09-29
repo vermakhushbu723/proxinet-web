@@ -31,7 +31,7 @@ const answer = (q) => {
     return { text: 'We follow the 3-2-1-1-0 rule — one immutable copy and zero errors on a verified restore. Veeam SureBackup verifies every backup automatically.', cta: { label: 'Backup & DR', to: '/solutions/backup-dr' } };
   if (s.includes('wifi') || s.includes('wi-fi') || s.includes('network'))
     return { text: 'For Wi-Fi we start with a predictive survey, then AP placement, and after install a heatmap validation report proves the design was delivered.', cta: { label: 'Enterprise Wi-Fi', to: '/solutions/network/enterprise-wifi' } };
-  return { text: 'This is best discussed with an engineer. Book a free 30-minute assessment — no obligation, and you get a written summary.', cta: { label: 'Book assessment', to: '/book-assessment' } };
+  return { text: 'This is best discussed with an engineer. Send us your requirement and we will reply within two working hours.', cta: { label: 'Contact us', to: '/contact' } };
 };
 
 function Assistant({ open, onClose }) {
@@ -191,7 +191,7 @@ export default function FloatingActions() {
         <a href={wa} target="_blank" rel="noreferrer" className="flex flex-col items-center gap-0.5 border-x border-slate-200 py-2.5 text-[11px] font-medium text-slate-600 dark:border-white/10 dark:text-slate-300">
           <WhatsAppOutlined className="text-base text-[#25D366]" /> WhatsApp
         </a>
-        <Link to="/book-assessment" className="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-medium text-slate-600 dark:text-slate-300">
+        <Link to="/contact" className="flex flex-col items-center gap-0.5 py-2.5 text-[11px] font-medium text-slate-600 dark:text-slate-300">
           <MessageOutlined className="text-base text-brand-500" /> Enquire
         </Link>
       </div>

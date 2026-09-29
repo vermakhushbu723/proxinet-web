@@ -21,7 +21,7 @@ export const searchIndex = [
   { t: 'Cloud Cost Calculator', d: 'Azure / AWS monthly estimate', to: '/tools/cloud-cost-calculator', kind: 'Tool' },
   { t: 'IT Security Health Score', d: 'Ten questions, an instant score', to: '/tools/security-health-score', kind: 'Tool' },
   { t: 'AMC Plan Selector', d: 'Find the right plan for you', to: '/tools/amc-plan-selector', kind: 'Tool' },
-  { t: 'Book Free IT Assessment', d: 'A 30-minute infrastructure review', to: '/book-assessment', kind: 'Page' },
+  { t: 'Contact / Get A Quote', d: 'Send your requirement to our team', to: '/contact', kind: 'Page' },
   { t: 'Careers', d: 'Open positions and talent database', to: '/careers', kind: 'Page' },
   { t: 'Client Portal', d: 'Tickets, assets, SLA reports', to: '/portal/login', kind: 'Page' },
   { t: 'Procurement Pack', d: 'Vendor onboarding documents', to: '/procurement', kind: 'Page' },

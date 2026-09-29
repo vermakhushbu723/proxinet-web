@@ -29,7 +29,7 @@ const megaMenu = [
       { title: 'Managed', items: services.slice(0, 4).map((s) => ({ label: s.name, to: `/services/${s.slug}` })) },
       { title: 'Professional', items: services.slice(4, 7).map((s) => ({ label: s.name, to: `/services/${s.slug}` })) },
       { title: 'Advisory & Supply', items: services.slice(7).map((s) => ({ label: s.name, to: `/services/${s.slug}` })) },
-      { title: 'Plans', items: [{ label: 'SLA & Support Plans', to: '/services/plans' }, { label: 'Free IT Assessment', to: '/book-assessment' }] },
+      { title: 'Plans', items: [{ label: 'SLA & Support Plans', to: '/services/plans' }] },
     ],
   },
   {
@@ -181,11 +181,8 @@ export default function Navbar() {
               icon={dark ? <BulbOutlined /> : <MoonOutlined />}
               onClick={toggle}
             />
-            <Link to="/book-assessment" className="hidden sm:block">
-              <Button type="primary" className="!whitespace-nowrap !px-3.5 !font-semibold xl:!px-5">
-                <span className="hidden xl:inline">Get Free IT Assessment</span>
-                <span className="xl:hidden">Free Assessment</span>
-              </Button>
+            <Link to="/contact" className="hidden sm:block">
+              <Button type="primary" className="!whitespace-nowrap !px-3.5 !font-semibold xl:!px-5">Get A Quote</Button>
             </Link>
             <Button
               type="text" shape="circle" className="lg:!hidden"
@@ -241,11 +238,11 @@ export default function Navbar() {
                       </div>
                       <div className="mt-7 flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 pt-5 dark:border-white/10">
                         <p className="text-sm text-slate-500 dark:text-slate-400">
-                          {m.footer?.text || 'Not sure what you need? Start with a free 30-minute assessment.'}
+                          {m.footer?.text || 'Not sure what you need? Talk to our team.'}
                         </p>
                         <div className="flex gap-2">
                           <Link to={m.to}><Button>View all {m.label}</Button></Link>
-                          <Link to="/book-assessment"><Button type="primary">Book assessment</Button></Link>
+                          <Link to="/contact"><Button type="primary">Contact us</Button></Link>
                         </div>
                       </div>
                     </>
@@ -304,7 +301,7 @@ export default function Navbar() {
             </div>
           </div>
           <div className="border-t border-slate-200 p-4 dark:border-white/10">
-            <Link to="/book-assessment"><Button type="primary" block size="large">Get Free IT Assessment</Button></Link>
+            <Link to="/contact"><Button type="primary" block size="large">Get A Quote</Button></Link>
           </div>
         </div>
       </Drawer>

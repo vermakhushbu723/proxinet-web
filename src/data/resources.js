@@ -99,7 +99,6 @@ export const glossary = [
 
 export const faqs = [
   { cat: 'Engagement', q: 'Do you work with smaller companies?', a: 'Yes. The Bronze AMC plan is designed for offices with up to 25 endpoints. Many of our clients started with us at 20 users and have since grown past 300.' },
-  { cat: 'Engagement', q: 'What does the free assessment actually include?', a: 'A structured 30-minute review covering current infrastructure, EOL exposure, backup readiness and your top three risks. You receive a written summary whether or not you engage us afterwards.' },
   { cat: 'Engagement', q: 'Do you only supply, or do you implement as well?', a: 'Both. For most clients we handle the full lifecycle — design, supply, implementation and ongoing management.' },
   { cat: 'Support', q: 'How do we raise support requests?', a: 'Through the client portal, email, phone or WhatsApp. All four channels create a ticket in the same queue with an SLA timer attached.' },
   { cat: 'Support', q: 'What is the response time for a P1 issue?', a: 'It depends on the plan — four hours on Bronze, one hour on Silver and 15 minutes on Gold. The figure is written into the contract.' },

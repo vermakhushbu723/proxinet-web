@@ -1,15 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Slider, InputNumber, Select, Radio, Progress, Tag, Statistic, Alert, Form, Input, message, Segmented } from 'antd';
+import { Button, Slider, InputNumber, Select, Radio, Progress, Tag, Statistic, Alert, Segmented } from 'antd';
 import {
   CalculatorOutlined, SafetyOutlined, CloudOutlined, DatabaseOutlined,
-  WifiOutlined, DollarOutlined, ArrowRightOutlined, CheckCircleFilled, MailOutlined,
+  WifiOutlined, DollarOutlined, ArrowRightOutlined, CheckCircleFilled,
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
 import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge } from '../components/ui';
 import { PageHero, CTABand, CardImage } from '../components/blocks';
 import { toolImg } from '../data/images';
-import { submitForm, showSubmitError } from '../api/public';
 
 const inr = (n) => '₹' + Math.round(n).toLocaleString('en-IN');
 
@@ -53,37 +52,6 @@ export function ToolsHub() {
       </section>
       <CTABand />
     </>
-  );
-}
-
-/* Shared result-email capture */
-function EmailResult({ label = 'Email me the result' }) {
-  const [sent, setSent] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [email, setEmail] = useState('');
-  const send = async () => {
-    if (!/^\S+@\S+\.\S+$/.test(email)) return message.error('Please enter a valid email address.');
-    setSaving(true);
-    try {
-      await submitForm('toolReports', { email, tool: document.querySelector('h1')?.textContent || window.location.pathname });
-      setSent(true);
-      message.success('The detailed report has been sent to your email.');
-    } catch (err) {
-      showSubmitError(err);
-    } finally {
-      setSaving(false);
-    }
-    return undefined;
-  };
-  if (sent) return <Alert type="success" showIcon message="Report sent — please check your inbox." className="!mt-5" />;
-  return (
-    <div className="mt-5 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-white/10 dark:bg-white/[0.03]">
-      <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">{label}</p>
-      <div className="mt-2.5 flex gap-2">
-        <Input placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} onPressEnter={send} prefix={<MailOutlined className="text-slate-400" />} />
-        <Button type="primary" onClick={send} loading={saving}>Send</Button>
-      </div>
-    </div>
   );
 }
 
@@ -206,8 +174,7 @@ export function CloudCostCalculator() {
               message="This is indicative"
               description="Actual pricing depends on region, reserved instances, licensing and OEM discounts. An exact quote follows the assessment."
             />
-            <EmailResult label="Email me the detailed breakdown" />
-            <Link to="/book-assessment" className="mt-4 block"><Button type="primary" block size="large">Get an exact quote</Button></Link>
+            <Link to="/contact" className="mt-4 block"><Button type="primary" block size="large">Get an exact quote</Button></Link>
           </div>
         </Reveal>
       </section>
@@ -310,8 +277,7 @@ export function SecurityHealthScore() {
           )}
 
           <div className="px-card mt-4">
-            <EmailResult label="Email me the full report" />
-            <Link to="/book-assessment" className="mt-4 block"><Button type="primary" block size="large">Discuss with an engineer</Button></Link>
+            <Link to="/contact" className="mt-4 block"><Button type="primary" block size="large">Discuss with an engineer</Button></Link>
           </div>
         </Reveal>
       </section>
@@ -419,8 +385,7 @@ export function AMCPlanSelector() {
             </ul>
 
             <Alert type="info" showIcon className="!mt-5" message="Indicative estimate" description="The final quote is confirmed after scope, OEM licensing and site distances are known." />
-            <EmailResult label="Email me the plan summary" />
-            <Link to="/book-assessment" className="mt-4 block"><Button type="primary" block size="large">Get a formal quote</Button></Link>
+            <Link to="/contact" className="mt-4 block"><Button type="primary" block size="large">Get a formal quote</Button></Link>
             <Link to="/services/plans" className="mt-2 block"><Button block size="large">Compare all plans</Button></Link>
           </div>
         </Reveal>
@@ -498,7 +463,7 @@ export function ServerSizing() {
               type="info" showIcon className="!mt-5" message="A baseline, not a final design"
               description="Actual sizing depends on application vendor requirements, HA and N+1 policy, and the backup window."
             />
-            <Link to="/book-assessment" className="mt-4 block"><Button type="primary" block size="large">Validate this sizing</Button></Link>
+            <Link to="/contact" className="mt-4 block"><Button type="primary" block size="large">Validate this sizing</Button></Link>
           </div>
         </Reveal>
       </section>
@@ -700,7 +665,7 @@ export function TCOCalculator() {
               type="info" showIcon className="!mt-5" message="Cost is not the only factor"
               description="Data residency, validated environments, latency and capex availability also shape the decision. Hybrid is often the most practical answer."
             />
-            <Link to="/book-assessment" className="mt-4 block"><Button type="primary" block size="large">Discuss your workloads</Button></Link>
+            <Link to="/contact" className="mt-4 block"><Button type="primary" block size="large">Discuss your workloads</Button></Link>
           </div>
         </Reveal>
       </section>
