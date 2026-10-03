@@ -152,39 +152,248 @@ export function CTABand({
   secondary = null,
 }) {
   return (
-    <section className="px-container py-16 sm:py-20">
+    <section className="px-container py-14 sm:py-18 lg:py-20">
       <Reveal>
-        <div className="relative isolate overflow-hidden rounded-3xl bg-brand-700 p-8 sm:p-12">
-          <img src={img(photos.teamMeeting, 1600)} alt="" aria-hidden="true" loading="lazy" className="absolute inset-0 -z-10 h-full w-full object-cover" />
-          <div className="absolute inset-0 -z-10 bg-gradient-to-br from-brand-700/95 via-brand-600/90 to-brand-500/75" aria-hidden="true" />
+        <div
+          className="
+            group relative isolate overflow-hidden
+            rounded-[28px]
+            border border-slate-200/80
+            bg-slate-900
+            p-6
+            shadow-[0_25px_80px_rgba(15,23,42,0.18)]
+            sm:p-10
+            lg:p-12
+          "
+        >
+          {/* IT / Business Background Image */}
+          <img
+            src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=2000&q=85"
+            alt=""
+            aria-hidden="true"
+            loading="lazy"
+            className="
+              absolute
+              inset-0
+              -z-20
+              h-full
+              w-full
+              object-cover
+              object-center
+              opacity-100
+              transition-transform
+              duration-1000
+              group-hover:scale-[1.03]
+            "
+          />
+
+          {/* Dark Neutral Overlay */}
           <div
-            className="absolute inset-0 opacity-20"
+            className="
+              absolute
+              inset-0
+              -z-10
+              bg-slate-950/70
+            "
+            aria-hidden="true"
+          />
+
+          {/* Soft Gradient */}
+          <div
+            className="
+              absolute
+              inset-0
+              -z-10
+              bg-gradient-to-r
+              from-slate-950/90
+              via-slate-900/65
+              to-slate-900/30
+            "
+            aria-hidden="true"
+          />
+
+          {/* Subtle Grid */}
+          <div
+            className="absolute inset-0 -z-10 opacity-[0.08]"
             aria-hidden="true"
             style={{
               backgroundImage:
-                'linear-gradient(rgba(255,255,255,.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.4) 1px, transparent 1px)',
-              backgroundSize: '44px 44px',
+                'linear-gradient(rgba(255,255,255,.35) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.35) 1px, transparent 1px)',
+              backgroundSize: '42px 42px',
             }}
           />
-          <div className="absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10 blur-2xl" aria-hidden="true" />
-          <div className="relative flex flex-col items-start justify-between gap-7 lg:flex-row lg:items-center">
-            <div className="max-w-xl">
-              <h2 className="font-display text-2xl font-semibold leading-tight text-white sm:text-3xl">{title}</h2>
-              <p className="mt-3 text-[15px] leading-relaxed text-white/85">{sub}</p>
+
+          {/* Soft Light */}
+          <div
+            className="
+              absolute
+              -right-24
+              -top-24
+              -z-10
+              h-72
+              w-72
+              rounded-full
+              bg-blue-400/15
+              blur-3xl
+              transition-transform
+              duration-700
+              group-hover:scale-125
+            "
+            aria-hidden="true"
+          />
+
+          <div
+            className="
+              absolute
+              -bottom-28
+              -left-20
+              -z-10
+              h-64
+              w-64
+              rounded-full
+              bg-cyan-400/10
+              blur-3xl
+            "
+            aria-hidden="true"
+          />
+
+          {/* Main Content */}
+          <div
+            className="
+              relative
+              flex
+              flex-col
+              gap-8
+              lg:flex-row
+              lg:items-center
+              lg:justify-between
+            "
+          >
+            {/* Text */}
+            <div className="max-w-2xl">
+              <h2
+                className="
+                  max-w-xl
+                  font-display
+                  text-2xl
+                  font-bold
+                  leading-[1.12]
+                  tracking-tight
+                  text-white
+                  sm:text-3xl
+                  lg:text-4xl
+                "
+              >
+                {title}
+              </h2>
+
+              <p
+                className="
+                  mt-4
+                  max-w-xl
+                  text-sm
+                  leading-6
+                  text-white/80
+                  sm:text-[15px]
+                  sm:leading-7
+                "
+              >
+                {sub}
+              </p>
             </div>
-            <div className="flex shrink-0 flex-col gap-3 sm:flex-row">
+
+            {/* Buttons */}
+            <div
+              className="
+                flex
+                shrink-0
+                flex-col
+                gap-3
+                sm:flex-row
+                lg:flex-col
+                xl:flex-row
+              "
+            >
               <Link to={primary.to}>
-                <Button size="large" className="!h-12 !border-none !bg-white !px-7 !font-semibold !text-brand-700 hover:!bg-brand-50">
-                  {primary.label} <ArrowRightOutlined />
+                <Button
+                  size="large"
+                  className="
+                    group/btn
+                    !h-12
+                    !w-full
+                    !rounded-xl
+                    !border-none
+                    !bg-white
+                    !px-7
+                    !font-semibold
+                    !text-slate-900
+                    !shadow-[0_10px_30px_rgba(0,0,0,0.18)]
+                    transition-all
+                    duration-300
+                    hover:-translate-y-1
+                    hover:!bg-white
+                    hover:!text-brand-700
+                    hover:!shadow-[0_16px_35px_rgba(0,0,0,0.25)]
+                    sm:!w-auto
+                  "
+                >
+                  {primary.label}
+
+                  <ArrowRightOutlined
+                    className="
+                      ml-1
+                      transition-transform
+                      duration-300
+                      group-hover/btn:translate-x-1
+                    "
+                  />
                 </Button>
               </Link>
+
               {secondary && (
                 <Link to={secondary.to}>
-                  <Button size="large" ghost className="!h-12 !px-7 !font-semibold">{secondary.label}</Button>
+                  <Button
+                    size="large"
+                    ghost
+                    className="
+                      !h-12
+                      !w-full
+                      !rounded-xl
+                      !border-white/40
+                      !px-7
+                      !font-semibold
+                      !text-white
+                      backdrop-blur-sm
+                      transition-all
+                      duration-300
+                      hover:-translate-y-1
+                      hover:!border-white
+                      hover:!bg-white/10
+                      sm:!w-auto
+                    "
+                  >
+                    {secondary.label}
+                  </Button>
                 </Link>
               )}
             </div>
           </div>
+
+          {/* Bottom Accent */}
+          <div
+            className="
+              absolute
+              bottom-0
+              left-8
+              right-8
+              h-px
+              bg-gradient-to-r
+              from-transparent
+              via-white/40
+              to-transparent
+            "
+            aria-hidden="true"
+          />
         </div>
       </Reveal>
     </section>
