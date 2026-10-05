@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
-import { Link, useParams, Navigate } from 'react-router-dom';
-import { Button, Tag, Segmented, Input, Collapse, Empty } from 'antd';
-import { SearchOutlined, DownloadOutlined, FileTextOutlined, CalendarOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import React, { useState, useMemo, useEffect } from 'react';
+import { useParams, Navigate, useLocation } from 'react-router-dom';
+import { Tag, Segmented, Input, Collapse, Empty } from 'antd';
+import { SearchOutlined, CalendarOutlined } from '@ant-design/icons';
 import { posts, findPost, glossary, faqs, whitepapers } from '../data/resources';
-import { Reveal, Stagger, StaggerItem, ArrowLink } from '../components/ui';
-import { PageHero, CTABand, CardImage } from '../components/blocks';
+import { Reveal, Stagger, StaggerItem } from '../components/ui';
+import { PageHero, CTABand, InfoCard, dotList } from '../components/blocks';
 import { img, photos, postImg } from '../data/images';
 
 const fmt = (d) => new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -29,24 +29,14 @@ export function ResourcesHub() {
     <>
       <PageHero
         eyebrow="Resources" title="To read, to understand, to decide"
-        sub="Not sales material — the things that actually prove useful."
+        sub="Practical guides, tools and answers — no sales fluff."
         crumbs={[{ label: 'Resources' }]}
       />
       <section className="px-container px-section">
-        <Stagger className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((c) => (
             <StaggerItem key={c.t}>
-              <Link to={c.to} className="group block h-full">
-                <div className="px-card px-card-hover flex h-full flex-col">
-                  <CardImage src={img(resImg[c.t], 700)} alt={c.t} />
-                  <span className="font-mono text-[10.5px] uppercase tracking-wider text-slate-400">{c.n}</span>
-                  <h2 className="mt-2 font-display text-[18px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">{c.t}</h2>
-                  <p className="px-body mt-2 flex-1">{c.d}</p>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand-600 dark:text-brand-300">
-                    Open <ArrowRightOutlined className="text-[10px] transition-transform group-hover:translate-x-1" />
-                  </span>
-                </div>
-              </Link>
+              <InfoCard to={c.to} image={img(resImg[c.t], 700)} as="h2" title={c.t} meta={c.n} text={c.d} cta="Open" />
             </StaggerItem>
           ))}
         </Stagger>
@@ -70,7 +60,7 @@ export function Blog() {
     <>
       <PageHero
         eyebrow="Blog" title="Practical IT writing, without the jargon"
-        sub="Every article answers a real question that clients actually ask us."
+        sub="Real answers to questions clients ask us."
         crumbs={[{ label: 'Blog' }]}
       />
       <section className="px-container px-section">
@@ -85,26 +75,13 @@ export function Blog() {
         {list.length === 0 ? (
           <Empty description="No articles found" />
         ) : (
-          <Stagger className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {list.map((p) => (
               <StaggerItem key={p.slug}>
-                <Link to={`/blog/${p.slug}`} className="group block h-full">
-                  <article className="px-card px-card-hover flex h-full flex-col">
-                    <CardImage src={postImg(p.slug, 700)} alt={p.title} className="h-48" />
-                    <div className="flex items-center gap-2.5">
-                      <Tag color="red" className="!m-0">{p.cat}</Tag>
-                      <span className="font-mono text-[11px] uppercase tracking-wider text-slate-400">{p.read}</span>
-                    </div>
-                    <h2 className="mt-3 font-display text-[17px] font-semibold leading-snug text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">
-                      {p.title}
-                    </h2>
-                    <p className="px-body mt-2.5 flex-1">{p.excerpt}</p>
-                    <div className="mt-4 flex items-center justify-between border-t border-slate-100 pt-3.5 font-mono text-[11px] uppercase tracking-wider text-slate-400 dark:border-white/10">
-                      <span>{fmt(p.date)}</span>
-                      <span>{p.author}</span>
-                    </div>
-                  </article>
-                </Link>
+                <InfoCard
+                  to={`/blog/${p.slug}`} image={postImg(p.slug, 700)} as="h2"
+                  title={p.title} meta={dotList([p.cat, p.read, fmt(p.date)])} text={p.excerpt} cta="Read article"
+                />
               </StaggerItem>
             ))}
           </Stagger>
@@ -119,7 +96,6 @@ export function BlogPost() {
   const { slug } = useParams();
   const p = findPost(slug);
   if (!p) return <Navigate to="/blog" replace />;
-  const more = posts.filter((x) => x.slug !== slug).slice(0, 3);
 
   return (
     <>
@@ -134,8 +110,8 @@ export function BlogPost() {
         </div>
       </PageHero>
 
-      <div className="px-container grid gap-12 px-section lg:grid-cols-[1fr_280px]">
-        <article className="min-w-0 max-w-[68ch]">
+      <div className="px-container px-section">
+        <article className="mx-auto min-w-0 max-w-[68ch]">
           <img src={postImg(p.slug, 1400)} alt={p.title} className="mb-10 aspect-[16/9] w-full rounded-3xl object-cover shadow-lift" />
           {p.body.map((b, i) => (
             <Reveal key={i} className="mb-8">
@@ -145,23 +121,6 @@ export function BlogPost() {
           ))}
         </article>
 
-        <aside className="lg:sticky lg:top-24 lg:h-fit">
-          <div className="px-card">
-            <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">More articles</p>
-            <ul className="mt-4 space-y-4">
-              {more.map((m) => (
-                <li key={m.slug}>
-                  <Link to={`/blog/${m.slug}`} className="group block">
-                    <img src={postImg(m.slug, 500)} alt="" aria-hidden="true" loading="lazy" className="mb-2.5 aspect-[16/9] w-full rounded-xl object-cover" />
-                    <Tag color="red" className="!mb-1.5">{m.cat}</Tag>
-                    <p className="text-[14px] font-medium leading-snug text-slate-700 group-hover:text-brand-600 dark:text-slate-200">{m.title}</p>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <ArrowLink to="/blog" className="mt-5 !text-[13.5px]">All articles</ArrowLink>
-          </div>
-        </aside>
       </div>
 
       <CTABand />
@@ -175,24 +134,17 @@ export function Whitepapers() {
     <>
       <PageHero
         eyebrow="Whitepapers" title="Guides, playbooks and checklists"
-        sub="Each download is a working document — not theory, but something you can use tomorrow."
+        sub="Practical documents you can use right away."
         crumbs={[{ label: 'Resources', to: '/resources' }, { label: 'Whitepapers' }]}
       />
       <section className="px-container px-section">
-        <Stagger className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {whitepapers.map((w, wi) => (
             <StaggerItem key={w.title}>
-              <div className="px-card px-card-hover flex h-full flex-col">
-                <CardImage src={img(wpImgs[wi % wpImgs.length], 700)} alt={w.title} className="h-40" />
-                <div className="flex items-start justify-between">
-                  <FileTextOutlined className="text-2xl text-brand-500" />
-                  <Tag>{w.cat}</Tag>
-                </div>
-                <h2 className="mt-4 font-display text-[17px] font-semibold text-slate-900 dark:text-white">{w.title}</h2>
-                <p className="px-body mt-2 flex-1">{w.desc}</p>
-                <p className="mt-3 font-mono text-[11px] uppercase tracking-wider text-slate-400">{w.pages} pages · PDF</p>
-                <Link to="/contact" className="mt-4 block"><Button block icon={<DownloadOutlined />}>Request a copy</Button></Link>
-              </div>
+              <InfoCard
+                to="/contact" image={img(wpImgs[wi % wpImgs.length], 700)} as="h2"
+                title={w.title} meta={dotList([w.cat, `${w.pages} pages · PDF`])} text={w.desc} cta="Request a copy"
+              />
             </StaggerItem>
           ))}
         </Stagger>
@@ -278,13 +230,19 @@ export function FAQ() {
 
 /* =================== NEWS & EVENTS =================== */
 export function NewsEvents() {
-  const items = [
+  const { hash } = useLocation();
+  const [type, setType] = useState('All');
+  useEffect(() => {
+    setType(hash === '#news' ? 'News' : hash === '#events' ? 'Event' : 'All');
+  }, [hash]);
+  const all = [
     { date: '2026-09-02', type: 'Event', title: 'Webinar: Ransomware readiness for SMEs', desc: 'A 45-minute session co-hosted with Veeam on immutable backup and the recovery playbook.' },
     { date: '2026-08-18', type: 'News', title: '24x7 NOC coverage expanded', desc: 'The 15-minute P1 response guarantee is now live for Gold plan clients.' },
     { date: '2026-07-25', type: 'News', title: 'New Delhi office expansion', desc: 'The service desk team at the New Ashok Nagar office has doubled in size.' },
     { date: '2026-06-30', type: 'Event', title: 'Workshop: Cloud cost optimisation', desc: 'A hands-on session on the practical steps that cut Azure and AWS bills by 20 to 40 percent.' },
     { date: '2026-05-12', type: 'News', title: 'ISO 27001:2022 transition complete', desc: 'The ISMS has migrated to the updated standard and cleared its surveillance audit.' },
   ];
+  const items = type === 'All' ? all : all.filter((n) => n.type === type);
   return (
     <>
       <PageHero
@@ -294,6 +252,12 @@ export function NewsEvents() {
       />
       <section className="px-container px-section">
         <div className="mx-auto max-w-3xl space-y-4">
+          <Segmented
+            className="!mb-4"
+            value={type}
+            onChange={setType}
+            options={[{ label: 'All', value: 'All' }, { label: 'News', value: 'News' }, { label: 'Events', value: 'Event' }]}
+          />
           {items.map((n) => (
             <Reveal key={n.title}>
               <div className="px-card px-card-hover flex flex-wrap items-start gap-5">

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { Button, Collapse } from 'antd';
-import { ArrowRightOutlined, CrownFilled } from '@ant-design/icons';
+import { CrownFilled } from '@ant-design/icons';
 import { services, findService, slaPlans } from '../data/services';
 import { Reveal, Stagger, StaggerItem } from '../components/ui';
-import { PageHero, CTABand, TickList, CardImage, FeatureImage } from '../components/blocks';
+import { PageHero, CTABand, InfoCard, SplitFeature } from '../components/blocks';
 import { serviceImg } from '../data/images';
 
 /* =================== HUB =================== */
@@ -14,28 +14,18 @@ export function ServicesHub() {
       <PageHero
         eyebrow="Services"
         title="Not just supply — the whole lifecycle"
-        sub="From consulting and design through deployment, 24/7 support and lifecycle management."
+        sub="Consulting, deployment, 24/7 support and lifecycle care."
         crumbs={[{ label: 'Services' }]}
-      >
-        <Link to="/services/plans"><Button type="primary" size="large">Compare SLA plans</Button></Link>
-      </PageHero>
+      />
 
       <section className="px-container px-section">
-        <Stagger className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((s) => (
             <StaggerItem key={s.slug}>
-              <Link to={`/services/${s.slug}`} className="group block h-full">
-                <div className="px-card px-card-hover flex h-full flex-col">
-                  <CardImage src={serviceImg(s.slug, 800)} alt={s.name} className="h-48" />
-                  <h2 className="font-display text-[17px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">
-                    {s.name}
-                  </h2>
-                  <p className="px-body mt-2 flex-1">{s.blurb}</p>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand-600 dark:text-brand-300">
-                    Details <ArrowRightOutlined className="text-[10px] transition-transform group-hover:translate-x-1" />
-                  </span>
-                </div>
-              </Link>
+              <InfoCard
+                to={`/services/${s.slug}`} image={serviceImg(s.slug, 800)} as="h2"
+                title={s.name} meta="Managed service" text={s.blurb} cta="View service"
+              />
             </StaggerItem>
           ))}
         </Stagger>
@@ -50,28 +40,21 @@ export function ServiceDetail() {
   const { slug } = useParams();
   const s = findService(slug);
   if (!s) return <Navigate to="/services" replace />;
-  const others = services.filter((x) => x.slug !== slug).slice(0, 5);
 
   return (
     <>
       <PageHero
         eyebrow="Service" title={s.name} sub={s.hero}
         crumbs={[{ label: 'Services', to: '/services' }, { label: s.name }]}
-      >
-        <div className="flex flex-wrap gap-3">
-          <Link to="/contact"><Button type="primary" size="large">Get A Quote</Button></Link>
-          <Link to="/services/plans"><Button size="large">See SLA plans</Button></Link>
-        </div>
-      </PageHero>
+      />
 
-      <div className="px-container grid gap-12 px-section lg:grid-cols-[1fr_320px]">
+      <div className="px-container px-section">
         <div className="min-w-0">
-          <Reveal>
-            <FeatureImage src={serviceImg(s.slug, 1400)} alt={s.name} ratio="aspect-[16/9]" className="mb-12" />
-            <p className="px-lead">{s.blurb}</p>
-            <h2 className="px-h3 mt-10 text-slate-900 dark:text-white">What is included</h2>
-            <TickList items={s.deliverables} className="mt-5" />
-          </Reveal>
+          <SplitFeature
+            image={serviceImg(s.slug, 800)} alt={s.name}
+            eyebrow="Service" title="What is included" intro={s.blurb}
+            points={s.deliverables}
+          />
 
           {s.faqs?.length > 0 && (
             <Reveal className="mt-12">
@@ -83,21 +66,6 @@ export function ServiceDetail() {
             </Reveal>
           )}
         </div>
-
-        <aside className="lg:sticky lg:top-24 lg:h-fit">
-          <div className="px-card">
-            <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">Other services</p>
-            <ul className="mt-3 space-y-2">
-              {others.map((o) => (
-                <li key={o.slug}>
-                  <Link to={`/services/${o.slug}`} className="flex items-center gap-2 text-[14px] text-slate-600 hover:text-brand-600 dark:text-slate-300">
-                    <span className="h-1 w-1 rounded-full bg-brand-400" /> {o.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </aside>
       </div>
 
       <CTABand />
@@ -112,7 +80,7 @@ export function SLAPlans() {
       <PageHero
         eyebrow="Managed services"
         title="SLA & Support Plans"
-        sub="Three tiers with transparent scope, defined response times and indicative pricing. The final quote follows the assessment."
+        sub="Three clear tiers — defined scope, response times and pricing."
         crumbs={[{ label: 'Services', to: '/services' }, { label: 'SLA Plans' }]}
       />
 

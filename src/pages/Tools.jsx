@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { Button, Slider, InputNumber, Select, Radio, Progress, Tag, Statistic, Alert, Segmented } from 'antd';
 import {
   CalculatorOutlined, SafetyOutlined, CloudOutlined, DatabaseOutlined,
-  WifiOutlined, DollarOutlined, ArrowRightOutlined, CheckCircleFilled,
+  WifiOutlined, DollarOutlined, CheckCircleFilled,
 } from '@ant-design/icons';
 import { motion } from 'framer-motion';
-import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge } from '../components/ui';
-import { PageHero, CTABand, CardImage } from '../components/blocks';
+import { Reveal, Stagger, StaggerItem, SectionHead } from '../components/ui';
+import { PageHero, CTABand, InfoCard } from '../components/blocks';
 import { toolImg } from '../data/images';
 
 const inr = (n) => '₹' + Math.round(n).toLocaleString('en-IN');
@@ -26,26 +26,14 @@ export function ToolsHub() {
     <>
       <PageHero
         eyebrow="Tools" title="Calculators that give you real numbers"
-        sub="Work out your own estimate before any sales call. No login, no email gate."
+        sub="Get your own estimate in minutes — no login needed."
         crumbs={[{ label: 'Tools' }]}
       />
       <section className="px-container px-section">
-        <Stagger className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {tools.map((t) => (
             <StaggerItem key={t.to}>
-              <Link to={t.to} className="group block h-full">
-                <div className="px-card px-card-hover flex h-full flex-col">
-                  <CardImage src={toolImg(t.to, 800)} alt={t.t} />
-                  <div className="flex items-center gap-3">
-                    <IconBadge size="sm">{t.icon}</IconBadge>
-                    <h2 className="font-display text-[17px] font-semibold leading-tight text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">{t.t}</h2>
-                  </div>
-                  <p className="px-body mt-2 flex-1">{t.d}</p>
-                  <span className="mt-4 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand-600 dark:text-brand-300">
-                    Open tool <ArrowRightOutlined className="text-[10px] transition-transform group-hover:translate-x-1" />
-                  </span>
-                </div>
-              </Link>
+              <InfoCard to={t.to} image={toolImg(t.to, 800)} as="h2" title={t.t} meta="Free calculator" text={t.d} cta="Open tool" />
             </StaggerItem>
           ))}
         </Stagger>

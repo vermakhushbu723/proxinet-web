@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { Button, Tag, Segmented, Empty, Alert } from 'antd';
-import { StarFilled, DownloadOutlined } from '@ant-design/icons';
-import { caseStudies, findCase, clientLogos, partners, testimonials } from '../data/proof';
+import { Button, Segmented, Alert } from 'antd';
+import { StarFilled } from '@ant-design/icons';
+import { caseStudies, findCase, testimonials } from '../data/proof';
+import { clients, clientSectors } from '../data/clients';
 import { industries } from '../data/industries';
 import { Reveal, Stagger, StaggerItem } from '../components/ui';
-import { PageHero, CTABand, TickList, CardImage } from '../components/blocks';
-import { caseImg, industryImg } from '../data/images';
-import PartnerLogo from '../components/PartnerLogo';
+import { PageHero, CTABand, TickList, InfoCard } from '../components/blocks';
+import { caseImg } from '../data/images';
+import AllianceModal from '../components/AllianceModal';
+import { alliances } from '../data/alliances';
 
 const sampleNote = (
   <Alert
@@ -19,74 +21,53 @@ const sampleNote = (
 
 /* =================== CLIENTS =================== */
 export function Clients() {
-  const [filter, setFilter] = useState('all');
-  const list = filter === 'all' ? clientLogos : clientLogos.filter((c) => c.industry === filter);
-  const options = [
-    { label: 'All', value: 'all' },
-    ...industries.filter((i) => clientLogos.some((c) => c.industry === i.slug)).map((i) => ({ label: i.name, value: i.slug })),
-  ];
+  const [filter, setFilter] = useState('All');
+  const list = filter === 'All' ? clients : clients.filter((c) => c.sector === filter);
 
   return (
     <>
       <PageHero
-        eyebrow="Trusted by" title="Our prestigious clients"
-        sub="Over 200 organisations across manufacturing, BFSI, pharma, education, retail, legal and hospitality."
+        eyebrow="Client" title="Our prestigious clients"
+        sub="Proxinet as a team is keen on working with your esteemed organization to collaborate in adding value to existing IT Infrastructure."
         crumbs={[{ label: 'Clients' }]}
       />
 
       <section className="px-container px-section">
-        {sampleNote}
-        <div className="mb-8 overflow-x-auto pb-1">
-          <Segmented options={options} value={filter} onChange={setFilter} />
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="px-eyebrow"><span className="inline-block h-px w-6 bg-brand-400" />Trusted by</p>
+            <h2 className="mt-2 font-display text-[1.6rem] font-bold text-slate-900 dark:text-white">{clients.length} organisations we serve</h2>
+          </div>
         </div>
-        {list.length === 0 ? (
-          <Empty description="No logos added for this industry yet" />
-        ) : (
-          <Stagger className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4" gap={0.04}>
-            {list.map((c) => (
-              <StaggerItem key={c.name}>
-                <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3.5 transition-all hover:-translate-y-0.5 hover:border-brand-300 hover:shadow-soft dark:border-white/10 dark:bg-white/[0.03]">
+
+        <div className="mb-8 mt-6 overflow-x-auto pb-1">
+          <Segmented options={['All', ...clientSectors]} value={filter} onChange={setFilter} />
+        </div>
+
+        <Stagger key={filter} className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4" gap={0.03}>
+          {list.map((c) => (
+            <StaggerItem key={c.name}>
+              <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-3 shadow-[0_12px_30px_rgba(15,23,42,0.10)] transition-all duration-300 hover:-translate-y-2 hover:border-brand-300 hover:shadow-[0_22px_45px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-ink-900 dark:hover:border-brand-500/40">
+                <span className="flex h-28 items-center justify-center overflow-hidden rounded-xl border border-slate-100 bg-white p-2">
                   <img
-                    src={industryImg(c.industry, 200)} alt="" aria-hidden="true" loading="lazy"
-                    className="h-14 w-14 shrink-0 rounded-lg object-cover"
+                    src={c.logo} alt={c.name} loading="lazy"
+                    className="max-h-24 max-w-full object-contain transition-transform duration-300 group-hover:scale-105"
                   />
-                  <span className="min-w-0">
-                    <span className="block truncate text-[14px] font-semibold text-slate-700 dark:text-slate-200">{c.name}</span>
-                    <span className="block truncate font-mono text-[10.5px] uppercase tracking-wider text-slate-400">
-                      {industries.find((i) => i.slug === c.industry)?.name}
-                    </span>
-                  </span>
-                </div>
-              </StaggerItem>
-            ))}
-          </Stagger>
-        )}
+                </span>
+                <span className="mt-3 block px-1 font-display text-[15px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-400">
+                  {c.name}
+                </span>
+                <span className="mt-1 block px-1 pb-1 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
+                  {c.sector}
+                </span>
+              </div>
+            </StaggerItem>
+          ))}
+        </Stagger>
       </section>
 
       <CTABand />
     </>
-  );
-}
-
-function CaseCard({ c }) {
-  const ind = industries.find((i) => i.slug === c.industry);
-  return (
-    <Reveal>
-      <Link to={`/case-studies/${c.slug}`} className="group block h-full">
-        <article className="px-card px-card-hover flex h-full flex-col">
-          <CardImage src={caseImg(c.slug, 800)} alt={c.title} className="h-48" />
-          <Tag color="red" className="!mb-3 self-start">{ind?.name || c.industry}</Tag>
-          <h3 className="font-display text-[17px] font-semibold leading-snug text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">
-            {c.title}
-          </h3>
-          <p className="px-body mt-2.5 flex-1">{c.challenge.slice(0, 140)}…</p>
-          <div className="mt-5 border-t border-slate-100 pt-4 dark:border-white/10">
-            <p className="font-display text-2xl font-bold text-brand-600 dark:text-brand-300">{c.metric.value}</p>
-            <p className="text-[12.5px] text-slate-500 dark:text-slate-400">{c.metric.label}</p>
-          </div>
-        </article>
-      </Link>
-    </Reveal>
   );
 }
 
@@ -103,7 +84,7 @@ export function CaseStudies() {
     <>
       <PageHero
         eyebrow="Case studies" title="What we built, and what it delivered"
-        sub="Every case study follows the same format — challenge, solution architecture, deployed stack and measurable outcome."
+        sub="Challenge, solution and measurable outcome — every time."
         crumbs={[{ label: 'Case Studies' }]}
       />
       <section className="px-container px-section">
@@ -205,40 +186,54 @@ export function CaseStudyDetail() {
 
 /* =================== PARTNERS =================== */
 export function Partners() {
+  const [alliance, setAlliance] = useState(null);
+
   return (
     <>
+      <AllianceModal alliance={alliance} onClose={() => setAlliance(null)} />
       <PageHero
         eyebrow="Alliances" title="Technology Partners"
-        sub="OEM partnerships that give you trained engineers, direct escalation paths and better commercials."
+        sub="OEM alliances for trained engineers and better pricing."
         crumbs={[{ label: 'Partners' }]}
-      >
-        <Link to="/procurement"><Button type="primary" size="large" icon={<DownloadOutlined />}>Get procurement pack</Button></Link>
-      </PageHero>
+      />
 
       <section className="px-container px-section">
-        <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {partners.map((p) => (
-            <StaggerItem key={p.name}>
-              <div className="px-card px-card-hover h-full">
-                <div className="flex items-center gap-3">
-                  <span className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-slate-200 bg-white dark:border-white/10 dark:bg-white/90">
-                    <PartnerLogo partner={p} size={26} />
-                  </span>
-                  <div>
-                    <h3 className="font-display text-[17px] font-semibold text-slate-900 dark:text-white">{p.name}</h3>
-                    <p className="font-mono text-[10.5px] uppercase tracking-wider text-slate-400">{p.cat}</p>
-                  </div>
-                </div>
-                <span className="mt-4 inline-block rounded-lg bg-brand-50 px-3 py-1 text-[12.5px] font-semibold text-brand-600 dark:bg-brand-500/10 dark:text-brand-300">
-                  {p.tier}
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <p className="px-eyebrow"><span className="inline-block h-px w-6 bg-brand-400" />Technology alliances</p>
+            <h2 className="mt-2 font-display text-[1.6rem] font-bold text-slate-900 dark:text-white">{alliances.length} brands we deploy and support</h2>
+          </div>
+          <p className="text-[13px] text-slate-400">Click a logo for details</p>
+        </div>
+
+        <Stagger className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {alliances.map((a) => (
+            <StaggerItem key={a.name}>
+              <button
+                type="button"
+                onClick={() => setAlliance(a)}
+                aria-label={`${a.name} details`}
+                className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-[0_12px_30px_rgba(15,23,42,0.10)] transition-all duration-300 hover:-translate-y-2 hover:border-brand-300 hover:shadow-[0_22px_45px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-ink-900 dark:hover:border-brand-500/40"
+              >
+                <span className="flex h-28 items-center justify-center rounded-xl border border-slate-100 bg-white p-4">
+                  <img
+                    src={a.logo} alt={a.name} loading="lazy"
+                    className="max-h-20 max-w-full object-contain transition-transform duration-300 group-hover:scale-110"
+                  />
                 </span>
-              </div>
+                <span className="mt-3 block px-1 font-display text-[16px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-400">
+                  {a.name}
+                </span>
+                <span className="mb-3 mt-1 block px-1 font-mono text-[10px] font-semibold uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
+                  {a.cat}
+                </span>
+                <span className="mt-auto flex items-center justify-between border-t border-slate-100 px-1 pt-3 text-[11px] font-bold uppercase tracking-wider text-slate-400 transition-colors group-hover:text-brand-600 dark:border-white/10">
+                  View details <span className="text-base transition-transform group-hover:translate-x-1">→</span>
+                </span>
+              </button>
             </StaggerItem>
           ))}
         </Stagger>
-        <p className="mt-6 text-[13px] text-slate-400">
-          Keep partner tiers updated against verification — status can change at every renewal.
-        </p>
       </section>
 
       <CTABand />
@@ -252,7 +247,7 @@ export function Testimonials() {
     <>
       <PageHero
         eyebrow="Client voices" title="Testimonials"
-        sub="With names, designations and companies — anonymous quotes carry no weight."
+        sub="What our clients say about working with us."
         crumbs={[{ label: 'Testimonials' }]}
       />
       <section className="px-container px-section">

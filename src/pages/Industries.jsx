@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { Button } from 'antd';
-import { ArrowRightOutlined, SafetyCertificateOutlined, WarningOutlined } from '@ant-design/icons';
+import { ArrowRightOutlined, SafetyCertificateOutlined } from '@ant-design/icons';
 import { industries, findIndustry } from '../data/industries';
 import { solutionFamilies, findFamily } from '../data/solutions';
 import { Reveal, Stagger, StaggerItem, SectionHead } from '../components/ui';
-import { PageHero, CTABand, CardImage, FeatureImage } from '../components/blocks';
+import { PageHero, CTABand, InfoCard, dotList, SplitFeature } from '../components/blocks';
 import { industryImg, familyImg } from '../data/images';
 
 export function IndustriesHub() {
@@ -13,30 +12,18 @@ export function IndustriesHub() {
     <>
       <PageHero
         eyebrow="Industries"
-        title="Every industry has its own uptime and compliance reality"
-        sub="In manufacturing, downtime is production loss; in BFSI, the audit trail is a regulatory obligation. The approach differs."
+        title="IT built for your industry"
+        sub="Uptime and compliance needs differ — so does our approach."
         crumbs={[{ label: 'Industries' }]}
       />
       <section className="px-container px-section">
-        <Stagger className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {industries.map((i) => (
             <StaggerItem key={i.slug}>
-              <Link to={`/industries/${i.slug}`} className="group block h-full">
-                <div className="px-card px-card-hover flex h-full flex-col">
-                  <CardImage src={industryImg(i.slug, 800)} alt={i.name} className="h-48" />
-                  <h2 className="font-display text-[17px] font-semibold text-slate-900 group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-300">
-                    {i.name}
-                  </h2>
-                  <p className="px-body mt-2 flex-1">{i.blurb}</p>
-                  <div className="mt-4 flex flex-wrap gap-1.5 border-t border-slate-100 pt-4 dark:border-white/10">
-                    {i.compliance.slice(0, 2).map((c) => (
-                      <span key={c} className="rounded-md bg-slate-100 px-2 py-0.5 font-mono text-[10.5px] uppercase tracking-wider text-slate-500 dark:bg-white/5 dark:text-slate-400">
-                        {c}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </Link>
+              <InfoCard
+                to={`/industries/${i.slug}`} image={industryImg(i.slug, 800)} as="h2"
+                title={i.name} meta={dotList(i.compliance.slice(0, 2))} text={i.blurb} cta="View industry"
+              />
             </StaggerItem>
           ))}
         </Stagger>
@@ -58,28 +45,16 @@ export function IndustryDetail() {
       <PageHero
         eyebrow="Industry" title={`IT infrastructure for ${ind.name}`} sub={ind.blurb}
         crumbs={[{ label: 'Industries', to: '/industries' }, { label: ind.name }]}
-      >
-        <Link to="/contact"><Button type="primary" size="large">Get A Quote</Button></Link>
-      </PageHero>
+      />
 
       {/* challenges */}
       <section className="px-container px-section">
-        <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
-        <FeatureImage src={industryImg(ind.slug, 1200)} alt={ind.name} />
-        <div>
-        <SectionHead eyebrow="Reality check" title={`Typical IT challenges in ${ind.name}`} />
-        <Stagger className="mt-8 grid gap-4">
-          {ind.challenges.map((c) => (
-            <StaggerItem key={c}>
-              <div className="h-full rounded-2xl border border-amber-200 bg-amber-50/60 p-5 dark:border-amber-500/25 dark:bg-amber-500/5">
-                <WarningOutlined className="text-lg text-amber-500" />
-                <p className="mt-2.5 text-[15px] font-medium text-slate-700 dark:text-slate-200">{c}</p>
-              </div>
-            </StaggerItem>
-          ))}
-        </Stagger>
-        </div>
-        </div>
+        <SplitFeature
+          image={industryImg(ind.slug, 800)} alt={ind.name}
+          eyebrow="Reality check" title={`Key IT challenges in ${ind.name}`}
+          intro="What we see most often — and what we fix first."
+          points={ind.challenges}
+        />
       </section>
 
       {/* compliance */}

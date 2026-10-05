@@ -62,7 +62,7 @@ function HeroText({ eyebrow, title, sub, crumbs, children, light = false }) {
           </div>
         )}
         <h1 className={`px-h1 max-w-4xl ${light ? 'text-white' : 'text-slate-900 dark:text-white'}`}>{title}</h1>
-        {sub && <p className={`mt-5 max-w-2xl text-[1.02rem] leading-relaxed sm:text-lg ${light ? 'text-white/80' : 'text-slate-600 dark:text-slate-300'}`}>{sub}</p>}
+        {sub && <p className={`mt-5 line-clamp-2 max-w-2xl text-[1.02rem] leading-relaxed sm:text-lg ${light ? 'text-white/80' : 'text-slate-600 dark:text-slate-300'}`}>{sub}</p>}
         {children && <div className={`mt-7 ${light ? 'px-hero-actions' : ''}`}>{children}</div>}
       </Reveal>
     </>
@@ -75,7 +75,7 @@ function HeroText({ eyebrow, title, sub, crumbs, children, light = false }) {
 export function CardImage({ src, alt = '', className = 'h-44', children }) {
   if (!src) return null;
   return (
-    <div className={`relative -mx-6 -mt-6 mb-5 overflow-hidden rounded-t-2xl bg-slate-200 dark:bg-white/5 ${className}`}>
+    <div className={`relative mb-5 overflow-hidden rounded-xl bg-slate-200 shadow-[0_8px_20px_rgba(15,23,42,0.18)] ring-1 ring-black/5 dark:bg-white/5 dark:ring-white/10 ${className}`}>
       <img
         src={src} alt={alt} loading="lazy"
         className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
@@ -86,9 +86,60 @@ export function CardImage({ src, alt = '', className = 'h-44', children }) {
   );
 }
 
-export function PhotoSection({ image, children, className = '', overlay = 'from-ink-900/95 via-ink-900/85 to-ink-900/70' }) {
+/**
+ * Standard listing card — same look as the Home "What we do → Solutions" cards.
+ * `meta` is a short mono line (tags), `text` is clamped to two lines, `extra` sits above the footer.
+ */
+export function InfoCard({ to, image, title, meta, text, cta = 'Explore', extra, as: Title = 'h3' }) {
+  const body = (
+    <div
+      className="
+        relative flex h-full min-h-[440px] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-4
+        shadow-[0_12px_30px_rgba(15,23,42,0.12)] transition-all duration-300
+        hover:-translate-y-2 hover:border-brand-300 hover:shadow-[0_22px_45px_rgba(15,23,42,0.18)]
+        dark:border-white/10 dark:bg-ink-900 dark:shadow-[0_15px_40px_rgba(0,0,0,0.35)]
+        dark:hover:border-brand-500/40 dark:hover:shadow-[0_25px_55px_rgba(0,0,0,0.5)]
+      "
+    >
+      <CardImage src={image} alt={title} className="!mb-0 h-44 transition-transform duration-500 group-hover:scale-[1.02]" />
+      <div className="flex flex-1 flex-col pt-5">
+        <Title className="font-display text-[18px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-400">
+          {title}
+        </Title>
+        {meta && (
+          <p className="mt-2 font-mono text-[10px] font-semibold uppercase leading-5 tracking-[0.08em] text-slate-500 dark:text-slate-400">
+            {meta}
+          </p>
+        )}
+        {text && (
+          <p className="mt-4 line-clamp-3 text-[15px] font-semibold leading-6 text-slate-700 dark:text-slate-200">{text}</p>
+        )}
+        {extra}
+        <div className="mt-auto flex items-center justify-between border-t border-slate-100 pt-4 dark:border-white/10">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-slate-400 transition-colors group-hover:text-brand-600 dark:group-hover:text-brand-400">
+            {cta}
+          </span>
+          <span className="text-lg text-slate-400 transition-all duration-300 group-hover:translate-x-1 group-hover:text-brand-500">→</span>
+        </div>
+      </div>
+    </div>
+  );
+  return to ? <Link to={to} className="group block h-full">{body}</Link> : <div className="group h-full">{body}</div>;
+}
+
+/** Joins short labels with a brand-coloured dot, as on the Home solution cards. */
+export function dotList(items) {
+  return items.map((t, i) => (
+    <React.Fragment key={t}>
+      {i > 0 && <span className="mx-1.5 text-brand-500">·</span>}
+      {t}
+    </React.Fragment>
+  ));
+}
+
+export function PhotoSection({ id, image, children, className = '', overlay = 'from-ink-900/95 via-ink-900/85 to-ink-900/70' }) {
   return (
-    <section className={`relative isolate overflow-hidden bg-ink-900 ${className}`}>
+    <section id={id} className={`relative isolate overflow-hidden bg-ink-900 ${className}`}>
       <img src={image} alt="" aria-hidden="true" loading="lazy" className="absolute inset-0 -z-10 h-full w-full object-cover" />
       <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${overlay}`} aria-hidden="true" />
       {children}
@@ -108,6 +159,48 @@ export function FeatureImage({ src, alt = '', className = '', badge, ratio = 'as
           {badge}
         </div>
       )}
+    </div>
+  );
+}
+
+/**
+ * Compact image on the left, heading + numbered points on the right.
+ * Used directly below the hero on detail pages.
+ */
+export function SplitFeature({ image, alt = '', eyebrow, title, intro, points = [], className = '' }) {
+  return (
+    <div className={`grid items-stretch gap-6 md:grid-cols-2 lg:gap-8 ${className}`}>
+      {/* image box — stretches to the same height as the text box */}
+      <Reveal className="h-full">
+        <div className="relative h-full min-h-[300px] overflow-hidden rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.12)] dark:border-white/10">
+          <img src={image} alt={alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-900/30 via-transparent to-transparent" aria-hidden="true" />
+        </div>
+      </Reveal>
+
+      {/* text box */}
+      <Reveal delay={0.08} className="h-full">
+        <div className="flex h-full flex-col justify-center rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.12)] sm:p-8 dark:border-white/10 dark:bg-ink-900">
+          {eyebrow && (
+            <div className="px-eyebrow mb-3">
+              <span className="inline-block h-px w-6 bg-brand-400" />{eyebrow}
+            </div>
+          )}
+          <h2 className="font-display text-[1.5rem] font-bold leading-tight text-slate-900 sm:text-[1.75rem] dark:text-white">{title}</h2>
+          {intro && <p className="mt-2 text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">{intro}</p>}
+
+          <ul className="mt-5 grid gap-2.5">
+            {points.map((p, i) => (
+              <li key={p} className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 px-3.5 py-2.5 dark:border-white/10 dark:bg-white/[0.03]">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-brand-500 font-mono text-[11px] font-bold text-white">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <span className="text-[14.5px] font-semibold leading-snug text-slate-800 dark:text-slate-100">{p}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </Reveal>
     </div>
   );
 }
@@ -490,7 +583,18 @@ export function TickList({ items, className = '' }) {
  *  Scroll restoration
  * ------------------------------------------------------------------ */
 export function ScrollToTop() {
-  const { pathname } = useLocation();
-  React.useEffect(() => { window.scrollTo({ top: 0, behavior: 'instant' }); }, [pathname]);
+  const { pathname, hash } = useLocation();
+  React.useEffect(() => {
+    if (hash) {
+      // wait a frame so the target section has rendered
+      const t = setTimeout(() => {
+        const el = document.getElementById(hash.slice(1));
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 450);
+      return () => clearTimeout(t);
+    }
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    return undefined;
+  }, [pathname, hash]);
   return null;
 }

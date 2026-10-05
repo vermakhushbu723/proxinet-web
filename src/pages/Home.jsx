@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Modal } from 'antd';
+import { Button } from 'antd';
 import {
   ArrowRightOutlined, CloudOutlined, SafetyOutlined, DatabaseOutlined,
   CloudDownloadOutlined, WifiOutlined, TeamOutlined, VideoCameraOutlined,
@@ -12,92 +12,16 @@ import { solutionFamilies } from '../data/solutions';
 import { partners } from '../data/proof';
 import { Reveal, Stagger, StaggerItem, Counter, SectionHead, ArrowLink, Glow, IconBadge } from '../components/ui';
 import PartnerLogo from '../components/PartnerLogo';
-import { CTABand, CardImage, PhotoSection, DarkHead } from '../components/blocks';
+import AllianceModal from '../components/AllianceModal';
+import { alliances } from '../data/alliances';
+import { CTABand, PhotoSection, DarkHead, InfoCard, dotList } from '../components/blocks';
 import { img, photos, familyImg } from '../data/images';
-import Picture01 from '../assets/picture_01.png';
-import Picture02 from '../assets/picture_02.png';
-import Picture03 from '../assets/picture_03.png';
-import Picture04 from '../assets/picture_04.png';
-import Picture06 from '../assets/picture_06.png';
-import Picture08 from '../assets/picture_08.png';
-import Picture12 from '../assets/picture_12.png';
-import Picture13 from '../assets/picture_13.png';
-import Picture14 from '../assets/picture_14.png';
-import Picture16 from '../assets/picture_16.png';
-import Picture17 from '../assets/picture_17.png';
-import Picture19 from '../assets/picture_19.jpeg';
-import Picture21 from '../assets/picture_21.png';
-import Unnamed1 from '../assets/unnamed (1).png';
-import Unnamed2 from '../assets/unnamed (2).png';
-import Unnamed3 from '../assets/unnamed (3).png';
-import Unnamed4 from '../assets/unnamed (4).png';
-import Unnamed5 from '../assets/unnamed (5).png';
-import Unnamed6 from '../assets/unnamed (6).png';
-import Unnamed7 from '../assets/unnamed (7).png';
-import Unnamed from '../assets/unnamed.png';
-import UntitledDesign2 from '../assets/Untitled-design-2.jpg';
 
 const icons = {
   cloud: <CloudOutlined />, shield: <SafetyOutlined />, server: <DatabaseOutlined />,
   backup: <CloudDownloadOutlined />, wifi: <WifiOutlined />, team: <TeamOutlined />,
   camera: <VideoCameraOutlined />,
 };
-
-
-const alliances = [
-  { name: 'Accops', logo: Picture01, cat: 'Virtual Workspace & VDI', desc: 'Secure digital workspace, VDI and zero-trust remote access for distributed teams.', offer: ['Virtual desktop infrastructure', 'Secure remote access gateway', 'Multi-factor authentication'] },
-  { name: 'Microsoft', logo: Picture02, cat: 'Cloud & Productivity', desc: 'Microsoft 365, Azure and identity services — licensing, migration and ongoing management.', offer: ['Microsoft 365 & Exchange Online', 'Azure infrastructure & backup', 'Entra ID & Intune'] },
-  { name: 'Veeam', logo: Picture03, cat: 'Backup & DR', desc: 'Image-level backup, replication and verified recovery for physical, virtual and cloud workloads.', offer: ['Backup & Replication', 'Immutable backup repositories', 'Automated restore testing'] },
-  { name: 'Acronis', logo: Picture04, cat: 'Cyber Protection', desc: 'Integrated backup, disaster recovery and anti-ransomware protection in a single agent.', offer: ['Cyber Protect suite', 'Cloud backup & DR', 'Anti-ransomware'] },
-  { name: 'Trend Micro', logo: Picture06, cat: 'Endpoint & Server Security', desc: 'Layered protection for endpoints, servers, email and hybrid cloud workloads.', offer: ['Endpoint protection & EDR', 'Server & workload security', 'Email security'] },
-  { name: 'Red Hat', logo: Picture08, cat: 'Enterprise Linux', desc: 'Red Hat Enterprise Linux subscriptions, deployment and support for business-critical servers.', offer: ['RHEL subscriptions', 'Server build & hardening', 'Patch & lifecycle management'] },
-  { name: 'Aruba Networks', logo: Picture12, cat: 'Wireless & Switching', desc: 'Enterprise Wi-Fi, campus switching and centralised network management.', offer: ['Wi-Fi 6 access points', 'Campus switching', 'Cloud-managed networking'] },
-  { name: 'Lenovo', logo: Picture13, cat: 'Compute', desc: 'Desktops, laptops, workstations and ThinkSystem servers for every workload.', offer: ['ThinkPad & ThinkCentre', 'ThinkSystem servers', 'Warranty & lifecycle services'] },
-  { name: 'Cisco', logo: Picture14, cat: 'Networking', desc: 'Routing, switching, security and collaboration for branch and data-center networks.', offer: ['Routing & switching', 'Meraki cloud networking', 'Network security'] },
-  { name: 'ManageEngine', logo: Picture16, cat: 'IT Management', desc: 'IT service desk, endpoint management and network monitoring tools.', offer: ['ServiceDesk Plus', 'Endpoint Central', 'OpManager monitoring'] },
-  { name: 'Time Champ', logo: Picture17, cat: 'Workforce Analytics', desc: 'Employee productivity tracking, attendance and workforce analytics.', offer: ['Productivity monitoring', 'Attendance & time tracking', 'Activity reports'] },
-  { name: 'HPE', logo: Picture19, cat: 'Server & Storage', desc: 'ProLiant servers, storage arrays and hybrid infrastructure from Hewlett Packard Enterprise.', offer: ['ProLiant servers', 'Storage arrays', 'HPE GreenLake'] },
-  { name: 'RSA SecurID', logo: Picture21, cat: 'Identity & Access', desc: 'Strong authentication and identity assurance for users, apps and remote access.', offer: ['Multi-factor authentication', 'Hardware & software tokens', 'Identity governance'] },
-  { name: 'eScan', logo: Unnamed1, cat: 'Endpoint Security', desc: 'Antivirus and endpoint security with centralised management for business networks.', offer: ['Endpoint antivirus', 'Central management console', 'Device & web control'] },
-  { name: 'SUSE', logo: Unnamed2, cat: 'Enterprise Linux', desc: 'SUSE Linux Enterprise Server and open-source infrastructure for SAP and critical workloads.', offer: ['SUSE Linux Enterprise', 'SAP-ready platforms', 'Support subscriptions'] },
-  { name: 'Claude by Anthropic', logo: Unnamed3, cat: 'AI Assistant', desc: 'Claude AI for business — writing, analysis, coding and workflow automation for your teams.', offer: ['Claude for teams & enterprise', 'AI adoption & enablement', 'Workflow automation'] },
-  { name: 'Dell Technologies', logo: Unnamed4, cat: 'Server & Storage', desc: 'PowerEdge servers, storage, laptops and desktops with enterprise support.', offer: ['PowerEdge servers', 'Storage solutions', 'Latitude & OptiPlex'] },
-  { name: 'Ruckus Networks', logo: Unnamed5, cat: 'Wireless Networking', desc: 'High-density Wi-Fi and switching for campuses, hospitality and large venues.', offer: ['High-density Wi-Fi', 'ICX switching', 'Cloud network management'] },
-  { name: 'Arcserve', logo: Unnamed6, cat: 'Backup & Recovery', desc: 'Unified data protection, backup appliances and business continuity.', offer: ['Unified Data Protection', 'Backup appliances', 'Cloud DR'] },
-  { name: 'Sophos', logo: Unnamed7, cat: 'Network & Endpoint Security', desc: 'Firewalls, endpoint protection and managed detection and response.', offer: ['XGS firewalls', 'Intercept X endpoint', 'Managed detection & response'] },
-  { name: 'Proxmox', logo: Unnamed, cat: 'Virtualization', desc: 'Open-source virtualization platform for VMs, containers and backup.', offer: ['Proxmox VE clusters', 'Proxmox Backup Server', 'VMware migration'] },
-  { name: 'LU-VE Group', logo: UntitledDesign2, cat: 'Industrial Partner', desc: 'Global manufacturer of heat exchangers and cooling solutions.', offer: ['Data-center cooling', 'Heat exchangers', 'Industrial refrigeration'] },
-];
-
-/** Details popup for a technology alliance logo. */
-function AllianceModal({ alliance, onClose }) {
-  return (
-    <Modal open={!!alliance} onCancel={onClose} footer={null} centered width={520} destroyOnClose>
-      {alliance && (
-        <div className="pt-2">
-          <div className="flex h-32 items-center justify-center rounded-xl border border-slate-200 bg-white p-4 dark:border-white/10">
-            <img src={alliance.logo} alt={alliance.name} className="max-h-24 max-w-[260px] object-contain" />
-          </div>
-          <h3 className="mt-5 font-display text-[20px] font-bold text-slate-900 dark:text-white">{alliance.name}</h3>
-          <p className="mt-1 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-500">{alliance.cat}</p>
-          <p className="mt-3 text-[15px] leading-6 text-slate-600 dark:text-slate-300">{alliance.desc}</p>
-          <ul className="mt-4 space-y-2 border-t border-slate-100 pt-4 dark:border-white/10">
-            {alliance.offer.map((o) => (
-              <li key={o} className="flex items-center gap-2 text-[14px] text-slate-700 dark:text-slate-200">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-brand-500" />
-                {o}
-              </li>
-            ))}
-          </ul>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <Link to="/contact" onClick={onClose}><Button type="primary">Talk to an expert</Button></Link>
-            <Link to="/partners" onClick={onClose}><Button>All partners</Button></Link>
-          </div>
-        </div>
-      )}
-    </Modal>
-  );
-}
 
 /* ------------------------------------------------------------------ *
  *  Hero orbit — solutions circle a rotating photo, services on an inner ring
@@ -305,7 +229,6 @@ export default function Home() {
           />
         </div>
 
-
         {/* =========================================================
       MAIN HERO CONTAINER
   ========================================================= */}
@@ -373,7 +296,6 @@ export default function Home() {
               </span>
             </motion.div>
 
-
             {/* =====================================================
           MAIN HEADING
       ===================================================== */}
@@ -411,7 +333,6 @@ export default function Home() {
               </span>
             </motion.h1>
 
-
             {/* =====================================================
           SMALL SUPPORTING LINE
       ===================================================== */}
@@ -440,7 +361,6 @@ export default function Home() {
                 Cloud · Cybersecurity · Networks · Backup · Data centers
               </span>
             </motion.div>
-
 
             {/* =====================================================
           CTA
@@ -479,7 +399,6 @@ export default function Home() {
             </motion.div>
 
           </div>
-
 
           {/* =======================================================
         RIGHT HERO ORBIT
@@ -623,181 +542,19 @@ export default function Home() {
 
     {/* Solution Cards */}
     <Stagger className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-
       {solutionFamilies.map((f) => (
-
         <StaggerItem key={f.slug}>
-
-          <Link
-            to={`/solutions/${f.slug}`}
-            className="group block h-full"
-          >
-
-            {/* Raised Card */}
-            <div
-              className="
-                relative flex h-full min-h-[440px] flex-col
-                overflow-hidden rounded-2xl
-                border border-slate-200
-                bg-white
-                p-4
-                shadow-[0_12px_30px_rgba(15,23,42,0.12)]
-                transition-all duration-300
-                hover:-translate-y-2
-                hover:border-brand-300
-                hover:shadow-[0_22px_45px_rgba(15,23,42,0.18)]
-                dark:border-white/10
-                dark:bg-ink-900
-                dark:shadow-[0_15px_40px_rgba(0,0,0,0.35)]
-                dark:hover:border-brand-500/40
-                dark:hover:shadow-[0_25px_55px_rgba(0,0,0,0.5)]
-              "
-            >
-
-              {/* Image */}
-              <CardImage
-                src={familyImg(f.slug, 800)}
-                alt={f.name}
-                className="
-                  h-44
-                  overflow-hidden
-                  rounded-xl
-                  transition-transform
-                  duration-500
-                  group-hover:scale-[1.02]
-                "
-              />
-
-              {/* Content */}
-              <div className="flex flex-1 flex-col pt-5">
-
-                {/* Card Title */}
-                <h3
-                  className="
-                    font-display
-                    text-[18px]
-                    font-bold
-                    leading-snug
-                    text-slate-900
-                    transition-colors
-                    group-hover:text-brand-600
-                    dark:text-white
-                    dark:group-hover:text-brand-400
-                  "
-                >
-                  {f.name}
-                </h3>
-
-                {/* Services */}
-                <p
-                  className="
-                    mt-2
-                    font-mono
-                    text-[10px]
-                    font-semibold
-                    uppercase
-                    leading-5
-                    tracking-[0.08em]
-                    text-slate-500
-                    dark:text-slate-400
-                  "
-                >
-                  {f.children.slice(0, 4).map((child, index) => {
-
-                    const point =
-                      typeof child === 'string'
-                        ? child
-                        : child.name || child.title || child.label;
-
-                    return (
-                      <React.Fragment
-                        key={`${f.slug}-service-${index}`}
-                      >
-                        {index > 0 && (
-                          <span className="mx-1.5 text-brand-500">
-                            ·
-                          </span>
-                        )}
-
-                        {point}
-                      </React.Fragment>
-                    );
-                  })}
-                </p>
-
-                {/* Premium Description */}
-                <p
-                  className="
-                    mt-4
-                    text-[15px]
-                    font-semibold
-                    leading-6
-                    text-slate-700
-                    dark:text-slate-200
-                  "
-                >
-                  {f.blurb}
-                </p>
-
-                {/* Bottom Link */}
-                <div
-                  className="
-                    mt-auto
-                    flex
-                    items-center
-                    justify-between
-                    border-t
-                    border-slate-100
-                    pt-4
-                    dark:border-white/10
-                  "
-                >
-
-                  <span
-                    className="
-                      text-[11px]
-                      font-bold
-                      uppercase
-                      tracking-wider
-                      text-slate-400
-                      transition-colors
-                      group-hover:text-brand-600
-                      dark:text-slate-400
-                      dark:group-hover:text-brand-400
-                    "
-                  >
-                    Explore solution
-                  </span>
-
-                  <span
-                    className="
-                      text-lg
-                      text-slate-400
-                      transition-all
-                      duration-300
-                      group-hover:translate-x-1
-                      group-hover:text-brand-500
-                    "
-                  >
-                    →
-                  </span>
-
-                </div>
-
-              </div>
-            </div>
-
-          </Link>
-
+          <InfoCard
+            to={`/solutions/${f.slug}`} image={familyImg(f.slug, 800)}
+            title={f.name} meta={dotList(f.children.slice(0, 4).map((c) => c.name))}
+            text={f.blurb} cta="Explore solution"
+          />
         </StaggerItem>
-
       ))}
-
     </Stagger>
 
   </div>
 </section>
-
 
       {/* ── 4. STATS BAR ────────────────────────────────────────── */}
       <section className="border-b border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
@@ -907,7 +664,6 @@ export default function Home() {
             </div>
           </Reveal>
 
-
           {/* Feature Cards */}
           <Stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
@@ -988,7 +744,6 @@ export default function Home() {
               </div>
             </StaggerItem>
 
-
             {/* Card 2 */}
             <StaggerItem>
               <div
@@ -1065,7 +820,6 @@ export default function Home() {
                 <div className="mt-5 h-px w-8 bg-blue-500/40 transition-all duration-500 group-hover:w-full" />
               </div>
             </StaggerItem>
-
 
             {/* Card 3 */}
             <StaggerItem>
@@ -1144,7 +898,6 @@ export default function Home() {
               </div>
             </StaggerItem>
 
-
             {/* Card 4 */}
             <StaggerItem>
               <div
@@ -1222,7 +975,6 @@ export default function Home() {
               </div>
             </StaggerItem>
 
-
             {/* Card 5 */}
             <StaggerItem>
               <div
@@ -1299,7 +1051,6 @@ export default function Home() {
                 <div className="mt-5 h-px w-8 bg-orange-500/40 transition-all duration-500 group-hover:w-full" />
               </div>
             </StaggerItem>
-
 
             {/* Card 6 */}
             <StaggerItem>
@@ -1415,7 +1166,6 @@ export default function Home() {
 
             </div>
 
-
             {/* ================= PROCESS CARDS ================= */}
             <div className="relative mt-10 sm:mt-12">
 
@@ -1460,7 +1210,6 @@ export default function Home() {
 
                       </div>
 
-
                       {/* ================= CARD ================= */}
                       <div
                         className="
@@ -1494,7 +1243,6 @@ export default function Home() {
                     "
                         />
 
-
                         {/* Small Label */}
                         <div className="mb-4 flex items-center gap-2">
 
@@ -1506,12 +1254,10 @@ export default function Home() {
 
                         </div>
 
-
                         {/* Title */}
                         <h3 className="font-display text-xl font-bold text-white transition-colors duration-300 group-hover:text-brand-300">
                           {s.title}
                         </h3>
-
 
                         {/* Compact Points */}
                         <div className="mt-5 space-y-2.5">
@@ -1537,7 +1283,6 @@ export default function Home() {
                             ))}
 
                         </div>
-
 
                         {/* ================= DELIVERABLE ================= */}
                         <div
@@ -1587,7 +1332,6 @@ export default function Home() {
                           </div>
 
                         </div>
-
 
                         {/* Bottom Accent */}
                         <div

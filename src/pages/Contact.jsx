@@ -18,7 +18,7 @@ export function Contact() {
     <>
       <PageHero
         eyebrow="Contact" title="Let's talk"
-        sub="Fill the form, call us, or send a WhatsApp message — we reply within two working hours."
+        sub="Form, call or WhatsApp — we reply within two working hours."
         crumbs={[{ label: 'Contact' }]}
       />
 
@@ -97,7 +97,7 @@ export function Careers() {
     <>
       <PageHero
         eyebrow="Careers" title="People who solve the problem, even at 2 a.m."
-        sub="ProXinet focuses on hiring, developing, motivating and retaining people. These roles are open right now."
+        sub="Grow with us — these roles are open now."
         crumbs={[{ label: 'Careers' }]}
       />
 
@@ -222,7 +222,7 @@ export function Procurement() {
     <>
       <PageHero
         eyebrow="For procurement teams" title="Vendor Onboarding Pack"
-        sub="Every document requested during enterprise vendor registration, in a single request."
+        sub="All vendor-registration documents in one request."
         crumbs={[{ label: 'Procurement' }]}
       />
       <section className="px-container grid gap-10 px-section lg:grid-cols-[1fr_380px]">

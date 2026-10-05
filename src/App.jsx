@@ -48,9 +48,41 @@ function Page({ children }) {
   );
 }
 
+const pageTitles = [
+  ['/', 'PROXINET TECHNOLOGIES'],
+  ['/solutions', 'Solution'],
+  ['/services', 'Services'],
+  ['/industries', 'Industries'],
+  ['/clients', 'Client'],
+  ['/case-studies', 'Case Studies'],
+  ['/partners', 'Alliances'],
+  ['/testimonials', 'Testimonials'],
+  ['/about', 'About'],
+  ['/resources', 'Resources'],
+  ['/blog', 'Blog'],
+  ['/news-events', 'News & Events'],
+  ['/tools', 'Tools'],
+  ['/contact', 'Contact'],
+  ['/careers', 'Careers'],
+  ['/procurement', 'Procurement'],
+  ['/book-assessment', 'Book Assessment'],
+  ['/portal/login', 'Client Login'],
+  ['/status', 'Status'],
+  ['/sitemap', 'Sitemap'],
+  ['/legal', 'Legal'],
+];
+
 function Shell() {
   const loc = useLocation();
   const isPortalLogin = loc.pathname === '/portal/login';
+
+  // Browser-tab title, same pattern as proxinet.in ("Client - ProXinet Technologies Pvt. Ltd")
+  useEffect(() => {
+    const p = loc.pathname;
+    if (p.startsWith('/admin') || p.startsWith('/portal/dashboard')) return;
+    const page = pageTitles.find(([prefix]) => (prefix === '/' ? p === '/' : p.startsWith(prefix)));
+    document.title = page ? `${page[1]} - ProXinet Technologies Pvt. Ltd` : 'ProXinet Technologies Pvt. Ltd';
+  }, [loc.pathname]);
 
   if (loc.pathname.startsWith('/admin')) {
     return (

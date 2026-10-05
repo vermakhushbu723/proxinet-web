@@ -15,11 +15,11 @@ export function About() {
     <>
       <PageHero
         eyebrow="About us" title="An IT partner that designs the system and answers at 2 a.m."
-        sub="ProXinet Technologies — operating from Noida and New Delhi as an end-to-end IT infrastructure partner for Delhi NCR businesses."
+        sub="End-to-end IT infrastructure partner for Delhi NCR, from Noida and New Delhi."
         crumbs={[{ label: 'About' }]}
       />
 
-      <section className="px-container px-section">
+      <section id="overview" className="scroll-mt-24 px-container px-section">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
           <Reveal>
             <h2 className="px-h2 text-slate-900 dark:text-white">What we do</h2>
@@ -66,7 +66,7 @@ export function About() {
       </section>
 
       {/* values */}
-      <PhotoSection image={img(photos.highFive, 1920)}>
+      <PhotoSection id="what-we-believe" className="scroll-mt-24" image={img(photos.highFive, 1920)}>
         <div className="px-container px-section">
           <DarkHead eyebrow="What we stand for" title="Core values" />
           <Stagger className="mt-9 grid gap-4 md:grid-cols-3">
@@ -82,6 +82,30 @@ export function About() {
         </div>
       </PhotoSection>
 
+      {/* vision + social responsibility */}
+      <section className="px-container px-section">
+        <div className="grid gap-6 md:grid-cols-2">
+          {[
+            {
+              id: 'vision', eyebrow: 'Vision', title: 'A sustainable IT environment',
+              text: 'Our aim is to create a sustainable IT environment for our esteemed customers to help them grow and focus on their core business areas.',
+            },
+            {
+              id: 'social-responsibility', eyebrow: 'Social Responsibility', title: 'Committed to our environment',
+              text: 'We are committed to our environment and reduce carbon footprints in products delivered through our partners.',
+            },
+          ].map((b) => (
+            <Reveal key={b.id}>
+              <div id={b.id} className="px-card px-card-hover h-full scroll-mt-24">
+                <div className="px-eyebrow mb-3"><span className="inline-block h-px w-6 bg-brand-400" />{b.eyebrow}</div>
+                <h2 className="font-display text-[1.4rem] font-bold text-slate-900 dark:text-white">{b.title}</h2>
+                <p className="px-body mt-3">{b.text}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
       <CTABand />
     </>
   );
@@ -93,7 +117,7 @@ export function Leadership() {
     <>
       <PageHero
         eyebrow="Team" title="Leadership"
-        sub="In B2B services people buy from people. This is the team that will work on your account."
+        sub="The people who will work on your account."
         crumbs={[{ label: 'About', to: '/about' }, { label: 'Leadership' }]}
       />
       <section className="px-container px-section">
@@ -130,7 +154,7 @@ export function Story() {
     <>
       <PageHero
         eyebrow="Our story" title="Where we started, and where we are now"
-        sub="From a hardware supply business to a managed services partner — fifteen years on."
+        sub="From hardware supplier to managed services partner."
         crumbs={[{ label: 'About', to: '/about' }, { label: 'Our Story' }]}
       />
       <section className="px-container px-section">
@@ -178,7 +202,7 @@ export function Process() {
     <>
       <PageHero
         eyebrow="How we work" title="Our delivery process"
-        sub="Every step has a defined deliverable that you physically receive — not a verbal assurance."
+        sub="Every step ends with a deliverable you actually receive."
         crumbs={[{ label: 'About', to: '/about' }, { label: 'Our Process' }]}
       />
 
@@ -233,7 +257,7 @@ export function Certifications() {
     <>
       <PageHero
         eyebrow="Credentials" title="Certifications & Compliance"
-        sub="Every document enterprise procurement teams ask to verify is listed here."
+        sub="Every document procurement teams ask for, in one place."
         crumbs={[{ label: 'About', to: '/about' }, { label: 'Certifications' }]}
       >
         <Link to="/procurement"><Button type="primary" size="large">Download procurement pack</Button></Link>

@@ -18,8 +18,6 @@ import {
 
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { services } from '../data/services';
-import { industries } from '../data/industries';
 import { company } from '../data/company';
 import { useTheme } from './ui';
 import SearchPanel from './SearchPanel';
@@ -28,389 +26,113 @@ import LogoImage from '../LOGO-1.png';
 
 
 /* ============================================================
-   SOLUTIONS
-   ONLY THESE 5 CATEGORIES
+   MENU — same items as the proxinet.in main menu
 ============================================================ */
+
+const sol = (family, slug) => `/solutions/${family}/${slug}`;
 
 const solutionMenu = [
   {
-    title: 'CLOUD',
+    title: 'Cloud Solutions',
     to: '/solutions/cloud',
     items: [
-      {
-        label: 'Azure',
-        to: '/solutions/cloud/azure',
-      },
-      {
-        label: 'AWS',
-        to: '/solutions/cloud/aws',
-      },
-      {
-        label: 'M365',
-        to: '/solutions/cloud/microsoft-365',
-      },
-      {
-        label: 'Google Cloud',
-        to: '/solutions/cloud/google-cloud',
-      },
-      {
-        label: 'Hybrid',
-        to: '/solutions/cloud/hybrid-cloud',
-      },
-      {
-        label: 'Migration',
-        to: '/solutions/cloud/cloud-migration',
-      },
+      { label: 'Azure', to: sol('cloud', 'microsoft-azure') },
+      { label: 'AWS', to: sol('cloud', 'aws') },
+      { label: 'Microsoft 365', to: sol('cloud', 'microsoft-365') },
+      { label: 'Google Cloud', to: sol('cloud', 'google-cloud') },
     ],
   },
-
   {
-    title: 'SECURITY',
+    title: 'Security Solution',
     to: '/solutions/cyber-security',
     items: [
-      {
-        label: 'Endpoint',
-        to: '/solutions/cyber-security/endpoint-security',
-      },
-      {
-        label: 'Email',
-        to: '/solutions/cyber-security/email-security',
-      },
-      {
-        label: 'Data',
-        to: '/solutions/cyber-security/data-protection',
-      },
-      {
-        label: 'Mobile',
-        to: '/solutions/cyber-security/mobile-security',
-      },
-      {
-        label: 'VPN',
-        to: '/solutions/cyber-security/vpn',
-      },
-      {
-        label: 'Web',
-        to: '/solutions/cyber-security/web-security',
-      },
+      { label: 'End Point Solutions', to: sol('cyber-security', 'endpoint-security') },
+      { label: 'Email Security', to: sol('cyber-security', 'email-security') },
+      { label: 'SSL and VPN', to: sol('cyber-security', 'ssl-vpn') },
+      { label: 'Data Loss Prevention', to: sol('cyber-security', 'data-loss-prevention') },
+      { label: 'Mobile Device Management', to: sol('cyber-security', 'mobile-device-management') },
+      { label: 'Proxy and Content Filters', to: sol('cyber-security', 'web-proxy-filtering') },
     ],
   },
-
   {
-    title: 'DATA CENTER',
+    title: 'Data Center Solutions',
     to: '/solutions/data-center',
     items: [
-      {
-        label: 'Virtualization',
-        to: '/solutions/data-center/virtualization',
-      },
-      {
-        label: 'Servers',
-        to: '/solutions/data-center/servers',
-      },
-      {
-        label: 'SAN',
-        to: '/solutions/data-center/san',
-      },
-      {
-        label: 'NAS',
-        to: '/solutions/data-center/nas',
-      },
-      {
-        label: 'HCI',
-        to: '/solutions/data-center/hci',
-      },
-      {
-        label: 'Colocation',
-        to: '/solutions/data-center/colocation',
-      },
+      { label: 'Virtualization', to: sol('data-center', 'server-virtualization') },
+      { label: 'Server', to: sol('data-center', 'servers') },
+      { label: 'SAN', to: sol('data-center', 'san-storage') },
+      { label: 'NAS', to: sol('data-center', 'nas-storage') },
     ],
   },
-
   {
-    title: 'BACKUP & DR',
+    title: 'Backup Solutions',
     to: '/solutions/backup-dr',
     items: [
-      {
-        label: 'Veeam',
-        to: '/solutions/backup-dr/veeam-backup',
-      },
-      {
-        label: 'Cloud Backup',
-        to: '/solutions/backup-dr/cloud-backup',
-      },
-      {
-        label: 'DR',
-        to: '/solutions/backup-dr/disaster-recovery',
-      },
-      {
-        label: 'Ransomware Recovery',
-        to: '/solutions/backup-dr/ransomware-recovery',
-      },
+      { label: 'Backup', to: sol('backup-dr', 'veeam-backup') },
     ],
   },
-
   {
-    title: 'NETWORK',
+    title: 'Network Solutions',
     to: '/solutions/network',
     items: [
-      {
-        label: 'Cabling',
-        to: '/solutions/network/cabling',
-      },
-      {
-        label: 'Switching',
-        to: '/solutions/network/switching',
-      },
-      {
-        label: 'Wi-Fi',
-        to: '/solutions/network/enterprise-wifi',
-      },
-      {
-        label: 'SD-WAN',
-        to: '/solutions/network/sd-wan',
-      },
-      {
-        label: 'Monitoring',
-        to: '/solutions/network/network-monitoring',
-      },
+      { label: 'Wired', to: sol('network', 'structured-cabling') },
+      { label: 'Wireless', to: sol('network', 'enterprise-wifi') },
     ],
   },
 ];
 
-
-/* ============================================================
-   MEGA MENU
-============================================================ */
+const dropItem =
+  'block whitespace-nowrap px-5 py-2.5 text-[13.5px] font-medium uppercase tracking-[0.02em] text-slate-200 transition-all duration-200 hover:translate-x-1 hover:text-brand-300';
 
 const megaMenu = [
-  {
-    key: 'solutions',
-    label: 'Solutions',
-    to: '/solutions',
-    columns: solutionMenu,
-  },
-
+  { key: 'home', label: 'Home', to: '/' },
+  { key: 'solutions', label: 'Solution', to: '/solutions', columns: solutionMenu },
   {
     key: 'services',
     label: 'Services',
     to: '/services',
-
     columns: [
       {
-        title: 'Managed',
-        items: services.slice(0, 4).map((s) => ({
-          label: s.name,
-          to: `/services/${s.slug}`,
-        })),
-      },
-
-      {
-        title: 'Professional',
-        items: services.slice(4, 7).map((s) => ({
-          label: s.name,
-          to: `/services/${s.slug}`,
-        })),
-      },
-
-      {
-        title: 'Advisory & Supply',
-        items: services.slice(7).map((s) => ({
-          label: s.name,
-          to: `/services/${s.slug}`,
-        })),
-      },
-
-      {
-        title: 'Plans',
+        title: 'Services',
         items: [
-          {
-            label: 'SLA & Support Plans',
-            to: '/services/plans',
-          },
+          { label: 'Infrastructure Services', to: '/services/managed-it-services' },
+          { label: 'Data Center Services', to: '/solutions/data-center' },
+          { label: 'Network Services', to: '/solutions/network' },
+          { label: 'Cloud Services', to: '/solutions/cloud' },
         ],
       },
     ],
   },
-
-  {
-    key: 'industries',
-    label: 'Industries',
-    to: '/industries',
-
-    columns: [
-      {
-        title: 'Regulated',
-        items: industries
-          .filter((i) =>
-            ['bfsi', 'pharma-healthcare', 'legal'].includes(i.slug)
-          )
-          .map((i) => ({
-            label: i.name,
-            to: `/industries/${i.slug}`,
-          })),
-      },
-
-      {
-        title: 'Operations-heavy',
-        items: industries
-          .filter((i) =>
-            [
-              'manufacturing',
-              'retail-ecommerce',
-              'construction-real-estate',
-            ].includes(i.slug)
-          )
-          .map((i) => ({
-            label: i.name,
-            to: `/industries/${i.slug}`,
-          })),
-      },
-
-      {
-        title: 'People-heavy',
-        items: industries
-          .filter((i) =>
-            [
-              'education',
-              'hospitality-tourism',
-              'it-ites',
-            ].includes(i.slug)
-          )
-          .map((i) => ({
-            label: i.name,
-            to: `/industries/${i.slug}`,
-          })),
-      },
-    ],
-  },
-
-  {
-    key: 'why',
-    label: 'Why ProXinet',
-    to: '/about',
-
-    columns: [
-      {
-        title: 'Company',
-        items: [
-          {
-            label: 'About Us',
-            to: '/about',
-          },
-          {
-            label: 'Leadership Team',
-            to: '/about/leadership',
-          },
-          {
-            label: 'Our Story',
-            to: '/about/story',
-          },
-          {
-            label: 'Our Process',
-            to: '/about/process',
-          },
-        ],
-      },
-
-      {
-        title: 'Proof',
-        items: [
-          {
-            label: 'Clients',
-            to: '/clients',
-          },
-          {
-            label: 'Case Studies',
-            to: '/case-studies',
-          },
-          {
-            label: 'Testimonials',
-            to: '/testimonials',
-          },
-        ],
-      },
-
-      {
-        title: 'Credentials',
-        items: [
-          {
-            label: 'Partners & Alliances',
-            to: '/partners',
-          },
-          {
-            label: 'Certifications',
-            to: '/about/certifications',
-          },
-          {
-            label: 'Procurement Pack',
-            to: '/procurement',
-          },
-        ],
-      },
-    ],
-  },
-
+  { key: 'clients', label: 'Client', to: '/clients' },
   {
     key: 'resources',
     label: 'Resources',
-    to: '/resources',
-
+    to: '/news-events',
     columns: [
       {
-        title: 'Read',
+        title: 'Resources',
         items: [
-          {
-            label: 'Blog',
-            to: '/blog',
-          },
-          {
-            label: 'Whitepapers',
-            to: '/resources/whitepapers',
-          },
-          {
-            label: 'Glossary',
-            to: '/resources/glossary',
-          },
-          {
-            label: 'FAQs',
-            to: '/resources/faq',
-          },
+          { label: 'News', to: '/news-events#news' },
+          { label: 'Events', to: '/news-events#events' },
         ],
       },
-
+    ],
+  },
+  { key: 'alliances', label: 'Alliances', to: '/partners' },
+  { key: 'contact', label: 'Contact', to: '/contact' },
+  { key: 'careers', label: 'Careers', to: '/careers' },
+  {
+    key: 'about',
+    label: 'About',
+    to: '/about',
+    columns: [
       {
-        title: 'Tools',
+        title: 'About',
         items: [
-          {
-            label: 'Cloud Cost Calculator',
-            to: '/tools/cloud-cost-calculator',
-          },
-          {
-            label: 'IT Security Health Score',
-            to: '/tools/security-health-score',
-          },
-          {
-            label: 'AMC Plan Selector',
-            to: '/tools/amc-plan-selector',
-          },
-          {
-            label: 'All tools',
-            to: '/tools',
-          },
-        ],
-      },
-
-      {
-        title: 'Company news',
-        items: [
-          {
-            label: 'News & Events',
-            to: '/news-events',
-          },
-          {
-            label: 'Careers',
-            to: '/careers',
-          },
+          { label: 'Overview', to: '/about#overview' },
+          { label: 'What We Believe', to: '/about#what-we-believe' },
+          { label: 'Vision', to: '/about#vision' },
+          { label: 'Social Responsibility', to: '/about#social-responsibility' },
         ],
       },
     ],
@@ -493,7 +215,7 @@ export default function Navbar() {
   ========================================================== */
 
   const linkClass = ({ isActive }, key) =>
-    `flex shrink-0 items-center gap-1 whitespace-nowrap rounded-lg px-2.5 py-2 text-[14px] font-medium transition-colors xl:px-3 xl:text-[15px] ${
+    `flex shrink-0 items-center gap-1 whitespace-nowrap rounded-lg px-2 py-2 text-[13.5px] font-medium transition-colors xl:px-2.5 xl:text-[14.5px] ${
       isActive || open === key
         ? 'text-brand-600 dark:text-brand-300'
         : 'text-slate-700 hover:text-brand-600 dark:text-slate-200 dark:hover:text-brand-300'
@@ -612,36 +334,54 @@ export default function Navbar() {
 
               <div
                 key={m.key}
-                className="shrink-0"
-                onMouseEnter={() => setOpen(m.key)}
+                className="relative shrink-0"
+                onMouseEnter={() => setOpen(m.columns ? m.key : null)}
               >
 
                 <NavLink
                   to={m.to}
+                  end={m.to === '/'}
                   className={(s) => linkClass(s, m.key)}
                 >
 
                   {m.label}
 
-                  <DownOutlined
-                    className={`text-[8px] transition-transform duration-300 ${
-                      open === m.key ? 'rotate-180' : ''
-                    }`}
-                  />
+                  {m.columns && (
+                    <DownOutlined
+                      className={`text-[8px] transition-transform duration-300 ${
+                        open === m.key ? 'rotate-180' : ''
+                      }`}
+                    />
+                  )}
 
                 </NavLink>
+
+                {/* SMALL DROPDOWN — Services / Resources / About */}
+                <AnimatePresence>
+                  {open === m.key && m.columns && m.key !== 'solutions' && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 6 }}
+                      transition={{ duration: 0.18, ease: 'easeOut' }}
+                      className="absolute left-0 top-full z-50 pt-2"
+                    >
+                      <ul className="m-0 min-w-[240px] list-none border border-slate-600 bg-slate-800 py-2 shadow-2xl dark:border-white/10 dark:bg-ink-900">
+                        {m.columns.flatMap((col) => col.items).map((it) => (
+                          <li key={it.to} className="m-0 list-none p-0">
+                            <Link to={it.to} className={dropItem}>
+                              {it.label}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
 
               </div>
 
             ))}
-
-
-            <NavLink
-              to="/contact"
-              className={(s) => linkClass(s, 'contact')}
-            >
-              Contact
-            </NavLink>
 
           </nav>
 
@@ -678,7 +418,7 @@ export default function Navbar() {
 
             <Link
               to="/contact"
-              className="hidden sm:block"
+              className="hidden 2xl:block"
             >
               <Button
                 type="primary"
@@ -703,188 +443,45 @@ export default function Navbar() {
         </div>
 
 
-        {/* ====================================================
-            MEGA MENU
-        ==================================================== */}
-
+        {/* SOLUTION MEGA PANEL — boxed, 5 columns, same layout as proxinet.in */}
         <AnimatePresence>
-
-          {open && (
-
+          {open === 'solutions' && (
             <motion.div
-              key={open}
-              initial={{
-                opacity: 0,
-                y: -8,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              exit={{
-                opacity: 0,
-                y: -8,
-              }}
-              transition={{
-                duration: 0.2,
-                ease: 'easeOut',
-              }}
-              className="
-                absolute
-                inset-x-0
-                top-full
-                hidden
-                border-b
-                border-slate-600
-                bg-slate-800
-                shadow-2xl
-                dark:border-white/10
-                dark:bg-ink-900
-                lg:block
-              "
-              onMouseEnter={() => setOpen(open)}
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.2, ease: 'easeOut' }}
+              className="absolute inset-x-0 top-full z-50 hidden lg:block"
+              onMouseEnter={() => setOpen('solutions')}
             >
-
-              <div className="px-container py-6">
-
-                {(() => {
-                  const m = megaMenu.find(
-                    (x) => x.key === open
-                  );
-
-                  if (!m) return null;
-
-                  return (
-                    <div
-                      className={
-                        m.key === 'solutions'
-                          ? 'grid grid-cols-5 gap-x-6'
-                          : 'grid grid-cols-2 gap-x-8 gap-y-6 md:grid-cols-3 lg:grid-cols-5'
-                      }
-                    >
-
-                      {m.columns.map((col) => (
-
-                        <div key={col.title}>
-
-                          {/* COLUMN TITLE */}
-
-                          {col.to ? (
-
+              <div className="px-container">
+                <div className="grid grid-cols-5 divide-x divide-slate-600 border border-slate-600 bg-slate-800 py-7 shadow-2xl dark:divide-white/10 dark:border-white/10 dark:bg-ink-900">
+                  {solutionMenu.map((col) => (
+                    <div key={col.title} className="px-6">
+                      <Link
+                        to={col.to}
+                        className="mb-4 block font-display text-[14.5px] font-bold uppercase tracking-[0.02em] text-white transition-colors hover:text-brand-300"
+                      >
+                        {col.title}
+                      </Link>
+                      <ul className="m-0 list-none space-y-1 p-0">
+                        {col.items.map((it) => (
+                          <li key={it.to} className="m-0 list-none p-0">
                             <Link
-                              to={col.to}
-                              className="
-                                mb-3
-                                block
-                                font-display
-                                text-[15px]
-                                font-bold
-                                uppercase
-                                tracking-[0.08em]
-                                text-white
-                                transition-colors
-                                hover:text-brand-300
-                              "
+                              to={it.to}
+                              className="block py-1.5 text-[13.5px] uppercase tracking-[0.02em] text-slate-300 transition-all duration-200 hover:translate-x-1 hover:text-brand-300"
                             >
-                              {col.title}
+                              {it.label}
                             </Link>
-
-                          ) : (
-
-                            <p
-                              className="
-                                mb-3
-                                font-mono
-                                text-[11px]
-                                font-bold
-                                uppercase
-                                tracking-[0.14em]
-                                text-white
-                              "
-                            >
-                              {col.title}
-                            </p>
-
-                          )}
-
-
-                          {/* MENU ITEMS */}
-
-                          <ul className="m-0 list-none space-y-1 p-0">
-
-                            {col.items.map((it) => (
-
-                              <li
-                                key={it.to}
-                                className="m-0 list-none p-0"
-                              >
-
-                                <Link
-                                  to={it.to}
-                                  className="
-                                    group
-                                    flex
-                                    items-center
-                                    gap-2.5
-                                    rounded-md
-                                    px-2
-                                    py-1.5
-                                    text-[14px]
-                                    font-medium
-                                    text-white
-                                    transition-all
-                                    duration-200
-                                    hover:translate-x-1
-                                    hover:bg-slate-700
-                                    hover:text-white
-                                    dark:hover:bg-white/10
-                                  "
-                                >
-
-                                  {/* ONLY ONE DOT */}
-
-                                  <span
-                                    className="
-                                      h-1.5
-                                      w-1.5
-                                      shrink-0
-                                      rounded-full
-                                      bg-slate-400
-                                      transition-all
-                                      duration-200
-                                      group-hover:bg-brand-400
-                                      group-hover:shadow-[0_0_8px_rgba(251,146,60,0.7)]
-                                    "
-                                  />
-
-                                  {/* WHITE TEXT */}
-
-                                  <span className="text-white">
-                                    {it.label}
-                                  </span>
-
-                                </Link>
-
-                              </li>
-
-                            ))}
-
-                          </ul>
-
-                        </div>
-
-                      ))}
-
+                          </li>
+                        ))}
+                      </ul>
                     </div>
-                  );
-                })()}
-
+                  ))}
+                </div>
               </div>
-
             </motion.div>
-
           )}
-
         </AnimatePresence>
 
       </header>
@@ -956,7 +553,16 @@ export default function Navbar() {
             <Collapse
               ghost
               expandIconPosition="end"
-              items={megaMenu.map((m) => ({
+              items={megaMenu.map((m) => (!m.columns ? {
+                key: m.key,
+                showArrow: false,
+                collapsible: 'icon',
+                label: (
+                  <Link to={m.to} className="block font-display font-semibold text-slate-800 dark:text-slate-100">
+                    {m.label}
+                  </Link>
+                ),
+              } : {
 
                 key: m.key,
 
@@ -1090,14 +696,6 @@ export default function Navbar() {
                 dark:border-white/10
               "
             >
-
-              <Link
-                to="/contact"
-                className="block font-display font-semibold"
-              >
-                Contact
-              </Link>
-
 
               <Link
                 to="/portal/login"
