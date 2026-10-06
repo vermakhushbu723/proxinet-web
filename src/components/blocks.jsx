@@ -210,7 +210,7 @@ export function DarkHead({ eyebrow, title, sub, center = false }) {
   return (
     <div className={center ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'}>
       {eyebrow && <div className="px-eyebrow mb-3 !text-brand-300"><span className="inline-block h-px w-6 bg-brand-400" />{eyebrow}</div>}
-      <h2 className="px-h2 text-white">{title}</h2>
+      <h2 className="px-h2 font-extrabold tracking-tight text-white">{title}</h2>
       {sub && <p className="mt-4 text-[1.02rem] leading-relaxed text-white/75 sm:text-lg">{sub}</p>}
     </div>
   );

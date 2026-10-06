@@ -5,7 +5,7 @@ import { SearchOutlined, CalendarOutlined } from '@ant-design/icons';
 import { posts, findPost, glossary, faqs, whitepapers } from '../data/resources';
 import { Reveal, Stagger, StaggerItem } from '../components/ui';
 import { PageHero, CTABand, InfoCard, dotList } from '../components/blocks';
-import { img, photos, postImg } from '../data/images';
+import { img, photos, postImg, slotImg } from '../data/images';
 
 const fmt = (d) => new Date(d).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -142,7 +142,7 @@ export function Whitepapers() {
           {whitepapers.map((w, wi) => (
             <StaggerItem key={w.title}>
               <InfoCard
-                to="/contact" image={img(wpImgs[wi % wpImgs.length], 700)} as="h2"
+                to="/contact" image={slotImg(`whitepaper:${wi % wpImgs.length}`, wpImgs[wi % wpImgs.length], 700)} as="h2"
                 title={w.title} meta={dotList([w.cat, `${w.pages} pages · PDF`])} text={w.desc} cta="Request a copy"
               />
             </StaggerItem>
@@ -275,7 +275,7 @@ export function NewsEvents() {
                   <p className="px-body mt-1.5">{n.desc}</p>
                 </div>
                 <img
-                  src={img(n.type === 'Event' ? photos.event : photos.openOffice, 400)} alt="" aria-hidden="true" loading="lazy"
+                  src={n.type === 'Event' ? slotImg('news-event-thumb', photos.event, 400) : slotImg('news-news-thumb', photos.openOffice, 400)} alt="" aria-hidden="true" loading="lazy"
                   className="hidden h-24 w-36 shrink-0 rounded-xl object-cover sm:block"
                 />
               </div>

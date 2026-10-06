@@ -1,5 +1,8 @@
 // Central image library. Every photo is an Unsplash image (free to use under the Unsplash licence),
 // served through their CDN with on-the-fly resizing. Swap an id here and it changes everywhere.
+import pagePhotos from './pagePhotos.json';
+import overrides from './photoOverrides.json';
+
 export const img = (id, w = 800) =>
   `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
 
@@ -236,13 +239,31 @@ export const iconFamily = {
 };
 
 const pick = (map, key, fallback) => map[key] || fallback;
+// One photo per slot across the whole site — photoOverrides.json replaces any slot that was a duplicate.
+const ov = (slot, id) => overrides[slot] || id;
+/** Image for a named slot (e.g. 'story-1', 'whitepaper:3') with its default photo id. */
+export const slotImg = (slot, id, w) => img(ov(slot, id), w);
 export const familyImg = (slug, w) => img(pick(familyMap, slug, P.datacenter), w);
-export const solutionImg = (slug, w) => img(pick(solutionMap, slug, P.circuitBoard), w);
-export const serviceImg = (slug, w) => img(pick(serviceMap, slug, P.teamMonitors), w);
-export const industryImg = (slug, w) => img(pick(industryMap, slug, P.skyscrapers), w);
-export const caseImg = (slug, w) => img(pick(caseMap, slug, P.teamMeeting), w);
-export const postImg = (slug, w) => img(pick(postMap, slug, P.laptopDesk), w);
-export const toolImg = (path, w) => img(pick(toolMap, path, P.analytics), w);
+// Per-page photos (pagePhotos.json): `hero` sits behind the page heading, `side` is the image next to the
+// points / on cards — so the two never repeat on the same page.
+const sol = pagePhotos.solutions || {};
+const svc = pagePhotos.services || {};
+export const solutionImg = (slug, w) => img(ov(`solution-side:${slug}`, sol[slug]?.side || pick(solutionMap, slug, P.circuitBoard)), w);
+// Hand-picked local hero images (src/assets/solutions/<slug>.jpg) win over the Unsplash ones.
+const localHero = Object.fromEntries(
+  Object.entries(import.meta.glob('../assets/solutions/*.jpg', { eager: true, import: 'default' }))
+    .map(([path, url]) => [path.split('/').pop().replace('.jpg', ''), url]),
+);
+export const solutionHeroImg = (slug, w) => localHero[slug] || img(ov(`solution-hero:${slug}`, sol[slug]?.hero || pick(solutionMap, slug, P.circuitBoard)), w);
+export const serviceImg = (slug, w) => img(svc[slug]?.side || pick(serviceMap, slug, P.teamMonitors), w);
+export const serviceHeroImg = (slug, w) => img(svc[slug]?.hero || pick(serviceMap, slug, P.teamMonitors), w);
+export const industryImg = (slug, w) => img(ov(`industry-side:${slug}`, pick(industryMap, slug, P.skyscrapers)), w);
+const industryHeroImg = (slug, w) => img(ov(`industry-hero:${slug}`, pick(industryMap, slug, P.skyscrapers)), w);
+export const caseImg = (slug, w) => img(ov(`case-side:${slug}`, pick(caseMap, slug, P.teamMeeting)), w);
+const caseHeroImg = (slug, w) => img(ov(`case-hero:${slug}`, pick(caseMap, slug, P.teamMeeting)), w);
+export const postImg = (slug, w) => img(ov(`post-side:${slug}`, pick(postMap, slug, P.laptopDesk)), w);
+const postHeroImg = (slug, w) => img(ov(`post-hero:${slug}`, pick(postMap, slug, P.laptopDesk)), w);
+export const toolImg = (path, w) => img(ov(`tool:${path}`, pick(toolMap, path, P.analytics)), w);
 
 /** Picks the hero background for any route. Returns null where no photo hero is wanted. */
 export function heroImageFor(pathname) {
@@ -250,14 +271,15 @@ export function heroImageFor(pathname) {
   const seg = pathname.split('/').filter(Boolean);
   const [a, b, c] = seg;
   if (!a) return null;
-  if (a === 'solutions' && c) return solutionImg(c, W);
+  if (a === 'solutions' && c) return solutionHeroImg(c, W);
   if (a === 'solutions' && b) return familyImg(b, W);
-  if (a === 'services' && b && b !== 'plans') return serviceImg(b, W);
-  if (a === 'industries' && b) return industryImg(b, W);
-  if (a === 'case-studies' && b) return caseImg(b, W);
-  if (a === 'blog' && b) return postImg(b, W);
+  if (a === 'services' && b && b !== 'plans') return serviceHeroImg(b, W);
+  if (a === 'industries' && b) return industryHeroImg(b, W);
+  if (a === 'case-studies' && b) return caseHeroImg(b, W);
+  if (a === 'blog' && b) return postHeroImg(b, W);
   if (a === 'tools' && b) return toolImg(`/tools/${b}`, W);
-  if (a === 'legal') return img(P.contract, W);
+  if (a === 'legal') return slotImg('legal-hero', P.contract, W);
   const key = `/${seg.join('/')}`;
-  return pageMap[key] ? img(pageMap[key], W) : null;
+  const id = ov(`page:${key}`, (pagePhotos.pages || {})[key] || pageMap[key]);
+  return id ? img(id, W) : null;
 }

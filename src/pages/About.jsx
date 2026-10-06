@@ -7,7 +7,7 @@ import { leadership, milestones } from '../data/people';
 import { certifications } from '../data/proof';
 import { Reveal, Stagger, StaggerItem } from '../components/ui';
 import { PageHero, CTABand, FeatureImage, PhotoSection, DarkHead } from '../components/blocks';
-import { img, photos } from '../data/images';
+import { img, photos, slotImg } from '../data/images';
 import AllianceMarquee from '../components/AllianceMarquee';
 
 /* =================== ABOUT =================== */
@@ -25,13 +25,13 @@ export function About() {
       <section id="overview" className="scroll-mt-24 px-container px-section">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
           <Reveal>
-            <h2 className="px-h2 text-slate-900 dark:text-white">What we do</h2>
-            <p className="px-lead mt-5">
+            <h2 className="px-h2 font-extrabold tracking-tight text-slate-900 dark:text-white">What we do</h2>
+            <p className="mt-5 text-[1.05rem] sm:text-lg font-normal leading-relaxed text-slate-500 dark:text-slate-400">
               Our breadth of experience means we can recommend, design, deploy and maintain your IT
               infrastructure — all four. One accountable partner, so the burden of coordinating between
               multiple vendors does not land on you.
             </p>
-            <p className="px-body mt-4">
+            <p className="mt-4 text-[0.97rem] font-normal leading-relaxed text-slate-500 dark:text-slate-400">
               Working across manufacturing, IT/ITES, BFSI, pharma, education, legal, retail, construction
               and hospitality means we understand not just the technology but the compliance and uptime
               expectations that surround it.
@@ -44,22 +44,22 @@ export function About() {
                 { t: 'Sustainable design', d: 'Energy-efficient infrastructure and carbon footprint reduction.' },
               ].map((x) => (
                 <div key={x.t} className="rounded-xl border border-slate-200 p-4 dark:border-white/10">
-                  <p className="font-display font-semibold text-slate-900 dark:text-white">{x.t}</p>
-                  <p className="px-body mt-1">{x.d}</p>
+                  <p className="font-display text-[16px] font-bold text-slate-900 dark:text-white">{x.t}</p>
+                  <p className="mt-1 text-[14px] font-normal leading-relaxed text-slate-500 dark:text-slate-400">{x.d}</p>
                 </div>
               ))}
             </div>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <FeatureImage src={img(photos.officeTeam, 1000)} alt="ProXinet team working together" className="mb-10" />
+            <FeatureImage src={slotImg('about-feature', photos.officeTeam, 1000)} alt="ProXinet team working together" className="mb-10" />
             <div className="px-card">
-              <p className="font-mono text-[11px] uppercase tracking-wider text-slate-400">Our offices</p>
+              <p className="font-display text-[16px] font-bold text-slate-900 dark:text-white">Our offices</p>
               <div className="mt-4 space-y-3">
                 {company.offices.map((o) => (
                   <div key={o.label}>
-                    <p className="font-mono text-[10.5px] uppercase tracking-wider text-slate-400">{o.label}</p>
-                    <p className="mt-0.5 text-[14px] text-slate-600 dark:text-slate-300">{o.line}</p>
+                    <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">{o.label}</p>
+                    <p className="mt-0.5 text-[14px] text-slate-500 dark:text-slate-400">{o.line}</p>
                   </div>
                 ))}
               </div>
@@ -76,8 +76,8 @@ export function About() {
             {values.map((v) => (
               <StaggerItem key={v.title}>
                 <div className="h-full rounded-2xl border border-white/15 bg-white/[0.07] p-6 backdrop-blur-md transition-colors hover:bg-white/[0.12]">
-                  <h3 className="font-display text-[16.5px] font-semibold text-white">{v.title}</h3>
-                  <p className="mt-2 text-[0.97rem] leading-relaxed text-white/75">{v.desc}</p>
+                  <h3 className="font-display text-[17px] font-bold text-white">{v.title}</h3>
+                  <p className="mt-2 text-[0.95rem] font-normal leading-relaxed text-white/65">{v.desc}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -101,8 +101,8 @@ export function About() {
             <Reveal key={b.id}>
               <div id={b.id} className="px-card px-card-hover h-full scroll-mt-24">
                 <div className="px-eyebrow mb-3"><span className="inline-block h-px w-6 bg-brand-400" />{b.eyebrow}</div>
-                <h2 className="font-display text-[1.4rem] font-bold text-slate-900 dark:text-white">{b.title}</h2>
-                <p className="px-body mt-3">{b.text}</p>
+                <h2 className="font-display text-[1.45rem] font-extrabold tracking-tight text-slate-900 dark:text-white">{b.title}</h2>
+                <p className="mt-3 text-[0.97rem] font-normal leading-relaxed text-slate-500 dark:text-slate-400">{b.text}</p>
               </div>
             </Reveal>
           ))}
@@ -164,7 +164,7 @@ export function Story() {
         <Reveal className="mx-auto mb-14 max-w-4xl">
           <div className="grid gap-4 sm:grid-cols-3">
             {[photos.hardwareRepair, photos.teamMonitors, photos.dcEngineer].map((p, i) => (
-              <img key={p} src={img(p, 700)} alt="" aria-hidden="true" loading="lazy"
+              <img key={p} src={slotImg(`story-${i + 1}`, p, 700)} alt="" aria-hidden="true" loading="lazy"
                 className={`aspect-[4/3] w-full rounded-2xl object-cover shadow-soft ${i === 1 ? 'sm:-translate-y-4' : ''}`} />
             ))}
           </div>
@@ -228,7 +228,7 @@ export function Process() {
         </Stagger>
       </section>
 
-      <PhotoSection image={img(photos.nocDesk, 1920)}>
+      <PhotoSection image={slotImg('about-governance-bg', photos.nocDesk, 1920)}>
         <div className="px-container px-section">
           <DarkHead eyebrow="Governance" title="Support delivery framework" sub="ITIL-aligned — these four pillars apply to every managed account." />
           <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-4">

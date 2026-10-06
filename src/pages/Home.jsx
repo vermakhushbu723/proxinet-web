@@ -19,6 +19,52 @@ import { img, photos, familyImg } from '../data/images';
 const orbitIcons = import.meta.glob('../assets/orbit/*.svg', { eager: true, import: 'default' });
 const orbitIcon = (key) => orbitIcons[`../assets/orbit/${key}.svg`];
 
+/* Why choose us — flip cards */
+const whyCards = [
+  {
+    title: 'Experienced IT Team', icon: <TeamOutlined />,
+    text: 'Skilled professionals handling infrastructure, cloud, security, networking and managed IT services.',
+    points: ['OEM-certified engineers', 'Background-verified staff', '15+ years of delivery'],
+    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400',
+    back: 'from-brand-600 to-orange-500',
+  },
+  {
+    title: 'End-to-End Solutions', icon: <CloudOutlined />,
+    text: 'Cloud, cybersecurity, data center, backup and network solutions under one accountable partner.',
+    points: ['One partner, one contract', 'Design to support', 'No vendor juggling'],
+    tone: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
+    back: 'from-blue-600 to-cyan-500',
+  },
+  {
+    title: 'Security First', icon: <SafetyOutlined />,
+    text: 'Protecting endpoints, networks, cloud environments and critical business data with security-focused solutions.',
+    points: ['EDR, firewall & email security', 'Audit-ready controls', 'ISO 27001 practices'],
+    tone: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400',
+    back: 'from-emerald-600 to-teal-500',
+  },
+  {
+    title: 'Fast Deployment', icon: <ThunderboltFilled />,
+    text: 'Structured implementation with planned migrations, testing, documentation and smooth handover.',
+    points: ['Planned change windows', 'Tested before go-live', 'Full documentation'],
+    tone: 'bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400',
+    back: 'from-violet-600 to-fuchsia-500',
+  },
+  {
+    title: '24×7 Support', icon: <CustomerServiceOutlined />,
+    text: 'Continuous monitoring and support to keep your business-critical IT environment running.',
+    points: ['Round-the-clock NOC', 'SLA-backed response', 'Monthly health reports'],
+    tone: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
+    back: 'from-amber-500 to-orange-600',
+  },
+  {
+    title: 'Scalable Infrastructure', icon: <DatabaseOutlined />,
+    text: 'Flexible infrastructure designed to grow with your business and changing technology requirements.',
+    points: ['Grows with your users', 'Cloud & on-prem ready', 'Future-proof design'],
+    tone: 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400',
+    back: 'from-sky-600 to-indigo-600',
+  },
+];
+
 /* ------------------------------------------------------------------ *
  *  Hero orbit — solutions circle a rotating photo, services on an inner ring
  * ------------------------------------------------------------------ */
@@ -570,471 +616,40 @@ export default function Home() {
             </div>
           </Reveal>
 
-          {/* Feature Cards */}
+          {/* Feature Cards — flip over on hover and change colour */}
           <Stagger className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {whyCards.map((c) => (
+              <StaggerItem key={c.title}>
+                <div className="px-flip group h-[250px]" tabIndex={0}>
+                  <div className="px-flip-inner">
 
-            {/* Card 1 */}
-            <StaggerItem>
-              <div
-                className="
-            group
-            relative
-            h-full
-            overflow-hidden
-            rounded-2xl
-            border
-            border-slate-200
-            bg-white
-            p-6
-            shadow-[0_10px_30px_rgba(15,23,42,0.07)]
-            transition-all
-            duration-300
-            hover:-translate-y-2
-            hover:border-brand-300
-            hover:shadow-[0_20px_45px_rgba(15,23,42,0.14)]
-            dark:border-white/10
-            dark:bg-white/[0.04]
-            dark:hover:border-brand-500/40
-          "
-              >
-                <div
-                  className="
-              mb-5
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-xl
-              border
-              border-brand-100
-              bg-brand-50
-              text-xl
-              text-brand-600
-              transition-all
-              duration-300
-              group-hover:scale-110
-              group-hover:bg-brand-600
-              group-hover:text-white
-              dark:border-brand-500/20
-              dark:bg-brand-500/10
-              dark:text-brand-400
-              dark:group-hover:bg-brand-500
-              dark:group-hover:text-white
-            "
-                >
-                  <TeamOutlined />
+                    {/* front */}
+                    <div className="px-flip-face flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.07)] dark:border-white/10 dark:bg-ink-900">
+                      <div className={`mb-5 flex h-12 w-12 items-center justify-center rounded-xl text-xl ${c.tone}`}>
+                        {c.icon}
+                      </div>
+                      <h3 className="font-display text-lg font-bold text-slate-900 dark:text-white">{c.title}</h3>
+                      <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{c.text}</p>
+                      <span className="mt-auto pt-3 text-[11px] font-bold uppercase tracking-wider text-slate-400">Hover to know more ↻</span>
+                    </div>
+
+                    {/* back */}
+                    <div className={`px-flip-face px-flip-back flex flex-col justify-center rounded-2xl bg-gradient-to-br p-6 text-white shadow-[0_20px_45px_rgba(15,23,42,0.22)] ${c.back}`}>
+                      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white/20 text-xl">{c.icon}</div>
+                      <h3 className="font-display text-lg font-bold">{c.title}</h3>
+                      <ul className="mt-3 space-y-1.5 text-[14px] font-medium text-white/90">
+                        {c.points.map((pt) => (
+                          <li key={pt} className="flex items-center gap-2">
+                            <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-white" />{pt}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                  </div>
                 </div>
-
-                <h3
-                  className="
-              font-display
-              text-lg
-              font-bold
-              text-slate-900
-              transition-colors
-              group-hover:text-brand-600
-              dark:text-white
-              dark:group-hover:text-brand-400
-            "
-                >
-                  Experienced IT Team
-                </h3>
-
-                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                  Skilled professionals handling infrastructure, cloud,
-                  security, networking and managed IT services.
-                </p>
-
-                <div className="mt-5 h-px w-8 bg-brand-500/40 transition-all duration-500 group-hover:w-full" />
-              </div>
-            </StaggerItem>
-
-            {/* Card 2 */}
-            <StaggerItem>
-              <div
-                className="
-            group
-            relative
-            h-full
-            overflow-hidden
-            rounded-2xl
-            border
-            border-slate-200
-            bg-white
-            p-6
-            shadow-[0_10px_30px_rgba(15,23,42,0.07)]
-            transition-all
-            duration-300
-            hover:-translate-y-2
-            hover:border-brand-300
-            hover:shadow-[0_20px_45px_rgba(15,23,42,0.14)]
-            dark:border-white/10
-            dark:bg-white/[0.04]
-            dark:hover:border-brand-500/40
-          "
-              >
-                <div
-                  className="
-              mb-5
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-xl
-              border
-              border-blue-100
-              bg-blue-50
-              text-xl
-              text-blue-600
-              transition-all
-              duration-300
-              group-hover:scale-110
-              group-hover:bg-blue-600
-              group-hover:text-white
-              dark:border-blue-500/20
-              dark:bg-blue-500/10
-              dark:text-blue-400
-              dark:group-hover:bg-blue-500
-              dark:group-hover:text-white
-            "
-                >
-                  <CloudOutlined />
-                </div>
-
-                <h3
-                  className="
-              font-display
-              text-lg
-              font-bold
-              text-slate-900
-              transition-colors
-              group-hover:text-blue-600
-              dark:text-white
-              dark:group-hover:text-blue-400
-            "
-                >
-                  End-to-End Solutions
-                </h3>
-
-                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                  Cloud, cybersecurity, data center, backup and network
-                  solutions under one accountable partner.
-                </p>
-
-                <div className="mt-5 h-px w-8 bg-blue-500/40 transition-all duration-500 group-hover:w-full" />
-              </div>
-            </StaggerItem>
-
-            {/* Card 3 */}
-            <StaggerItem>
-              <div
-                className="
-            group
-            relative
-            h-full
-            overflow-hidden
-            rounded-2xl
-            border
-            border-slate-200
-            bg-white
-            p-6
-            shadow-[0_10px_30px_rgba(15,23,42,0.07)]
-            transition-all
-            duration-300
-            hover:-translate-y-2
-            hover:border-emerald-300
-            hover:shadow-[0_20px_45px_rgba(15,23,42,0.14)]
-            dark:border-white/10
-            dark:bg-white/[0.04]
-            dark:hover:border-emerald-500/40
-          "
-              >
-                <div
-                  className="
-              mb-5
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-xl
-              border
-              border-emerald-100
-              bg-emerald-50
-              text-xl
-              text-emerald-600
-              transition-all
-              duration-300
-              group-hover:scale-110
-              group-hover:bg-emerald-600
-              group-hover:text-white
-              dark:border-emerald-500/20
-              dark:bg-emerald-500/10
-              dark:text-emerald-400
-              dark:group-hover:bg-emerald-500
-              dark:group-hover:text-white
-            "
-                >
-                  <SafetyOutlined />
-                </div>
-
-                <h3
-                  className="
-              font-display
-              text-lg
-              font-bold
-              text-slate-900
-              transition-colors
-              group-hover:text-emerald-600
-              dark:text-white
-              dark:group-hover:text-emerald-400
-            "
-                >
-                  Security First
-                </h3>
-
-                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                  Protecting endpoints, networks, cloud environments and
-                  critical business data with security-focused solutions.
-                </p>
-
-                <div className="mt-5 h-px w-8 bg-emerald-500/40 transition-all duration-500 group-hover:w-full" />
-              </div>
-            </StaggerItem>
-
-            {/* Card 4 */}
-            <StaggerItem>
-              <div
-                className="
-            group
-            relative
-            h-full
-            overflow-hidden
-            rounded-2xl
-            border
-            border-slate-200
-            bg-white
-            p-6
-            shadow-[0_10px_30px_rgba(15,23,42,0.07)]
-            transition-all
-            duration-300
-            hover:-translate-y-2
-            hover:border-violet-300
-            hover:shadow-[0_20px_45px_rgba(15,23,42,0.14)]
-            dark:border-white/10
-            dark:bg-white/[0.04]
-            dark:hover:border-violet-500/40
-          "
-              >
-                <div
-                  className="
-              mb-5
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-xl
-              border
-              border-violet-100
-              bg-violet-50
-              text-xl
-              text-violet-600
-              transition-all
-              duration-300
-              group-hover:scale-110
-              group-hover:bg-violet-600
-              group-hover:text-white
-              dark:border-violet-500/20
-              dark:bg-violet-500/10
-              dark:text-violet-400
-              dark:group-hover:bg-violet-500
-              dark:group-hover:text-white
-            "
-                >
-                  <ThunderboltFilled />
-                </div>
-
-                <h3
-                  className="
-              font-display
-              text-lg
-              font-bold
-              text-slate-900
-              transition-colors
-              group-hover:text-violet-600
-              dark:text-white
-              dark:group-hover:text-violet-400
-            "
-                >
-                  Fast Deployment
-                </h3>
-
-                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                  Structured implementation with planned migrations,
-                  testing, documentation and smooth handover.
-                </p>
-
-                <div className="mt-5 h-px w-8 bg-violet-500/40 transition-all duration-500 group-hover:w-full" />
-              </div>
-            </StaggerItem>
-
-            {/* Card 5 */}
-            <StaggerItem>
-              <div
-                className="
-            group
-            relative
-            h-full
-            overflow-hidden
-            rounded-2xl
-            border
-            border-slate-200
-            bg-white
-            p-6
-            shadow-[0_10px_30px_rgba(15,23,42,0.07)]
-            transition-all
-            duration-300
-            hover:-translate-y-2
-            hover:border-orange-300
-            hover:shadow-[0_20px_45px_rgba(15,23,42,0.14)]
-            dark:border-white/10
-            dark:bg-white/[0.04]
-            dark:hover:border-orange-500/40
-          "
-              >
-                <div
-                  className="
-              mb-5
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-xl
-              border
-              border-orange-100
-              bg-orange-50
-              text-xl
-              text-orange-600
-              transition-all
-              duration-300
-              group-hover:scale-110
-              group-hover:bg-orange-600
-              group-hover:text-white
-              dark:border-orange-500/20
-              dark:bg-orange-500/10
-              dark:text-orange-400
-              dark:group-hover:bg-orange-500
-              dark:group-hover:text-white
-            "
-                >
-                  <CustomerServiceOutlined />
-                </div>
-
-                <h3
-                  className="
-              font-display
-              text-lg
-              font-bold
-              text-slate-900
-              transition-colors
-              group-hover:text-orange-600
-              dark:text-white
-              dark:group-hover:text-orange-400
-            "
-                >
-                  24×7 Support
-                </h3>
-
-                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                  Continuous monitoring and support to keep your
-                  business-critical IT environment running.
-                </p>
-
-                <div className="mt-5 h-px w-8 bg-orange-500/40 transition-all duration-500 group-hover:w-full" />
-              </div>
-            </StaggerItem>
-
-            {/* Card 6 */}
-            <StaggerItem>
-              <div
-                className="
-            group
-            relative
-            h-full
-            overflow-hidden
-            rounded-2xl
-            border
-            border-slate-200
-            bg-white
-            p-6
-            shadow-[0_10px_30px_rgba(15,23,42,0.07)]
-            transition-all
-            duration-300
-            hover:-translate-y-2
-            hover:border-cyan-300
-            hover:shadow-[0_20px_45px_rgba(15,23,42,0.14)]
-            dark:border-white/10
-            dark:bg-white/[0.04]
-            dark:hover:border-cyan-500/40
-          "
-              >
-                <div
-                  className="
-              mb-5
-              flex
-              h-12
-              w-12
-              items-center
-              justify-center
-              rounded-xl
-              border
-              border-cyan-100
-              bg-cyan-50
-              text-xl
-              text-cyan-600
-              transition-all
-              duration-300
-              group-hover:scale-110
-              group-hover:bg-cyan-600
-              group-hover:text-white
-              dark:border-cyan-500/20
-              dark:bg-cyan-500/10
-              dark:text-cyan-400
-              dark:group-hover:bg-cyan-500
-              dark:group-hover:text-white
-            "
-                >
-                  <DatabaseOutlined />
-                </div>
-
-                <h3
-                  className="
-              font-display
-              text-lg
-              font-bold
-              text-slate-900
-              transition-colors
-              group-hover:text-cyan-600
-              dark:text-white
-              dark:group-hover:text-cyan-400
-            "
-                >
-                  Scalable Infrastructure
-                </h3>
-
-                <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">
-                  Flexible infrastructure designed to grow with your
-                  business and changing technology requirements.
-                </p>
-
-                <div className="mt-5 h-px w-8 bg-cyan-500/40 transition-all duration-500 group-hover:w-full" />
-              </div>
-            </StaggerItem>
-
+              </StaggerItem>
+            ))}
           </Stagger>
         </div>
       </section>

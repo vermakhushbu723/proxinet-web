@@ -1,0 +1,136 @@
+{
+  "solutions": {
+    "microsoft-azure": {
+      "hero": "1667372283536-a832e74401c2",
+      "side": "1690627931320-16ac56eb2588"
+    },
+    "aws": {
+      "hero": "1667984390535-6d03cff0b11a",
+      "side": "1667984390553-7f439e6ae401"
+    },
+    "microsoft-365": {
+      "hero": "1633113216164-6469037eafa5",
+      "side": "1612831455359-970e23a1e4e9"
+    },
+    "google-cloud": {
+      "hero": "1551288049-bebda4e38f71",
+      "side": "1460925895917-afdab827c52f"
+    },
+    "hybrid-cloud": {
+      "hero": "1667372283587-e1557c08aca4",
+      "side": "1667984390533-64bdefe719ea"
+    },
+    "cloud-migration": {
+      "hero": "1535557597501-0fee0a500c57",
+      "side": "1667372283545-1261fb5c427a"
+    },
+    "endpoint-security": {
+      "hero": "1614064548237-096f735f344f",
+      "side": "1614064641938-3bbee52942c7"
+    },
+    "email-security": {
+      "hero": "1584543515885-b8981dbf0b5d",
+      "side": "1683117927786-f146451082fb"
+    },
+    "ssl-vpn": {
+      "hero": "1548092372-0d1bd40894a3",
+      "side": "1616587894289-86480e533129"
+    },
+    "data-loss-prevention": {
+      "hero": "1550751827-4bd374c3f58b",
+      "side": "1633265486064-086b219458ec"
+    },
+    "mobile-device-management": {
+      "hero": "1596742578443-7682ef5251cd",
+      "side": "1584433144859-1fc3ab64a957"
+    },
+    "web-proxy-filtering": {
+      "hero": "1516321165247-4aa89a48be28",
+      "side": "1762340916350-ad5a3d620c16"
+    },
+    "server-virtualization": {
+      "hero": "1558494949-ef010cbdcc31",
+      "side": "1680992046626-418f7e910589"
+    },
+    "servers": {
+      "hero": "1580106815433-a5b1d1d53d85",
+      "side": "1695668548342-c0c1ad479aee"
+    },
+    "san-storage": {
+      "hero": "1639066648921-82d4500abf1a",
+      "side": "1484557052118-f32bd25b45b5"
+    },
+    "nas-storage": {
+      "hero": "1790746717945-425f6e0c03bd",
+      "side": "1601737487795-dab272f52420"
+    },
+    "veeam-backup": {
+      "hero": "1581725645226-92ad3b4c16d8",
+      "side": "1531492746076-161ca9bcad58"
+    },
+    "disaster-recovery-draas": {
+      "hero": "1613820070607-ef1d3ccc07f9",
+      "side": "1508697014387-db70aad34f4d"
+    },
+    "structured-cabling": {
+      "hero": "1683322499436-f4383dd59f5a",
+      "side": "1544197150-b99a580bb7a8"
+    },
+    "enterprise-wifi": {
+      "hero": "1733810763720-4c83af0668ea",
+      "side": "1750711158632-5273ec9b9b86"
+    }
+  },
+  "services": {
+    "managed-it-services": {
+      "hero": "1662638600476-d563fffbb072",
+      "side": "1603969409447-ba86143a03f6"
+    },
+    "annual-maintenance-contract": {
+      "hero": "1604754742629-3e5728249d73",
+      "side": "1581092918056-0c4c3acd3789"
+    },
+    "it-consulting": {
+      "hero": "1542744173-8e7e53415bb0",
+      "side": "1454165804606-c3d57bc86b40"
+    },
+    "project-management": {
+      "hero": "1557804506-669a67965ba0",
+      "side": "1590402494587-44b71d7772f6"
+    },
+    "247-noc-helpdesk": {
+      "hero": "1766066014237-00645c74e9c6",
+      "side": "1598970434795-0c54fe7c0648"
+    },
+    "security-audit-vapt": {
+      "hero": "1510915228340-29c85a43dcfe",
+      "side": "1763128516808-785e80c1dd68"
+    },
+    "it-staffing-resident-engineer": {
+      "hero": "1531482615713-2afd69097998",
+      "side": "1580894908361-967195033215"
+    },
+    "infrastructure-assessment": {
+      "hero": "1584169417032-d34e8d805e8b",
+      "side": "1754548930574-6a995e5eb5a7"
+    },
+    "procurement-licensing": {
+      "hero": "1519389950473-47ba0277781c",
+      "side": "1763872038252-e6c4e0a11067"
+    },
+    "relocation-migration": {
+      "hero": "1549637642-90187f64f420",
+      "side": "1577702312572-5bb9328a9f15"
+    }
+  },
+  "pages": {
+    "/solutions": "1644325349124-d1756b79dd42",
+    "/services": "1522071820081-009f0129c71c",
+    "/clients": "1521791136064-7986c2920216",
+    "/news-events": "1540575467063-178a50c2df87",
+    "/partners": "1600880292089-90a7e086ee0c",
+    "/contact": "1553775282-20af80779df7",
+    "/careers": "1572021335469-31706a17aaef",
+    "/about": "1497366811353-6870744d04b2"
+  }
+}
