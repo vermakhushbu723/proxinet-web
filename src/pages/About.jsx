@@ -8,6 +8,7 @@ import { certifications } from '../data/proof';
 import { Reveal, Stagger, StaggerItem } from '../components/ui';
 import { PageHero, CTABand, FeatureImage, PhotoSection, DarkHead } from '../components/blocks';
 import { img, photos } from '../data/images';
+import AllianceMarquee from '../components/AllianceMarquee';
 
 /* =================== ABOUT =================== */
 export function About() {
@@ -18,6 +19,8 @@ export function About() {
         sub="End-to-end IT infrastructure partner for Delhi NCR, from Noida and New Delhi."
         crumbs={[{ label: 'About' }]}
       />
+
+      <AllianceMarquee />
 
       <section id="overview" className="scroll-mt-24 px-container px-section">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">

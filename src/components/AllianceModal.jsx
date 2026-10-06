@@ -9,8 +9,8 @@ export default function AllianceModal({ alliance, onClose }) {
     <Modal open={!!alliance} onCancel={onClose} footer={null} centered width={520} destroyOnClose>
       {alliance && (
         <div className="pt-2">
-          <div className="flex h-32 items-center justify-center rounded-xl border border-slate-200 bg-white p-4 dark:border-white/10">
-            <img src={alliance.logo} alt={alliance.name} className="max-h-24 max-w-[260px] object-contain" />
+          <div className="flex h-44 items-center justify-center rounded-xl border border-slate-200 bg-white p-4 dark:border-white/10">
+            <img src={alliance.logo} alt={alliance.name} className="max-h-36 max-w-[340px] object-contain" />
           </div>
           <h3 className="mt-5 font-display text-[20px] font-bold text-slate-900 dark:text-white">{alliance.name}</h3>
           <p className="mt-1 font-mono text-[11px] font-semibold uppercase tracking-[0.12em] text-brand-500">{alliance.cat}</p>

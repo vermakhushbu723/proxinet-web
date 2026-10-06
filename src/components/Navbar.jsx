@@ -40,6 +40,8 @@ const solutionMenu = [
       { label: 'AWS', to: sol('cloud', 'aws') },
       { label: 'Microsoft 365', to: sol('cloud', 'microsoft-365') },
       { label: 'Google Cloud', to: sol('cloud', 'google-cloud') },
+      { label: 'Hybrid Cloud', to: sol('cloud', 'hybrid-cloud') },
+      { label: 'Cloud Migration', to: sol('cloud', 'cloud-migration') },
     ],
   },
   {
@@ -69,6 +71,7 @@ const solutionMenu = [
     to: '/solutions/backup-dr',
     items: [
       { label: 'Backup', to: sol('backup-dr', 'veeam-backup') },
+      { label: 'Disaster Recovery', to: sol('backup-dr', 'disaster-recovery-draas') },
     ],
   },
   {

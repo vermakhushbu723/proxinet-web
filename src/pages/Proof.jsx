@@ -206,7 +206,7 @@ export function Partners() {
           <p className="text-[13px] text-slate-400">Click a logo for details</p>
         </div>
 
-        <Stagger className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <Stagger className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {alliances.map((a) => (
             <StaggerItem key={a.name}>
               <button
@@ -215,10 +215,10 @@ export function Partners() {
                 aria-label={`${a.name} details`}
                 className="group flex h-full w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-3 text-left shadow-[0_12px_30px_rgba(15,23,42,0.10)] transition-all duration-300 hover:-translate-y-2 hover:border-brand-300 hover:shadow-[0_22px_45px_rgba(15,23,42,0.18)] dark:border-white/10 dark:bg-ink-900 dark:hover:border-brand-500/40"
               >
-                <span className="flex h-28 items-center justify-center rounded-xl border border-slate-100 bg-white p-4">
+                <span className="flex h-40 items-center justify-center rounded-xl border border-slate-100 bg-white p-4">
                   <img
                     src={a.logo} alt={a.name} loading="lazy"
-                    className="max-h-20 max-w-full object-contain transition-transform duration-300 group-hover:scale-110"
+                    className="max-h-32 max-w-full object-contain transition-transform duration-300 group-hover:scale-110"
                   />
                 </span>
                 <span className="mt-3 block px-1 font-display text-[16px] font-bold leading-snug text-slate-900 transition-colors group-hover:text-brand-600 dark:text-white dark:group-hover:text-brand-400">

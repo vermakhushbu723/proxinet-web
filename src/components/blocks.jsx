@@ -239,8 +239,8 @@ export function ImageTile({ to, src, label, sub }) {
  *  CTA band — the closing block on a page
  * ------------------------------------------------------------------ */
 export function CTABand({
-  title = 'Have an IT requirement? Let’s talk.',
-  sub = 'Tell us what you need — our team replies within two working hours.',
+  title = 'Make Your Business Smarter. More Secure. Ready to Scale.',
+  sub = 'Future-ready Cloud and IT solutions designed around your business.',
   primary = { label: 'Get In Touch', to: '/contact' },
   secondary = null,
 }) {

@@ -94,14 +94,15 @@ export const photos = {
 
 const P = photos;
 
+// Solution family covers — each photo shows the actual thing the practice delivers.
 const familyMap = {
-  cloud: P.earthNight,
-  'cyber-security': P.glowCircuit,
-  'data-center': P.datacenter,
-  'backup-dr': P.hardDisk,
-  network: P.patchPanel,
-  collaboration: P.boardroom,
-  'physical-security': P.cctv,
+  cloud: '1667984390538-3dea7a3fe33d', // cloud computing render
+  'cyber-security': '1618060932014-4deda4932554', // padlock on keyboard keys
+  'data-center': '1564457461758-8ff96e439e83', // data hall with server racks
+  'backup-dr': '1762163516269-3c143e04175c', // storage drive bays
+  network: '1682559736721-c2e77ff4c650', // switch with patched cables
+  collaboration: '1573497161249-42447f9f6706', // meeting room on a video call
+  'physical-security': '1589935447067-5531094415d1', // CCTV cameras on a pole
 };
 
 const solutionMap = {
@@ -131,7 +132,7 @@ const solutionMap = {
   colocation: P.dcEngineer,
   'veeam-backup': P.pcb,
   'cloud-backup': P.dashboardLaptop,
-  'disaster-recovery-draas': P.wiring,
+  'disaster-recovery-draas': '1667372283545-1261fb5c427a', // cloud failover render
   'ransomware-recovery': P.virus,
   'structured-cabling': P.electrician,
   'switching-routing': P.patchPanel,

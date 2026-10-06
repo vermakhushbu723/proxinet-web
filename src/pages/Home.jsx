@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom';
 import { Button } from 'antd';
 import {
   ArrowRightOutlined, CloudOutlined, SafetyOutlined, DatabaseOutlined,
-  CloudDownloadOutlined, WifiOutlined, TeamOutlined, VideoCameraOutlined,
-  ThunderboltFilled, CustomerServiceOutlined, ScanOutlined, ToolOutlined, ClusterOutlined,
+  TeamOutlined, ThunderboltFilled, CustomerServiceOutlined,
 } from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { stats, processSteps } from '../data/company';
@@ -12,25 +11,22 @@ import { solutionFamilies } from '../data/solutions';
 import { partners } from '../data/proof';
 import { Reveal, Stagger, StaggerItem, Counter, SectionHead, ArrowLink, Glow, IconBadge } from '../components/ui';
 import PartnerLogo from '../components/PartnerLogo';
-import AllianceModal from '../components/AllianceModal';
-import { alliances } from '../data/alliances';
+import AllianceMarquee from '../components/AllianceMarquee';
 import { CTABand, PhotoSection, DarkHead, InfoCard, dotList } from '../components/blocks';
 import { img, photos, familyImg } from '../data/images';
 
-const icons = {
-  cloud: <CloudOutlined />, shield: <SafetyOutlined />, server: <DatabaseOutlined />,
-  backup: <CloudDownloadOutlined />, wifi: <WifiOutlined />, team: <TeamOutlined />,
-  camera: <VideoCameraOutlined />,
-};
+// Full-colour icons (Microsoft Fluent colour set) for the hero orbit, keyed by family slug / service key.
+const orbitIcons = import.meta.glob('../assets/orbit/*.svg', { eager: true, import: 'default' });
+const orbitIcon = (key) => orbitIcons[`../assets/orbit/${key}.svg`];
 
 /* ------------------------------------------------------------------ *
  *  Hero orbit — solutions circle a rotating photo, services on an inner ring
  * ------------------------------------------------------------------ */
 const orbitServices = [
-  { to: '/services/managed-it-services', name: 'Managed IT', icon: <ClusterOutlined /> },
-  { to: '/services/247-noc-helpdesk', name: '24×7 NOC', icon: <CustomerServiceOutlined /> },
-  { to: '/services/security-audit-vapt', name: 'VAPT', icon: <ScanOutlined /> },
-  { to: '/services/annual-maintenance-contract', name: 'AMC', icon: <ToolOutlined /> },
+  { to: '/services/managed-it-services', name: 'Managed IT', icon: 'managed' },
+  { to: '/services/247-noc-helpdesk', name: '24×7 NOC', icon: 'noc' },
+  { to: '/services/security-audit-vapt', name: 'VAPT', icon: 'vapt' },
+  { to: '/services/annual-maintenance-contract', name: 'AMC', icon: 'amc' },
 ];
 
 const onRing = (i, total, radius, offset = -90) => {
@@ -71,12 +67,12 @@ function HeroOrbit() {
             >
               <span className={`block animate-[spin_46s_linear_infinite_reverse] ${spin}`}>
                 <span
-                  className={`grid h-11 w-11 place-items-center rounded-2xl border text-lg shadow-lift transition-all duration-500 sm:h-14 sm:w-14 sm:text-2xl ${on
-                    ? 'scale-110 border-brand-500 bg-brand-500 text-white shadow-glow'
-                    : 'border-slate-200 bg-white text-brand-500 hover:border-brand-400 dark:border-white/10 dark:bg-ink-800'
+                  className={`grid h-11 w-11 place-items-center rounded-2xl border-2 bg-white shadow-lift transition-all duration-500 sm:h-14 sm:w-14 ${on
+                    ? 'scale-110 border-brand-500 shadow-glow'
+                    : 'border-slate-200 hover:border-brand-400 dark:border-white/20'
                     }`}
                 >
-                  {icons[f.icon]}
+                  <img src={orbitIcon(f.slug)} alt="" aria-hidden="true" className="h-7 w-7 sm:h-9 sm:w-9" draggable="false" />
                 </span>
               </span>
             </Link>
@@ -93,7 +89,7 @@ function HeroOrbit() {
           >
             <span className={`block animate-[spin_30s_linear_infinite] ${spin}`}>
               <span className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-white/95 px-2.5 py-1 text-[10.5px] font-semibold text-slate-700 shadow-soft backdrop-blur transition-colors hover:border-brand-400 hover:text-brand-600 dark:border-white/10 dark:bg-ink-800/95 dark:text-slate-200 sm:text-[12px]">
-                <span className="text-brand-500">{sv.icon}</span>{sv.name}
+                <img src={orbitIcon(sv.icon)} alt="" aria-hidden="true" className="h-4 w-4 sm:h-5 sm:w-5" draggable="false" />{sv.name}
               </span>
             </span>
           </Link>
@@ -149,11 +145,8 @@ function HeroOrbit() {
 }
 
 export default function Home() {
-  const [alliance, setAlliance] = useState(null);
-
   return (
     <>
-      <AllianceModal alliance={alliance} onClose={() => setAlliance(null)} />
       {/* ── 1. HERO ─────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-slate-200 bg-white dark:border-white/10 dark:bg-ink-900">
 
@@ -434,94 +427,7 @@ export default function Home() {
       </section>
 
       {/* ── 2. PARTNER MARQUEE ──────────────────────────────────── */}
-      <section className="overflow-hidden border-b border-slate-200 bg-gradient-to-r from-white via-slate-50 to-white py-9 dark:border-white/10 dark:from-ink-900 dark:via-slate-900 dark:to-ink-900">
-        <div className="px-container mb-4 flex flex-wrap items-baseline justify-between gap-2">
-          <Link
-            to="/partners"
-            className="font-mono text-[12px] font-semibold uppercase tracking-[0.18em] text-slate-500 transition-colors hover:text-brand-600 dark:text-slate-400 dark:hover:text-brand-400"
-          >
-            Technology alliances →
-          </Link>
-          <span className="text-[12px] text-slate-400">Click a logo for details</span>
-        </div>
-
-        <div className="relative">
-          <div className="px-marquee gap-4">
-            {[...alliances, ...alliances].map((a, i) => (
-              <button
-                type="button"
-                key={i}
-                onClick={() => setAlliance(a)}
-                aria-label={`${a.name} details`}
-                title={a.name}
-                className="
-            cursor-pointer
-            group flex h-[90px] w-[180px] shrink-0
-            items-center justify-center
-            overflow-hidden
-            rounded-2xl
-            border border-slate-200
-            bg-white
-            px-6 py-4
-            shadow-[0_6px_20px_rgba(15,23,42,0.08)]
-            transition-all duration-300
-            hover:-translate-y-1
-            hover:border-blue-300
-            hover:shadow-[0_12px_30px_rgba(37,99,235,0.15)]
-            dark:border-white/10
-            dark:bg-white/[0.05]
-            dark:hover:border-blue-400/40
-            dark:hover:bg-white/[0.08]
-          "
-              >
-                <img
-                  src={a.logo}
-                  alt={a.name}
-                  loading="lazy"
-                  className="
-              block
-              max-h-[58px]
-              max-w-[140px]
-              w-auto
-              object-contain
-              transition-transform
-              duration-300
-              group-hover:scale-110
-            "
-                />
-              </button>
-            ))}
-          </div>
-
-          {/* Left Fade */}
-          <div
-            className="
-        pointer-events-none
-        absolute inset-y-0 left-0 z-10 w-20
-        bg-gradient-to-r
-        from-white
-        via-white/90
-        to-transparent
-        dark:from-ink-900
-        dark:via-ink-900/90
-      "
-          />
-
-          {/* Right Fade */}
-          <div
-            className="
-        pointer-events-none
-        absolute inset-y-0 right-0 z-10 w-20
-        bg-gradient-to-l
-        from-white
-        via-white/90
-        to-transparent
-        dark:from-ink-900
-        dark:via-ink-900/90
-      "
-          />
-        </div>
-      </section>
+      <AllianceMarquee />
 
       {/* ── 3. SOLUTIONS ────────────────────────────────────────── */}
      <section className="border-y border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-ink-800">
