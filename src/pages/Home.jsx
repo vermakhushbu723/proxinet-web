@@ -13,7 +13,7 @@ import { Reveal, Stagger, StaggerItem, Counter, SectionHead, ArrowLink, Glow, Ic
 import PartnerLogo from '../components/PartnerLogo';
 import AllianceMarquee from '../components/AllianceMarquee';
 import { CTABand, PhotoSection, DarkHead, InfoCard, dotList } from '../components/blocks';
-import { img, photos, familyImg } from '../data/images';
+import { img, photos, familyImg, slotImg } from '../data/images';
 
 // Full-colour icons (Microsoft Fluent colour set) for the hero orbit, keyed by family slug / service key.
 const orbitIcons = import.meta.glob('../assets/orbit/*.svg', { eager: true, import: 'default' });
@@ -134,8 +134,11 @@ function HeroOrbit() {
             className="absolute -translate-x-1/2 -translate-y-1/2" style={onRing(i, orbitServices.length, 50, -45)}
           >
             <span className={`block animate-[spin_30s_linear_infinite] ${spin}`}>
-              <span className="flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-white/95 px-2.5 py-1 text-[10.5px] font-semibold text-slate-700 shadow-soft backdrop-blur transition-colors hover:border-brand-400 hover:text-brand-600 dark:border-white/10 dark:bg-ink-800/95 dark:text-slate-200 sm:text-[12px]">
-                <img src={orbitIcon(sv.icon)} alt="" aria-hidden="true" className="h-4 w-4 sm:h-5 sm:w-5" draggable="false" />{sv.name}
+              <span className="group/sv relative grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white shadow-soft transition-all hover:scale-110 hover:border-brand-400 dark:border-white/10 dark:bg-ink-800 sm:h-9 sm:w-9">
+                <img src={orbitIcon(sv.icon)} alt="" aria-hidden="true" className="h-4 w-4 sm:h-5 sm:w-5" draggable="false" />
+                <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-ink-900 px-2 py-0.5 text-[10.5px] font-semibold text-white opacity-0 shadow-lift transition-opacity group-hover/sv:opacity-100">
+                  {sv.name}
+                </span>
               </span>
             </span>
           </Link>
@@ -161,16 +164,16 @@ function HeroOrbit() {
               className="absolute inset-0 h-full w-full object-cover"
             />
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-t from-ink-900/85 via-ink-900/10 to-transparent" aria-hidden="true" />
+          <div className="absolute inset-0 bg-ink-900/55" aria-hidden="true" />
           <AnimatePresence mode="wait">
             <motion.div
               key={current.slug}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.35 }}
-              className="absolute inset-x-2 bottom-[16%] text-center"
+              className="absolute inset-x-[14%] top-1/2 -translate-y-1/2 text-center"
             >
-              <p className="font-display text-[12px] font-semibold leading-tight text-white sm:text-[15px]">{current.name}</p>
-              <p className="mt-0.5 hidden font-mono text-[9px] uppercase tracking-wider text-white/70 sm:block">
+              <p className="font-display text-[10.5px] font-semibold leading-[1.15] text-white [overflow-wrap:anywhere] sm:text-[13px]">{current.name}</p>
+              <p className="mt-0.5 hidden font-mono text-[8.5px] uppercase tracking-wider text-white/70 sm:block">
                 {current.children.length} services
               </p>
             </motion.div>
@@ -179,7 +182,7 @@ function HeroOrbit() {
       </div>
 
       {/* live status pill */}
-      <span className="absolute bottom-[6%] left-0 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-white px-3 py-1 text-[11.5px] font-semibold text-emerald-600 shadow-soft dark:border-white/10 dark:bg-ink-800">
+      <span className="absolute left-0 top-0 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-white px-3 py-1 text-[11.5px] font-semibold text-emerald-600 shadow-soft dark:border-white/10 dark:bg-ink-800">
         <span className="relative flex h-2 w-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
@@ -219,53 +222,16 @@ export default function Home() {
         {/* =========================================================
       RIGHT SIDE HERO IMAGE
   ========================================================= */}
-        <div
-          className="pointer-events-none absolute inset-y-0 right-0 hidden w-[53%] md:block"
-          aria-hidden="true"
-        >
+        {/* Full-width background — data-center aisle (no people or text, so nothing is hidden by the orbit) */}
+        <div className="pointer-events-none absolute inset-0" aria-hidden="true">
           <img
-            src={img(photos.datacenter, 1600)}
+            src={slotImg('home-hero-bg', '1578410169170-021c8c9c1554', 1920)}
             alt=""
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover object-center"
+            fetchpriority="high"
           />
-
-          {/* Left Fade */}
-          <div
-            className="
-        absolute inset-0
-        bg-gradient-to-r
-        from-white
-        via-white/85
-        to-white/20
-        dark:from-ink-900
-        dark:via-ink-900/80
-        dark:to-ink-900/20
-      "
-          />
-
-          {/* Bottom Fade */}
-          <div
-            className="
-        absolute inset-0
-        bg-gradient-to-t
-        from-white/60
-        via-transparent
-        to-transparent
-        dark:from-ink-900/70
-      "
-          />
-
-          {/* Soft Red Glow */}
-          <div
-            className="
-        absolute right-[18%] top-1/2
-        h-72 w-72
-        -translate-y-1/2
-        rounded-full
-        bg-brand-500/10
-        blur-3xl
-      "
-          />
+          {/* readable on the left, photo visible on the right */}
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,#fff_0%,rgba(255,255,255,.94)_36%,rgba(255,255,255,.55)_52%,rgba(255,255,255,0)_68%)] dark:bg-[linear-gradient(90deg,#140d0c_0%,rgba(20,13,12,.94)_36%,rgba(20,13,12,.55)_52%,rgba(20,13,12,0)_68%)]" />
         </div>
 
         {/* =========================================================
@@ -463,7 +429,6 @@ export default function Home() {
         flex
         items-center
         justify-center
-        lg:-mr-8
       "
           >
             <HeroOrbit />
@@ -630,7 +595,6 @@ export default function Home() {
                       </div>
                       <h3 className="font-display text-lg font-bold text-slate-900 dark:text-white">{c.title}</h3>
                       <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{c.text}</p>
-                      <span className="mt-auto pt-3 text-[11px] font-bold uppercase tracking-wider text-slate-400">Hover to know more ↻</span>
                     </div>
 
                     {/* back */}
