@@ -3,8 +3,9 @@
 import pagePhotos from './pagePhotos.json';
 import overrides from './photoOverrides.json';
 
+// Large (hero / full-width) images get higher quality so they stay sharp on big screens.
 export const img = (id, w = 800) =>
-  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=70`;
+  `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=${w >= 1600 ? 85 : 70}`;
 
 export const photos = {
   // infrastructure
@@ -248,7 +249,12 @@ export const familyImg = (slug, w) => img(pick(familyMap, slug, P.datacenter), w
 // points / on cards — so the two never repeat on the same page.
 const sol = pagePhotos.solutions || {};
 const svc = pagePhotos.services || {};
-export const solutionImg = (slug, w) => img(ov(`solution-side:${slug}`, sol[slug]?.side || pick(solutionMap, slug, P.circuitBoard)), w);
+// Hand-picked local card / side images (src/assets/solutions-side/<slug>.jpg) win over the Unsplash ones.
+const localSide = Object.fromEntries(
+  Object.entries(import.meta.glob('../assets/solutions-side/*.jpg', { eager: true, import: 'default' }))
+    .map(([path, url]) => [path.split('/').pop().replace('.jpg', ''), url]),
+);
+export const solutionImg = (slug, w) => localSide[slug] || img(ov(`solution-side:${slug}`, sol[slug]?.side || pick(solutionMap, slug, P.circuitBoard)), w);
 // Hand-picked local hero images (src/assets/solutions/<slug>.jpg) win over the Unsplash ones.
 const localHero = Object.fromEntries(
   Object.entries(import.meta.glob('../assets/solutions/*.jpg', { eager: true, import: 'default' }))
@@ -267,7 +273,7 @@ export const toolImg = (path, w) => img(ov(`tool:${path}`, pick(toolMap, path, P
 
 /** Picks the hero background for any route. Returns null where no photo hero is wanted. */
 export function heroImageFor(pathname) {
-  const W = 1920;
+  const W = 2400;
   const seg = pathname.split('/').filter(Boolean);
   const [a, b, c] = seg;
   if (!a) return null;

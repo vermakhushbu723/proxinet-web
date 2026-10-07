@@ -141,7 +141,7 @@ export const solutionFamilies = [
   },
   {
     slug: 'physical-security',
-    name: 'Surveillance & Physical Security',
+    name: 'Surveillance',
     icon: 'camera',
     tag: 'CCTV · Access Control · Attendance',
     blurb: 'IP surveillance, access control and attendance in one integrated system.',

@@ -5,7 +5,7 @@ export const services = [
     icon: 'setting',
     blurb: 'We take ownership of your entire IT estate — monitoring, patching, helpdesk and reporting.',
     hero: 'Small in-house IT team? We manage the whole infrastructure for you.',
-    deliverables: ['24/7 monitoring and alerting', 'Patch and firmware management', 'A named account engineer', 'Monthly SLA and health report', 'Quarterly infrastructure review', 'Asset and licence lifecycle tracking'],
+    deliverables: ['24/7 monitoring and alerting', 'Patch and firmware management', 'Monthly SLA and health report', 'Quarterly infrastructure review', 'Asset and licence lifecycle tracking'],
     faqs: [
       { q: 'What is the minimum contract term?', a: 'A standard AMC runs for 12 months. For a trial, a three-month pilot engagement is also possible.' },
       { q: 'Do we get an onsite or a remote engineer?', a: 'It depends on the plan — Silver and Gold include scheduled onsite visits, while Bronze is primarily remote.' },

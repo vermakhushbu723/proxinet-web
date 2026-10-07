@@ -27,6 +27,28 @@ export function PageHero({ eyebrow, title, sub, crumbs = [], children, compact =
     );
   }
 
+  // Our own illustrated hero images (logos / diagrams): full-width background that is never cropped —
+  // on desktop the hero takes the picture's own aspect ratio, so the whole image is visible edge to edge.
+  const fullImage = !src.startsWith('https://images.unsplash.com');
+  if (fullImage) {
+    return (
+      <section
+        className={`px-hero-photo relative isolate flex items-center overflow-hidden bg-ink-900 ${compact ? 'pb-12 pt-7 sm:pb-16 sm:pt-9' : 'pb-16 pt-8 sm:pb-24 sm:pt-12 lg:min-h-[440px]'}`}
+      >
+        <motion.img
+          src={src} alt="" aria-hidden="true" fetchpriority="high"
+          initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1 }}
+          className="absolute inset-0 -z-10 h-full w-full object-cover object-center"
+        />
+        {/* keeps the heading readable, lets the picture show clearly on the right */}
+        <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(20,13,12,.92)_0%,rgba(20,13,12,.75)_30%,rgba(20,13,12,.2)_55%,rgba(20,13,12,0)_70%)]" aria-hidden="true" />
+        <div className="px-container relative w-full">
+          <HeroText {...{ eyebrow, title, sub, crumbs, children }} light />
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className={`px-hero-photo relative isolate overflow-hidden bg-ink-900 ${compact ? 'pb-12 pt-7 sm:pb-16 sm:pt-9' : 'pb-16 pt-8 sm:pb-24 sm:pt-12 lg:min-h-[440px]'}`}>
       <motion.img
@@ -34,8 +56,8 @@ export function PageHero({ eyebrow, title, sub, crumbs = [], children, compact =
         initial={{ scale: 1.08 }} animate={{ scale: 1 }} transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
         className="absolute inset-0 -z-10 h-full w-full object-cover"
       />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-900/95 via-ink-900/80 to-ink-900/35" aria-hidden="true" />
-      <div className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-t from-ink-900/60 to-transparent" aria-hidden="true" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-ink-900/90 via-ink-900/60 to-ink-900/5" aria-hidden="true" />
+      <div className="absolute inset-x-0 bottom-0 -z-10 h-20 bg-gradient-to-t from-ink-900/40 to-transparent" aria-hidden="true" />
       <div className="px-container relative">
         <HeroText {...{ eyebrow, title, sub, crumbs, children }} light />
       </div>

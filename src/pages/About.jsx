@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Timeline, Tag } from 'antd';
-import { SafetyCertificateOutlined, LinkedinFilled, ThunderboltFilled } from '@ant-design/icons';
+import { SafetyCertificateOutlined, LinkedinFilled, ThunderboltFilled, EnvironmentOutlined } from '@ant-design/icons';
 import { company, values } from '../data/company';
 import { leadership, milestones } from '../data/people';
 import { certifications } from '../data/proof';
@@ -15,7 +15,7 @@ export function About() {
   return (
     <>
       <PageHero
-        eyebrow="About us" title="An IT partner that designs the system and answers at 2 a.m."
+        eyebrow="About us" title="An IT partner that designs, deploys and supports your infrastructure"
         sub="End-to-end IT infrastructure partner for Delhi NCR, from Noida and New Delhi."
         crumbs={[{ label: 'About' }]}
       />
@@ -25,16 +25,16 @@ export function About() {
       <section id="overview" className="scroll-mt-24 px-container px-section">
         <div className="grid gap-12 lg:grid-cols-[1.2fr_1fr]">
           <Reveal>
-            <h2 className="px-h2 font-extrabold tracking-tight text-slate-900 dark:text-white">What we do</h2>
+            <h2 className="px-h2 font-extrabold tracking-tight text-slate-900 dark:text-white">Who we are</h2>
             <p className="mt-5 text-[1.05rem] sm:text-lg font-normal leading-relaxed text-slate-500 dark:text-slate-400">
-              Our breadth of experience means we can recommend, design, deploy and maintain your IT
-              infrastructure — all four. One accountable partner, so the burden of coordinating between
-              multiple vendors does not land on you.
+              ProXinet Technologies Pvt. Ltd. is a one-stop IT solutions company based in Noida and New Delhi.
+              We work alongside your organisation to add real value to your existing IT infrastructure — from
+              the first design to day-to-day support, with one accountable team.
             </p>
             <p className="mt-4 text-[0.97rem] font-normal leading-relaxed text-slate-500 dark:text-slate-400">
-              Working across manufacturing, IT/ITES, BFSI, pharma, education, legal, retail, construction
-              and hospitality means we understand not just the technology but the compliance and uptime
-              expectations that surround it.
+              We have built and maintained some of the most challenging information systems across manufacturing,
+              IT/ITES, BFSI, pharma, education, legal, retail, construction, hospitality, travel and tourism — and
+              we are known for the quality of our technology, our customer service and our sustainability initiatives.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-2">
               {[
@@ -53,15 +53,35 @@ export function About() {
 
           <Reveal delay={0.1}>
             <FeatureImage src={slotImg('about-feature', photos.officeTeam, 1000)} alt="ProXinet team working together" className="mb-10" />
-            <div className="px-card">
-              <p className="font-display text-[16px] font-bold text-slate-900 dark:text-white">Our offices</p>
-              <div className="mt-4 space-y-3">
-                {company.offices.map((o) => (
-                  <div key={o.label}>
-                    <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">{o.label}</p>
-                    <p className="mt-0.5 text-[14px] text-slate-500 dark:text-slate-400">{o.line}</p>
+            {/* Our offices — flips on hover like the Home "Why choose us" cards */}
+            <div className="px-flip group h-[260px]" tabIndex={0}>
+              <div className="px-flip-inner">
+                <div className="px-flip-face flex flex-col justify-center rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.07)] dark:border-white/10 dark:bg-ink-900">
+                  <p className="flex items-center gap-2 font-display text-[18px] font-bold text-slate-900 dark:text-white">
+                    <EnvironmentOutlined className="text-brand-600 dark:text-brand-300" />Our offices
+                  </p>
+                  <div className="mt-4 space-y-4">
+                    {company.offices.map((o) => (
+                      <div key={o.label}>
+                        <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200">{o.label}</p>
+                        <p className="mt-0.5 text-[14px] leading-relaxed text-slate-500 dark:text-slate-400">{o.line}</p>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                </div>
+                <div className="px-flip-face px-flip-back flex flex-col justify-center rounded-2xl bg-gradient-to-br from-brand-500 via-brand-600 to-brand-800 p-6 text-white shadow-[0_20px_45px_rgba(15,23,42,0.22)]">
+                  <p className="flex items-center gap-2 font-display text-[18px] font-bold">
+                    <EnvironmentOutlined />Our offices
+                  </p>
+                  <div className="mt-4 space-y-4">
+                    {company.offices.map((o) => (
+                      <div key={o.label}>
+                        <p className="font-mono text-[11px] font-bold uppercase tracking-wider text-white/80">{o.label}</p>
+                        <p className="mt-0.5 text-[14px] leading-relaxed text-white">{o.line}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </Reveal>

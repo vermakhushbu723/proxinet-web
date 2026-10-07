@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import { Button, Form, Input, Select, Result, Tag, Upload, Alert } from 'antd';
+import { Button, Form, Input, Select, Result, Upload, Alert } from 'antd';
 import {
   PhoneOutlined, MailOutlined, EnvironmentOutlined, WhatsAppOutlined, UploadOutlined,
 } from '@ant-design/icons';
 import { company } from '../data/company';
 import { jobs } from '../data/people';
 import { submitApplication, showSubmitError } from '../api/public';
-import { Reveal, Stagger, StaggerItem, SectionHead, IconBadge } from '../components/ui';
+import { Reveal, SectionHead, IconBadge } from '../components/ui';
 import { PageHero, LeadForm, TickList } from '../components/blocks';
 
 /* =================== CONTACT =================== */
@@ -96,44 +96,14 @@ export function Careers() {
   return (
     <>
       <PageHero
-        eyebrow="Careers" title="People who solve the problem, even at 2 a.m."
-        sub="Grow with us — these roles are open now."
+        eyebrow="Careers" title="Grow your IT career with us"
+        sub="Grow with us — send your resume and our team will get in touch."
         crumbs={[{ label: 'Careers' }]}
       />
 
-      <section className="px-container px-section">
-        <SectionHead eyebrow="Open positions" title={`${jobs.length} roles currently open`} />
-        <Stagger className="mt-9 space-y-4">
-          {jobs.map((j) => (
-            <StaggerItem key={j.slug}>
-              <div className="px-card px-card-hover">
-                <div className="flex flex-wrap items-start justify-between gap-4">
-                  <div className="min-w-0">
-                    <h3 className="font-display text-[18px] font-semibold text-slate-900 dark:text-white">{j.title}</h3>
-                    <div className="mt-2 flex flex-wrap gap-1.5">
-                      <Tag color="red">{j.dept}</Tag>
-                      <Tag>{j.loc}</Tag>
-                      <Tag>{j.type}</Tag>
-                      <Tag>{j.exp}</Tag>
-                    </div>
-                    <p className="px-body mt-3">{j.desc}</p>
-                    <div className="mt-3 flex flex-wrap gap-1.5">
-                      {j.skills.map((s) => (
-                        <span key={s} className="rounded-md bg-slate-100 px-2 py-0.5 text-[12px] text-slate-600 dark:bg-white/5 dark:text-slate-300">{s}</span>
-                      ))}
-                    </div>
-                  </div>
-                  <a href="#apply"><Button type="primary">Apply</Button></a>
-                </div>
-              </div>
-            </StaggerItem>
-          ))}
-        </Stagger>
-      </section>
-
       <section id="apply" className="px-container px-section">
         <div className="mx-auto max-w-2xl">
-          <SectionHead eyebrow="Apply" title="Send us your resume" sub="Send it even if no role matches right now — we keep it in our talent database." center />
+          <SectionHead eyebrow="Apply" title="Send us your resume" sub="Fill in your details and attach your resume — we keep every profile in our talent database." center />
           <Reveal className="mt-8">
             {applied ? (
               <Result
@@ -142,7 +112,19 @@ export function Careers() {
                 extra={<Link to="/"><Button type="primary">Back to home</Button></Link>}
               />
             ) : (
-              <div className="px-card">
+              <div className="relative">
+                {/* soft brand glow behind the card */}
+                <div className="absolute -inset-3 rounded-[32px] bg-gradient-to-br from-brand-500/25 via-orange-400/10 to-blue-500/20 blur-2xl" aria-hidden="true" />
+                <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.16)] dark:border-white/10 dark:bg-ink-900 dark:shadow-[0_24px_60px_rgba(0,0,0,0.5)]">
+                  <div className="h-1.5 bg-gradient-to-r from-brand-600 via-orange-500 to-amber-400" aria-hidden="true" />
+                  <div className="flex items-center gap-3 border-b border-slate-100 px-6 py-5 sm:px-9 dark:border-white/10">
+                    <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-lg text-brand-600 dark:bg-brand-500/10 dark:text-brand-300">✦</span>
+                    <div>
+                      <p className="font-display text-[17px] font-bold text-slate-900 dark:text-white">Application form</p>
+                      <p className="text-[13px] text-slate-500 dark:text-slate-400">Takes about 2 minutes · All fields marked are required</p>
+                    </div>
+                  </div>
+                  <div className="px-apply-form p-6 sm:p-9">
                 <Form
                   form={form} layout="vertical" requiredMark={false}
                   onFinish={async (v) => {
@@ -190,8 +172,10 @@ export function Careers() {
                   <Form.Item name="message" label="Cover note (optional)">
                     <Input.TextArea rows={3} placeholder="Why are you a good fit for this role?" />
                   </Form.Item>
-                  <Button type="primary" size="large" htmlType="submit" block loading={saving}>Submit application</Button>
+                  <Button type="primary" size="large" htmlType="submit" block loading={saving} className="!h-12 !rounded-xl !text-[15px] !font-semibold !shadow-[0_10px_24px_rgba(214,43,31,0.28)]">Submit application</Button>
                 </Form>
+                  </div>
+                </div>
               </div>
             )}
           </Reveal>

@@ -158,3 +158,10 @@ a { color: inherit; text-decoration: none; }
 .px-flip-face { position: absolute; inset: 0; -webkit-backface-visibility: hidden; backface-visibility: hidden; }
 .px-flip-back { transform: rotateY(180deg); }
 @media (prefers-reduced-motion: reduce) { .px-flip-inner { transition: none; } }
+
+/* --- careers application form --- */
+.px-apply-form .ant-form-item-label > label { font-weight: 600; color: rgb(30 41 59); }
+.dark .px-apply-form .ant-form-item-label > label { color: rgb(226 232 240); }
+.px-apply-form .ant-input, .px-apply-form .ant-select-selector, .px-apply-form .ant-upload-wrapper .ant-btn { border-radius: 12px !important; }
+.px-apply-form .ant-input-lg, .px-apply-form .ant-select-lg .ant-select-selector { background: rgb(248 250 252); }
+.dark .px-apply-form .ant-input-lg, .dark .px-apply-form .ant-select-lg .ant-select-selector { background: rgba(255,255,255,.04); }

@@ -25,43 +25,43 @@ const whyCards = [
     title: 'Experienced IT Team', icon: <TeamOutlined />,
     text: 'Skilled professionals handling infrastructure, cloud, security, networking and managed IT services.',
     points: ['OEM-certified engineers', 'Background-verified staff', '15+ years of delivery'],
-    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-400',
-    back: 'from-brand-600 to-orange-500',
+    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
+    back: 'from-brand-500 via-brand-600 to-brand-800',
   },
   {
     title: 'End-to-End Solutions', icon: <CloudOutlined />,
     text: 'Cloud, cybersecurity, data center, backup and network solutions under one accountable partner.',
     points: ['One partner, one contract', 'Design to support', 'No vendor juggling'],
-    tone: 'bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400',
-    back: 'from-blue-600 to-cyan-500',
+    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
+    back: 'from-brand-500 via-brand-600 to-brand-800',
   },
   {
     title: 'Security First', icon: <SafetyOutlined />,
     text: 'Protecting endpoints, networks, cloud environments and critical business data with security-focused solutions.',
     points: ['EDR, firewall & email security', 'Audit-ready controls', 'ISO 27001 practices'],
-    tone: 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400',
-    back: 'from-emerald-600 to-teal-500',
+    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
+    back: 'from-brand-500 via-brand-600 to-brand-800',
   },
   {
     title: 'Fast Deployment', icon: <ThunderboltFilled />,
     text: 'Structured implementation with planned migrations, testing, documentation and smooth handover.',
     points: ['Planned change windows', 'Tested before go-live', 'Full documentation'],
-    tone: 'bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400',
-    back: 'from-violet-600 to-fuchsia-500',
+    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
+    back: 'from-brand-500 via-brand-600 to-brand-800',
   },
   {
     title: '24×7 Support', icon: <CustomerServiceOutlined />,
     text: 'Continuous monitoring and support to keep your business-critical IT environment running.',
     points: ['Round-the-clock NOC', 'SLA-backed response', 'Monthly health reports'],
-    tone: 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400',
-    back: 'from-amber-500 to-orange-600',
+    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
+    back: 'from-brand-500 via-brand-600 to-brand-800',
   },
   {
     title: 'Scalable Infrastructure', icon: <DatabaseOutlined />,
     text: 'Flexible infrastructure designed to grow with your business and changing technology requirements.',
     points: ['Grows with your users', 'Cloud & on-prem ready', 'Future-proof design'],
-    tone: 'bg-sky-50 text-sky-600 dark:bg-sky-500/10 dark:text-sky-400',
-    back: 'from-sky-600 to-indigo-600',
+    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
+    back: 'from-brand-500 via-brand-600 to-brand-800',
   },
 ];
 
@@ -95,30 +95,30 @@ function HeroOrbit() {
 
   return (
     <div
-      className="relative mx-auto aspect-square w-full max-w-[400px] select-none"
+      className="relative mx-auto aspect-square w-full max-w-[480px] select-none"
       onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}
     >
       {/* soft glow behind everything */}
       <div className="absolute inset-[12%] rounded-full bg-brand-500/20 blur-3xl" aria-hidden="true" />
 
       {/* outer ring — solutions */}
-      <div className={`absolute inset-[4%] animate-[spin_46s_linear_infinite] rounded-full border border-dashed border-brand-300/70 dark:border-brand-500/40 ${spin}`}>
+      <div className={`absolute inset-[5%] animate-[spin_46s_linear_infinite] rounded-full border border-dashed border-brand-300/70 dark:border-brand-500/40 ${spin}`}>
         {solutionFamilies.map((f, i) => {
           const on = i === active;
           return (
             <Link
               key={f.slug} to={`/solutions/${f.slug}`} aria-label={f.name}
               onMouseEnter={() => setActive(i)} onFocus={() => setActive(i)}
-              className="absolute -translate-x-1/2 -translate-y-1/2" style={onRing(i, solutionFamilies.length, 50)}
+              className="absolute w-max -translate-x-1/2 -translate-y-1/2" style={onRing(i, solutionFamilies.length, 50)}
             >
               <span className={`block animate-[spin_46s_linear_infinite_reverse] ${spin}`}>
                 <span
-                  className={`grid h-11 w-11 place-items-center rounded-2xl border-2 bg-white shadow-lift transition-all duration-500 sm:h-14 sm:w-14 ${on
+                  className={`grid h-10 w-10 place-items-center rounded-xl border-2 bg-white shadow-lift transition-all duration-500 sm:h-12 sm:w-12 ${on
                     ? 'scale-110 border-brand-500 shadow-glow'
                     : 'border-slate-200 hover:border-brand-400 dark:border-white/20'
                     }`}
                 >
-                  <img src={orbitIcon(f.slug)} alt="" aria-hidden="true" className="h-7 w-7 sm:h-9 sm:w-9" draggable="false" />
+                  <img src={orbitIcon(f.slug)} alt="" aria-hidden="true" className="h-6 w-6 sm:h-7 sm:w-7" draggable="false" />
                 </span>
               </span>
             </Link>
@@ -127,18 +127,15 @@ function HeroOrbit() {
       </div>
 
       {/* inner ring — services, turning the other way */}
-      <div className={`absolute inset-[21%] animate-[spin_30s_linear_infinite_reverse] rounded-full border border-slate-300/70 dark:border-white/15 ${spin}`}>
+      <div className={`absolute inset-[21.5%] animate-[spin_30s_linear_infinite_reverse] rounded-full border border-slate-300/70 dark:border-white/15 ${spin}`}>
         {orbitServices.map((sv, i) => (
           <Link
             key={sv.to} to={sv.to} aria-label={sv.name}
-            className="absolute -translate-x-1/2 -translate-y-1/2" style={onRing(i, orbitServices.length, 50, -45)}
+            className="absolute w-max -translate-x-1/2 -translate-y-1/2" style={onRing(i, orbitServices.length, 50, -45)}
           >
             <span className={`block animate-[spin_30s_linear_infinite] ${spin}`}>
-              <span className="group/sv relative grid h-8 w-8 place-items-center rounded-full border border-slate-200 bg-white shadow-soft transition-all hover:scale-110 hover:border-brand-400 dark:border-white/10 dark:bg-ink-800 sm:h-9 sm:w-9">
-                <img src={orbitIcon(sv.icon)} alt="" aria-hidden="true" className="h-4 w-4 sm:h-5 sm:w-5" draggable="false" />
-                <span className="pointer-events-none absolute left-1/2 top-full z-20 mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-md bg-ink-900 px-2 py-0.5 text-[10.5px] font-semibold text-white opacity-0 shadow-lift transition-opacity group-hover/sv:opacity-100">
-                  {sv.name}
-                </span>
+              <span className="flex w-max items-center gap-1 whitespace-nowrap rounded-full border border-slate-200 bg-white px-2 py-0.5 text-[9.5px] font-semibold text-slate-700 shadow-soft transition-colors hover:border-brand-400 hover:text-brand-600 dark:border-white/10 dark:bg-ink-800 dark:text-slate-200 sm:px-2.5 sm:py-1 sm:text-[11px]">
+                <img src={orbitIcon(sv.icon)} alt="" aria-hidden="true" className="h-3.5 w-3.5 sm:h-4 sm:w-4" draggable="false" />{sv.name}
               </span>
             </span>
           </Link>
@@ -146,7 +143,7 @@ function HeroOrbit() {
       </div>
 
       {/* centre — spinning gradient border around a cross-fading photo */}
-      <div className="absolute inset-[29%]">
+      <div className="absolute inset-[33%]">
         <div
           className={`absolute -inset-[6px] animate-[spin_6s_linear_infinite] rounded-full ${spin}`}
           style={{ background: 'conic-gradient(from 0deg, #d62b1f, #f09b94, transparent 40%, #d62b1f 70%, #971a13)' }}
@@ -182,7 +179,7 @@ function HeroOrbit() {
       </div>
 
       {/* live status pill */}
-      <span className="absolute left-0 top-0 flex items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-white px-3 py-1 text-[11.5px] font-semibold text-emerald-600 shadow-soft dark:border-white/10 dark:bg-ink-800">
+      <span className="absolute left-0 top-0 flex w-max items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200 bg-white px-3 py-1 text-[11.5px] font-semibold text-emerald-600 shadow-soft dark:border-white/10 dark:bg-ink-800">
         <span className="relative flex h-2 w-2">
           <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
@@ -626,7 +623,7 @@ export default function Home() {
           <div className="pointer-events-none absolute -left-32 top-0 h-80 w-80 rounded-full bg-brand-500/20 blur-3xl" />
           <div className="pointer-events-none absolute -right-32 bottom-0 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl" />
 
-          <div className="px-container px-section relative">
+          <div className="px-container px-section relative !pb-14 sm:!pb-16 lg:!pb-20">
 
             {/* ================= HEADER ================= */}
             <div className="-mt-10 max-w-6xl sm:-mt-14">
@@ -662,7 +659,7 @@ export default function Home() {
                 {processSteps.map((s, i) => (
                   <Reveal key={s.n} delay={i * 0.09}>
 
-                    <div className="group relative h-full">
+                    <div className="group relative flex h-full flex-col">
 
                       {/* ================= STEP NUMBER ================= */}
                       <div className="relative z-10 mb-5 flex items-center justify-between">
@@ -698,7 +695,7 @@ export default function Home() {
                       {/* ================= CARD ================= */}
                       <div
                         className="
-                    relative flex h-full flex-col overflow-hidden
+                    relative flex min-h-[340px] flex-1 flex-col overflow-hidden
                     rounded-2xl
                     border border-white/15
                     bg-white/[0.075]
