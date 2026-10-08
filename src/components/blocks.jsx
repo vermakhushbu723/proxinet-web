@@ -84,7 +84,7 @@ function HeroText({ eyebrow, title, sub, crumbs, children, light = false }) {
           </div>
         )}
         <h1 className={`px-h1 max-w-4xl ${light ? 'text-white' : 'text-slate-900 dark:text-white'}`}>{title}</h1>
-        {sub && <p className={`mt-5 line-clamp-2 max-w-2xl text-[1.02rem] leading-relaxed sm:text-lg ${light ? 'text-white/80' : 'text-slate-600 dark:text-slate-300'}`}>{sub}</p>}
+        {sub && <p className={`mt-5 line-clamp-3 max-w-2xl text-[1.02rem] leading-relaxed sm:text-lg ${light ? 'text-white/80' : 'text-slate-600 dark:text-slate-300'}`}>{sub}</p>}
         {children && <div className={`mt-7 ${light ? 'px-hero-actions' : ''}`}>{children}</div>}
       </Reveal>
     </>

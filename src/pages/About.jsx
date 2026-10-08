@@ -16,7 +16,7 @@ export function About() {
     <>
       <PageHero
         eyebrow="About us" title="An IT partner that designs, deploys and supports your infrastructure"
-        sub="End-to-end IT infrastructure partner for Delhi NCR, from Noida and New Delhi."
+        sub="From enterprise cloud architecture and multi-layered cybersecurity to 24/7 proactive data center management—we provide Pan-India delivery backed by engineering excellence."
         crumbs={[{ label: 'About' }]}
       />
 
@@ -104,30 +104,6 @@ export function About() {
           </Stagger>
         </div>
       </PhotoSection>
-
-      {/* vision + social responsibility */}
-      <section className="px-container px-section">
-        <div className="grid gap-6 md:grid-cols-2">
-          {[
-            {
-              id: 'vision', eyebrow: 'Vision', title: 'A sustainable IT environment',
-              text: 'Our aim is to create a sustainable IT environment for our esteemed customers to help them grow and focus on their core business areas.',
-            },
-            {
-              id: 'social-responsibility', eyebrow: 'Social Responsibility', title: 'Committed to our environment',
-              text: 'We are committed to our environment and reduce carbon footprints in products delivered through our partners.',
-            },
-          ].map((b) => (
-            <Reveal key={b.id}>
-              <div id={b.id} className="px-card px-card-hover h-full scroll-mt-24">
-                <div className="px-eyebrow mb-3"><span className="inline-block h-px w-6 bg-brand-400" />{b.eyebrow}</div>
-                <h2 className="font-display text-[1.45rem] font-extrabold tracking-tight text-slate-900 dark:text-white">{b.title}</h2>
-                <p className="mt-3 text-[0.97rem] font-normal leading-relaxed text-slate-500 dark:text-slate-400">{b.text}</p>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
 
       <CTABand />
     </>

@@ -117,13 +117,13 @@ export function Careers() {
                 <div className="absolute -inset-3 rounded-[32px] bg-gradient-to-br from-brand-500/25 via-orange-400/10 to-blue-500/20 blur-2xl" aria-hidden="true" />
                 <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-[0_24px_60px_rgba(15,23,42,0.16)] dark:border-white/10 dark:bg-ink-900 dark:shadow-[0_24px_60px_rgba(0,0,0,0.5)]">
                   <div className="h-1.5 bg-gradient-to-r from-brand-600 via-orange-500 to-amber-400" aria-hidden="true" />
-                  <div className="flex items-center gap-3 border-b border-slate-100 px-6 py-5 sm:px-9 dark:border-white/10">
+                  {/* <div className="flex items-center gap-3 border-b border-slate-100 px-6 py-5 sm:px-9 dark:border-white/10">
                     <span className="grid h-11 w-11 place-items-center rounded-xl bg-brand-50 text-lg text-brand-600 dark:bg-brand-500/10 dark:text-brand-300">✦</span>
                     <div>
                       <p className="font-display text-[17px] font-bold text-slate-900 dark:text-white">Application form</p>
                       <p className="text-[13px] text-slate-500 dark:text-slate-400">Takes about 2 minutes · All fields marked are required</p>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="px-apply-form p-6 sm:p-9">
                 <Form
                   form={form} layout="vertical" requiredMark={false}

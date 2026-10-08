@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from 'antd';
-import {
-  ArrowRightOutlined, CloudOutlined, SafetyOutlined, DatabaseOutlined,
-  TeamOutlined, ThunderboltFilled, CustomerServiceOutlined,
-} from '@ant-design/icons';
+import { ArrowRightOutlined, ThunderboltFilled } from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { stats, processSteps } from '../data/company';
 import { solutionFamilies } from '../data/solutions';
@@ -19,49 +16,45 @@ import { img, photos, familyImg, slotImg } from '../data/images';
 const orbitIcons = import.meta.glob('../assets/orbit/*.svg', { eager: true, import: 'default' });
 const orbitIcon = (key) => orbitIcons[`../assets/orbit/${key}.svg`];
 
-/* Why choose us — flip cards */
+/* Why choose us — flip cards with full-colour icons (Fluent colour set) */
+const whyIcons = import.meta.glob('../assets/why/*.svg', { eager: true, import: 'default' });
+const whyIcon = (key) => whyIcons[`../assets/why/${key}.svg`];
 const whyCards = [
   {
-    title: 'Experienced IT Team', icon: <TeamOutlined />,
+    title: 'Experienced IT Team', icon: 'team',
     text: 'Skilled professionals handling infrastructure, cloud, security, networking and managed IT services.',
     points: ['OEM-certified engineers', 'Background-verified staff', '15+ years of delivery'],
-    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
-    back: 'from-brand-500 via-brand-600 to-brand-800',
+    back: 'from-brand-600 via-red-500 to-orange-500',
   },
   {
-    title: 'End-to-End Solutions', icon: <CloudOutlined />,
+    title: 'End-to-End Solutions', icon: 'solutions',
     text: 'Cloud, cybersecurity, data center, backup and network solutions under one accountable partner.',
     points: ['One partner, one contract', 'Design to support', 'No vendor juggling'],
-    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
-    back: 'from-brand-500 via-brand-600 to-brand-800',
+    back: 'from-brand-600 via-red-500 to-orange-500',
   },
   {
-    title: 'Security First', icon: <SafetyOutlined />,
+    title: 'Security First', icon: 'security',
     text: 'Protecting endpoints, networks, cloud environments and critical business data with security-focused solutions.',
     points: ['EDR, firewall & email security', 'Audit-ready controls', 'ISO 27001 practices'],
-    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
-    back: 'from-brand-500 via-brand-600 to-brand-800',
+    back: 'from-brand-600 via-red-500 to-orange-500',
   },
   {
-    title: 'Fast Deployment', icon: <ThunderboltFilled />,
+    title: 'Fast Deployment', icon: 'deploy',
     text: 'Structured implementation with planned migrations, testing, documentation and smooth handover.',
     points: ['Planned change windows', 'Tested before go-live', 'Full documentation'],
-    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
-    back: 'from-brand-500 via-brand-600 to-brand-800',
+    back: 'from-brand-600 via-red-500 to-orange-500',
   },
   {
-    title: '24×7 Support', icon: <CustomerServiceOutlined />,
+    title: '24×7 Support', icon: 'support',
     text: 'Continuous monitoring and support to keep your business-critical IT environment running.',
     points: ['Round-the-clock NOC', 'SLA-backed response', 'Monthly health reports'],
-    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
-    back: 'from-brand-500 via-brand-600 to-brand-800',
+    back: 'from-brand-600 via-red-500 to-orange-500',
   },
   {
-    title: 'Scalable Infrastructure', icon: <DatabaseOutlined />,
+    title: 'Scalable Infrastructure', icon: 'scale',
     text: 'Flexible infrastructure designed to grow with your business and changing technology requirements.',
     points: ['Grows with your users', 'Cloud & on-prem ready', 'Future-proof design'],
-    tone: 'bg-brand-50 text-brand-600 dark:bg-brand-500/10 dark:text-brand-300',
-    back: 'from-brand-500 via-brand-600 to-brand-800',
+    back: 'from-brand-600 via-red-500 to-orange-500',
   },
 ];
 
@@ -587,16 +580,16 @@ export default function Home() {
 
                     {/* front */}
                     <div className="px-flip-face flex flex-col rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_10px_30px_rgba(15,23,42,0.07)] dark:border-white/10 dark:bg-ink-900">
-                      <div className={`mb-5 flex h-12 w-12 items-center justify-center rounded-xl text-xl ${c.tone}`}>
-                        {c.icon}
+                      <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl border border-slate-100 bg-white shadow-[0_8px_20px_rgba(15,23,42,0.08)] dark:border-white/10 dark:bg-white/95">
+                        <img src={whyIcon(c.icon)} alt="" aria-hidden="true" className="h-9 w-9" draggable="false" />
                       </div>
                       <h3 className="font-display text-lg font-bold text-slate-900 dark:text-white">{c.title}</h3>
                       <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-400">{c.text}</p>
                     </div>
 
                     {/* back */}
-                    <div className={`px-flip-face px-flip-back flex flex-col justify-center rounded-2xl bg-gradient-to-br p-6 text-white shadow-[0_20px_45px_rgba(15,23,42,0.22)] ${c.back}`}>
-                      <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white/20 text-xl">{c.icon}</div>
+                    <div className={`px-flip-face px-flip-back flex flex-col justify-center rounded-2xl bg-gradient-to-r p-6 text-white shadow-[0_20px_45px_rgba(15,23,42,0.22)] ${c.back}`}>
+                      <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-white shadow-lift"><img src={whyIcon(c.icon)} alt="" aria-hidden="true" className="h-8 w-8" draggable="false" /></div>
                       <h3 className="font-display text-lg font-bold">{c.title}</h3>
                       <ul className="mt-3 space-y-1.5 text-[14px] font-medium text-white/90">
                         {c.points.map((pt) => (

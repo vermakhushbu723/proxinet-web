@@ -135,7 +135,6 @@ const megaMenu = [
           { label: 'Overview', to: '/about#overview' },
           { label: 'What We Believe', to: '/about#what-we-believe' },
           { label: 'Vision', to: '/about#vision' },
-          { label: 'Social Responsibility', to: '/about#social-responsibility' },
         ],
       },
     ],
