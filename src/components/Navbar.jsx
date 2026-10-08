@@ -276,6 +276,7 @@ export default function Navbar() {
             </span>
 
 
+            {/* Client Login — hidden for now
             <Link
               to="/portal/login"
               className="flex items-center gap-2 transition-colors hover:text-white"
@@ -283,6 +284,7 @@ export default function Navbar() {
               <LoginOutlined />
               Client Login
             </Link>
+            */}
 
           </div>
 
@@ -699,12 +701,14 @@ export default function Navbar() {
               "
             >
 
+              {/* Client Login — hidden for now
               <Link
                 to="/portal/login"
                 className="block font-display font-semibold"
               >
                 Client Login
               </Link>
+              */}
 
 
               <div className="flex items-center justify-between pt-2">

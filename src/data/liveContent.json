@@ -1,711 +1,813 @@
 {
  "microsoft-azure": {
-  "source": "https://proxinet.in/cloud/",
   "blocks": [
    {
-    "h": "POWER YOUR BUSINESS WITH OUR CLOUD SOLUTIONS",
+    "h": "Microsoft Azure",
     "p": [
-     "The growing demand for 24/7 technology services is placing extra workload on companies and cloud services help to attain and manage these services well in advance.",
-     "A cloud based solution refers to on-demand services, computer networks, storage, applications or resources accessed via Internet. Cloud-based solutions can enable companies to focus on revenue driving initiatives rather than time-consuming, non-core business tasks."
+     "Run, protect and scale your business applications on Microsoft Azure — designed, migrated and managed by our team, with security and cost control built in from day one."
     ],
     "li": []
    },
    {
-    "h": "Virtual Machine",
+    "h": "Compute & virtual desktops",
     "p": [
-     "Server consolidation is a top reason to use VMs. Most operating system and application deployments only use a small amount of the physical resources available when deployed to bare metal. By virtualizing your servers, you can place many virtual servers onto each physical server to improve hardware utilization and reduce cost",
-     "Benefits of virtual machines:"
+     "Right-sized Azure Virtual Machines for your applications, and Azure Virtual Desktop to give hybrid and remote teams a secure Windows desktop from anywhere."
     ],
+    "li": []
+   },
+   {
+    "h": "Storage, backup & DR",
+    "p": [],
     "li": [
-     "Multiple OS environments can exist simultaneously on the same machine, isolated from each other.",
-     "Virtual machine can offer an instruction set architecture that differs from real computer",
-     "Easy maintenance, application provisioning, availability and convenient recovery.",
-     "Reduction of personnel costs, power, and cooling by using less physical equipment.",
-     "Better utilization of hardware Creates independent user environments. Keeping everything separate is especially useful for purposes like software testing.",
-     "Reduced downtime.",
-     "Ease of migration environments – prevents reinstallation and reconfiguration of systems to be migrated."
+     "Azure Blob and Azure Files storage with automatic lifecycle tiering",
+     "Managed Disks for virtual machine workloads",
+     "Azure Backup for servers, VMs, files and databases",
+     "Azure Site Recovery for disaster recovery to the cloud"
     ]
    },
    {
-    "h": "Blob Storage",
-    "p": [
-     "Azure Blob storage is Microsoft’s object storage solution for the cloud. Blob storage is optimized for storing massive amounts of unstructured data.",
-     "Blob storage is designed for:"
-    ],
+    "h": "Identity & security",
+    "p": [],
     "li": [
-     "Serving images or documents directly to a browser.",
-     "Storing files for distributed access.",
-     "Streaming video and audio.",
-     "Writing to log files.",
-     "Storing data for backup and restore, disaster recovery, and archiving",
-     "Storing data for analysis by an on-premises or Azure-hosted service."
+     "Microsoft Entra ID with multi-factor authentication and Conditional Access",
+     "Microsoft Defender for Cloud for posture management and threat protection",
+     "Azure Firewall, network security groups and private endpoints"
     ]
    },
    {
-    "h": "Benefits of blob storage",
-    "p": [
-     "Scalable, durable and available, Secured, Comprehensive data management, Optimised for data, Built-in data security, Built-in data security"
-    ],
-    "li": []
-   },
-   {
-    "h": "Managed Disk",
-    "p": [
-     "Azure managed disks are block-level storage volumes that are managed by Azure and used with Azure Virtual Machines. Managed disks are like a physical disk in an on-premises server but virtualized. With managed disks, all you have to do is specify the disk size, the disk type, and provision the disk. Once you provision the disk, Azure handles the rest."
-    ],
-    "li": []
-   },
-   {
-    "h": "Azure backup",
-    "p": [
-     "The Azure Backup service provides simple, secure, and cost-effective solutions to back up your data and recover it from the Microsoft Azure cloud.",
-     "Data that you can backup includes:",
-     "Files",
-     "Folders",
-     "System states",
-     "App-specific data",
-     "Fileshares",
-     "Machine configurations"
-    ],
-    "li": []
+    "h": "Governance & cost control",
+    "p": [],
+    "li": [
+     "Landing zone design with Azure Policy and role-based access",
+     "Azure Arc to manage on-premise and multi-cloud servers from Azure",
+     "FinOps reviews, reservations and savings plans to keep the monthly bill in check"
+    ]
    }
   ]
  },
  "aws": {
-  "source": "https://proxinet.in/asw/",
   "blocks": [
    {
     "h": "Amazon Web Services (AWS)",
     "p": [
-     "Amazon Web Services (AWS) is Amazon’s cloud web hosting platform that offers flexible, reliable, scalable, easy-to-use, and cost-effective solutions. Today, AWS provides a highly reliable, scalable, low- cost infrastructure platform in the cloud that powers multitude of businesses in 190 countries around the world."
+     "AWS is the world’s most widely used cloud platform. We help you design, migrate and run secure, reliable and cost-efficient workloads on AWS."
     ],
     "li": []
    },
    {
-    "h": "Amazon EC2",
-    "p": [
-     "Amazon Elastic Compute Cloud (Amazon EC2) is a web-based service that allows businesses to run application programs in the Amazon Web Services (AWS) public cloud. Amazon EC2 allows a developer to spin up virtual machines (VMs), which provide compute capacity for IT projects and cloud workloads that run with global AWS data centres."
-    ],
-    "li": []
-   },
-   {
-    "h": "AWS EC2 Benefits",
+    "h": "Compute",
     "p": [],
     "li": [
-     "EC2 reduces the time to boot new servers",
-     "Scaling capacity based on changes to computing requirements",
-     "Complete control of servers",
-     "Flexibility with operating systems",
-     "Built-in security",
-     "Auto-scaling",
-     "Pay-as-you-go",
-     "Increased Reliability",
-     "Elasticity"
+     "Amazon EC2 with Auto Scaling — capacity that follows demand",
+     "Graviton-based instances for better price-performance",
+     "Containers with Amazon ECS / EKS and serverless with AWS Lambda"
     ]
    },
    {
-    "h": "Amazon S3",
-    "p": [
-     "Amazon S3 (Simple Storage Service) is a scalable, high-speed, low-cost web-based service designed for online backup and archiving of data and application programs. It allows to upload, store, and download any type of files up to 5 TB in size."
-    ],
-    "li": []
-   },
-   {
-    "h": "Amazon S3 Features",
+    "h": "Storage",
     "p": [],
     "li": [
-     "Low cost and Easy to Use − Using Amazon S3, the user can store a large amount of data at very low charges.",
-     "Secure − Amazon S3 supports data transfer over SSL and the data gets encrypted automatically once it is uploaded. The user has complete control",
-     "Scalable − Using Amazon S3, there need not be any worry about storage concerns. We can store as much data as we have and access it anytime.",
-     "Higher performance − Amazon S3 is integrated with Amazon CloudFront, that distributes content to the end users with low latency and provides high data transfer speeds without any minimum usage commitments.",
-     "Integrated with AWS services − Amazon S3 integrated with AWS services include Amazon CloudFront, Amazon CLoudWatch, Amazon Kinesis, Amazon RDS, Amazon Route 53, Amazon VPC, AWS Lambda, Amazon EBS, Amazon Dynamo DB, etc"
+     "Amazon S3 with Intelligent-Tiering to cut storage cost automatically",
+     "S3 Object Lock for immutable, ransomware-safe copies",
+     "Amazon EBS and EFS for application and file workloads"
     ]
    },
    {
-    "h": "AWS Backup",
-    "p": [
-     "AWS Backup is a fully managed backup service that makes it easy to centralize and automate the backup of data across AWS services. Using AWS Backup, you can centrally configure backup policies and monitor backup activity for AWS resources, such as Amazon EBS volumes, Amazon EC2 instances, Amazon RDS databases, Amazon DynamoDB tables, Amazon EFS file systems, and AWS Storage Gateway volumes. AWS Backup automates and consolidates backup tasks previously performed service-by-service, removing the need to create custom scripts and manual processes. With just a few clicks in the AWS Backup console, you can create backup policies that automate backup schedules and retention management. AWS Backup provides a fully managed, policy-based backup solution, simplifying your backup management, enabling you to meet your business and regulatory backup compliance requirements."
-    ],
-    "li": []
+    "h": "Backup & resilience",
+    "p": [],
+    "li": [
+     "AWS Backup — central, policy-based backup across EC2, RDS, EBS, EFS and DynamoDB",
+     "AWS Elastic Disaster Recovery for fast failover of on-premise or cloud servers"
+    ]
    },
    {
-    "h": "Benefits",
-    "p": [
-     "Centrally manage backups",
-     "Automate backup processes"
-    ],
-    "li": []
+    "h": "Security & cost governance",
+    "p": [],
+    "li": [
+     "AWS Control Tower multi-account setup with IAM Identity Center",
+     "Amazon GuardDuty and Security Hub for continuous threat detection",
+     "Savings Plans, rightsizing and cost reports to optimise spend"
+    ]
    }
   ]
  },
  "microsoft-365": {
-  "source": "https://proxinet.in/microsoft-365/",
   "blocks": [
    {
     "h": "Microsoft 365",
     "p": [
-     "Proxinet has demonstrated its consistent capability, expertise, and commitment in the design and deployment of Microsoft solutions and gained a Silver partner accreditation.",
-     "Microsoft 365 is the productivity cloud designed to help you pursue your passion and run your business. More than just apps like Word, Excel, PowerPoint, Microsoft 365 brings together best-in-class productivity apps with powerful cloud services, device management, and advanced security in one, connected experience.",
-     "Use professional email and calendaring to reach customers and co-workers wherever work takes you. Store, access, and share files from anywhere with 1 TB of online storage per user. Keep your team on the same page with group chat, online meetings, and calling in Microsoft Teams, the hub for teamwork. Help protect your employees, your data, and your customer information with advanced security and device management.",
-     "All Microsoft 365 and Office 365 services are available with a 99.9% uptime, financially backed service guarantee."
+     "Microsoft 365 brings Word, Excel, PowerPoint, Outlook and Teams together with cloud storage, device management and advanced security — and now AI assistance with Microsoft 365 Copilot. We license, migrate, secure and manage it for you."
     ],
     "li": []
    },
    {
-    "h": "Plans",
-    "p": [
-     "Microsoft SharePoint is a cloud-based service that helps organizations share and manage content, knowledge, and applications to:",
-     "The resources on this page are designed to get you started. Depending on the needs of your organization, you may want to read about migration and governance options before you start rolling SharePoint out to your users. If you’re ready to get started with SharePoint, read about collaboration options and how to create a modern intelligent intranet. As you roll out SharePoint to your organization, remember to train your users to help them get the most out of these tools."
-    ],
+    "h": "Communication & collaboration",
+    "p": [],
     "li": [
-     "Empower teamwork",
-     "Quickly find information",
-     "Seamlessly collaborate across the organization"
+     "Exchange Online — professional email and calendaring",
+     "Microsoft Teams — chat, meetings, calling and Teams Rooms",
+     "SharePoint — intranet, document management and team sites",
+     "OneDrive — 1 TB of cloud storage per user, synced across devices"
     ]
    },
    {
-    "h": "Products for file storage and sharing",
+    "h": "AI productivity with Copilot",
+    "p": [
+     "Microsoft 365 Copilot helps users draft documents, summarise meetings and emails, and analyse data in Excel — working inside your tenant with your existing permissions and security."
+    ],
+    "li": []
+   },
+   {
+    "h": "Security & compliance",
     "p": [],
-    "li": []
+    "li": [
+     "Microsoft Defender for Office 365 against phishing and malware",
+     "Microsoft Entra ID with MFA and Conditional Access",
+     "Microsoft Intune to manage and secure devices",
+     "Microsoft Purview for data loss prevention, sensitivity labels and retention"
+    ]
    },
    {
-    "h": "Work with your files wherever you are",
+    "h": "Licensing & migration",
+    "p": [],
+    "li": [
+     "Choosing the right plan — Business Basic, Standard, Premium or Enterprise E3 / E5",
+     "Migration from on-premise Exchange, Google Workspace or other mail systems",
+     "Tenant setup, hardening and ongoing administration"
+    ]
+   }
+  ]
+ },
+ "google-cloud": {
+  "blocks": [
+   {
+    "h": "Google Workspace & Google Cloud",
     "p": [
-     "OneDrive gives you anywhere access to all your files, seamlessly integrated with Office and pre-installed with Windows. Automatically sync your files to your desktop so you can work with files offline. Access files on Windows, Mac, or mobile devices."
+     "Google Workspace (formerly G Suite) is the cloud productivity suite trusted by millions of businesses, and Google Cloud gives you a secure platform for applications and data analytics. We help you adopt, migrate and manage both."
     ],
     "li": []
    },
    {
-    "h": "Share inside and outside your organization",
-    "p": [
-     "Confidently share your files with OneDrive so others can access them seamlessly and securely, inside and outside your organization. Track the history of all activity on files to keep everyone on the same page. Use SharePoint for managing and sharing files or folders—within team sites or intranet sites, and across your organization."
-    ],
-    "li": []
+    "h": "Google Workspace",
+    "p": [],
+    "li": [
+     "Gmail, Calendar, Meet and Chat for professional communication",
+     "Docs, Sheets and Slides with real-time co-editing",
+     "Shared Drives for secure file storage and sharing",
+     "Gemini AI built in to help write, summarise and organise"
+    ]
    },
    {
-    "h": "Find, co-author, and update files",
+    "h": "Google Cloud Platform",
+    "p": [],
+    "li": [
+     "Compute Engine and Google Kubernetes Engine for applications",
+     "Cloud Storage for scalable, durable data storage",
+     "BigQuery for fast analytics on large data sets"
+    ]
+   },
+   {
+    "h": "Security & control",
+    "p": [],
+    "li": [
+     "2-step verification and single sign-on",
+     "Endpoint management for company and personal devices",
+     "Google Vault for retention and eDiscovery",
+     "Data loss prevention rules for Gmail and Drive"
+    ]
+   },
+   {
+    "h": "Migration & support",
     "p": [
-     "Work on a file, save it directly to OneDrive or SharePoint, and any changes you make are updated seamlessly. Deep integration with Office lets you start co-authoring a document on one device and finish on another, and you can select from a variety of tools to annotate, highlight, and comment on it."
+     "We migrate your email, calendars and files with minimal disruption, handle licensing, and provide ongoing admin and user support."
     ],
     "li": []
    }
   ]
  },
- "google-cloud": {
-  "source": "https://proxinet.in/google-cloud/",
+ "hybrid-cloud": {
   "blocks": [
    {
-    "h": "G suite",
+    "h": "Hybrid Cloud",
     "p": [
-     "Chosen by millions of businesses, from small companies to the Fortune 500."
+     "Most businesses now run a mix of on-premise systems and public cloud. Hybrid cloud connects them into one secure, centrally managed environment — so every workload runs where it performs best and costs least."
     ],
     "li": []
    },
    {
-    "h": "Do your best work, all in one suite.",
+    "h": "What we deliver",
     "p": [],
-    "li": []
+    "li": [
+     "Workload placement strategy — what stays on-premise and what moves to the cloud",
+     "Secure site-to-cloud connectivity with VPN, ExpressRoute or Direct Connect",
+     "One identity and security policy across on-premise and cloud",
+     "Central management with Azure Arc and cloud-native tools",
+     "Cloud backup and disaster recovery for on-premise servers"
+    ]
    },
    {
-    "h": "Work faster, work smarter",
+    "h": "Why hybrid",
+    "p": [],
+    "li": [
+     "Keep sensitive or latency-critical systems close to users",
+     "Use the cloud for burst capacity, backup and new applications",
+     "Get full value from existing hardware while modernising step by step"
+    ]
+   }
+  ]
+ },
+ "cloud-migration": {
+  "blocks": [
+   {
+    "h": "Cloud Migration",
     "p": [
-     "Collaborate on files in real time, quickly find space on everybody’s calendar, and take meetings from anywhere. G Suite has the tools to boost your productivity. Collaborate in real-time. Easily work on documents, spreadsheets, and slides across your devices, with or without internet. Work in a single document with teammates or people outside your company. See edits as others type, communicate through built-in chat, and ask questions in comments. Multiple people can work at the same time, and every change is saved automatically."
+     "We move your servers, applications, databases, email and files to Microsoft Azure, AWS or Google Cloud in planned, low-risk phases — with a rollback plan at every step."
     ],
     "li": []
    },
    {
-    "h": "Store and share files in the cloud.",
-    "p": [
-     "Keep all your work in one place with secure access from your computer, phone, or tablet. Quickly invite others to view, download, and collaborate on any file – no email attachment needed. File updates are automatically saved and stored in Drive, so everyone can always have access to the latest version."
-    ],
-    "li": []
+    "h": "Our approach",
+    "p": [],
+    "li": [
+     "Assess — discover your environment, dependencies and cloud readiness",
+     "Plan — choose rehost, replatform or modernise for each workload, and agree downtime windows",
+     "Migrate — move workloads wave by wave with data integrity checks",
+     "Optimise — right-size, secure and reduce cost after go-live"
+    ]
    },
    {
-    "h": "Secure your data and devices.",
+    "h": "After migration",
     "p": [
-     "Protect your company’s data with security options like 2-step verification and single-sign-on, and use endpoint management to keep your data safe in the case of a lost device or employee turnover. Archive email messages and on-the-record chats, and control how long they are retained. Easily configure security settings from a centralized administration console, and call or email Google support for help 24/7."
+     "Ongoing monitoring, backup, security and cost reviews — so the move to the cloud keeps paying off."
     ],
     "li": []
    }
   ]
  },
  "endpoint-security": {
-  "source": "https://proxinet.in/security-soluction/",
   "blocks": [
    {
-    "h": "Security Solution",
+    "h": "End Point Solutions",
     "p": [
-     "Endpoints are a primary target for cyber attackers. As the consequences and resulting damage of successful attacks grow, many companies try to bolster their overall defense by adding multiple endpoint protection products. Unfortunately, this approach weakens an organization’s security posture."
+     "Endpoints — laptops, desktops, servers and mobiles — remain the primary target for ransomware and cyber attacks. Traditional antivirus is no longer enough: modern endpoint protection combines next-generation antivirus, EDR / XDR and round-the-clock monitoring on a single, well-managed platform."
+    ],
+    "li": []
+   },
+   {
+    "h": "What we deliver",
+    "p": [],
+    "li": [
+     "Next-generation antivirus with behavioural and AI-based detection",
+     "Endpoint Detection & Response (EDR) with ransomware rollback",
+     "Extended Detection & Response (XDR) across endpoints, email, identity and network",
+     "Managed Detection & Response (MDR) — 24×7 threat monitoring and response",
+     "Patch and vulnerability management for operating systems and applications",
+     "Device control, application control and disk encryption"
+    ]
+   },
+   {
+    "h": "Platforms we work with",
+    "p": [
+     "Microsoft Defender for Endpoint, Sophos Intercept X, Trend Micro Vision One and eScan — chosen to fit your environment and budget. Contact us for a demo."
     ],
     "li": []
    }
   ]
  },
  "email-security": {
-  "source": "https://proxinet.in/email-security/",
   "blocks": [
    {
     "h": "Email Security",
     "p": [
-     "More than 90 percent of targeted attacks begin with a spear phishing email, which means your mail server security is more important than ever. Unfortunately, most mail server security solutions, including the limited set of built-in protections in Microsoft® Exchange™ 2013 and 2016, rely on pattern file updates, which only detect traditional malware. They don’t include specific protections to detect malicious URLs or document exploits commonly used in targeted attacks or advanced persistent threats"
+     "More than 90% of cyber attacks still start with an email — and today’s phishing uses AI-written messages, QR codes and business email compromise to get past basic filters. Protecting your mailboxes needs more than signature-based scanning."
     ],
     "li": []
    },
    {
-    "h": "Protect Your Email Servers 24/7",
-    "p": [
-     "Check email and attachments for viruses, worms, trojans, and other malware. Real-time, cloud-based file and sender reputation from McAfee Global Threat Intelligence protects against known and emerging threats."
-    ],
-    "li": []
-   },
-   {
-    "h": "Enforce Compliance",
-    "p": [
-     "Filter messages based on size, message content, or attachment content. Block or quarantine messages that contain specific words or phrases in the subject line, message body, or attachments."
-    ],
-    "li": []
-   },
-   {
-    "h": "Implement Data Leak Prevention and Content Scanning",
-    "p": [
-     "Use prebuilt dictionaries that cover most enterprise- and country-specific compliance rules, or customize filters to prevent data leaks. Create global rules, adding exceptions as needed."
-    ],
-    "li": []
-   },
-   {
-    "h": "Robust quarantine management",
-    "p": [
-     "In case messages are quarantined, users receive emails via which they can handle the message management themselves. In addition, administrators can have summary reports sent to them on a regular basis. However, if ever someone is waiting for an email message, an administrator can easily decide to delete or release messages from a central quarantine"
-    ],
-    "li": []
-   }
-  ]
- },
- "ssl-vpn": {
-  "source": "https://proxinet.in/ssl-and-vpn/",
-  "blocks": [
-   {
-    "h": "",
-    "p": [
-     "An SSL VPN is a type of virtual private network (VPN) that uses the Secure Sockets Layer (SSL) protocol — or, more often, its successor, the Transport Layer Security (TLS) protocol — in standard web browsers to provide secure, remote-access VPN capability. SSL VPN enables devices with an internet connection to establish a secure remote-access VPN connection with a web browser. An SSL VPN connection uses end-to-end encryption (E2EE) to protect data transmitted between the endpoint device client software and the SSL VPN server through which the client connects securely to the internet."
-    ],
-    "li": []
-   },
-   {
-    "h": "Enterprises use SSL VPNs for two main reasons:",
-    "p": [
-     "Moreover, SSL VPNs are easy to implement and don’t require installing and maintaining specific client software – just a modern browser! These types of VPNs are also known for their reliable connections. They provide a higher level of client platform compatibility as well as configurations for firewalls and remote networks.",
-     "They facilitate access to protected network resources remotely by using an authenticated pathway which encrypts all network traffic from end-to-end. This makes it appear as if the user is on the internal network, regardless of their actual geographic location.",
-     "SSL VPNs are critical to keeping employees connected to the work applications they need—and for IT to ensure that only authorized users gain access. SSL VPNs provide a secure way for your workforce, contractors, and partners worldwide to gain access to sensitive information from virtually any computer or device. Furthermore, they give IT full, granular control over data access. SSL VPNs are becoming more common in the workplace, and the learning curve to implement and use them is minimal.",
-     "SSL VPN servers can also be configured to enable more precise access control because they build tunnels to specific applications rather than to an entire enterprise network. That means users on SSL VPN connections can be restricted to only those applications for which they have been granted, not the whole network."
-    ],
+    "h": "Advanced threat protection",
+    "p": [],
     "li": [
-     "To allow remote employees to gain access to internal corporate resources safely.",
-     "To safeguard the web sessions of users connecting to the Internet from outside the corporate network."
+     "AI-based detection of phishing, impersonation and business email compromise",
+     "Link rewriting and time-of-click URL checks, including QR codes",
+     "Attachment sandboxing to catch zero-day malware"
+    ]
+   },
+   {
+    "h": "Email authentication",
+    "p": [
+     "SPF, DKIM and DMARC set up and enforced — protecting your domain from spoofing and keeping your mail out of spam, as major mailbox providers now require."
+    ],
+    "li": []
+   },
+   {
+    "h": "Compliance & data protection",
+    "p": [],
+    "li": [
+     "Content filtering and data leak prevention for outgoing mail",
+     "Email encryption for sensitive messages",
+     "Archiving and retention policies"
+    ]
+   },
+   {
+    "h": "Quarantine & awareness",
+    "p": [],
+    "li": [
+     "Self-service quarantine with daily digests for users",
+     "Phishing simulation and security awareness training"
     ]
    }
   ]
  },
+ "ssl-vpn": {
+  "blocks": [
+   {
+    "h": "SSL VPN & Zero Trust Access",
+    "p": [
+     "An SSL VPN uses SSL / TLS encryption to give remote users secure access to company resources over the internet. Today many organisations are moving to Zero Trust Network Access (ZTNA), which verifies every user and device and gives access only to the specific applications they need."
+    ],
+    "li": []
+   },
+   {
+    "h": "Secure remote access",
+    "p": [],
+    "li": [
+     "SSL / TLS VPN with multi-factor authentication for staff, contractors and partners",
+     "Always-on, client-based or browser-based access",
+     "Firmware kept patched — VPN appliances are a frequent attack target"
+    ]
+   },
+   {
+    "h": "Zero Trust Network Access (ZTNA)",
+    "p": [],
+    "li": [
+     "Per-application access instead of opening the whole network",
+     "Access decisions based on identity, device health and location",
+     "No exposed VPN gateway for attackers to scan"
+    ]
+   },
+   {
+    "h": "SASE",
+    "p": [
+     "Secure Access Service Edge combines ZTNA, secure web gateway, cloud app security and SD-WAN in one cloud-delivered service — consistent protection for users in the office, at home or on the move."
+    ],
+    "li": []
+   }
+  ]
+ },
  "data-loss-prevention": {
-  "source": "https://proxinet.in/solutions/data-loss-prevention/",
   "blocks": [
    {
     "h": "Data Loss Prevention",
     "p": [
-     "Data Loss Prevention (DLP) is the practice of detecting and preventing data breaches, exfiltration, or unwanted destruction of sensitive data. Organizations use DLP to protect and secure their data and comply with regulations.",
-     "The DLP term refers to defending organizations against both data loss and data leakage prevention. Data loss refers to an event in which important data is lost to the enterprise, such as in a ransomware attack. Data loss prevention focuses on preventing illicit transfer of data outside organizational boundaries.",
-     "There are myriad techniques in the market today that deliver different types of content inspection. One thing to consider is that while many DLP vendors have developed their own content engines, some employ third-party technology that is not designed for DLP. For example, rather than building pattern matching for credit card numbers, a DLP vendor may license technology from a search engine provider to pattern match credit card numbers. When evaluating DLP solutions, pay close attention to the types of patterns detected by each solution against a real corpus of sensitive data to confirm the accuracy of its content engine.",
-     "As the number of internet-connected devices skyrockets into the billions, data loss prevention is an increasingly important part of any organization’s ability to manage and protect critical and confidential information. Examples of critical and confidential data types include:",
-     "DLP gives you complete visibility and control over your information – wherever it lives and travels – and prevents insiders from exfiltrating sensitive data such as customer records and product designs."
+     "Data Loss Prevention (DLP) detects and stops sensitive data from leaving your organisation — through email, USB drives, cloud apps and now generative AI tools. It is also a key control for complying with India’s Digital Personal Data Protection (DPDP) Act, 2023."
     ],
+    "li": []
+   },
+   {
+    "h": "What we protect",
+    "p": [],
     "li": [
-     "Intellectual Property: source code, product design documents, process documentation, internal price lists",
-     "Corporate Data: Financial documents, strategic planning documents, due diligence research for mergers and acquisitions, employee information",
-     "Customer Data: Social Security numbers, credit card numbers, medical records, financial statements",
-     "Monitors for policy violations and risky user behavior across control points at all times.",
-     "Prevents and deters end users from leaking data with real-time blocking, quarantining and alerts.",
-     "Allows you to respond quickly and efficiently when critical data loss happens with automated incident remediation workflows and one-click Smart Responses.",
-     "Gives you flexibility to fine-tune policies to balance security and end-user productivity."
+     "Intellectual property — source code, designs, process documents and price lists",
+     "Corporate data — financials, strategy documents and employee records",
+     "Personal data — Aadhaar, PAN, card numbers, health and customer records"
+    ]
+   },
+   {
+    "h": "Where we protect it",
+    "p": [],
+    "li": [
+     "Endpoints — USB, printing, clipboard and uploads",
+     "Email and Microsoft 365 / Google Workspace",
+     "Cloud and SaaS applications",
+     "Generative AI tools such as ChatGPT and Copilot"
+    ]
+   },
+   {
+    "h": "How it works",
+    "p": [],
+    "li": [
+     "Data discovery and classification with sensitivity labels",
+     "Real-time blocking, encryption, quarantine and user alerts",
+     "Insider-risk monitoring and incident response workflows",
+     "Policies tuned to balance security with productivity"
     ]
    }
   ]
  },
  "mobile-device-management": {
-  "source": "https://proxinet.in/mobile-device-management/",
   "blocks": [
    {
     "h": "Mobile Device Management",
     "p": [
-     "Mobile device management (MDM) is a type of security software used by an IT department to monitor, manage and secure employees’ mobile devices that are deployed across multiple mobile service providers and across multiple mobile operating systems being used in the organization.",
-     "Mobile device management software is often combined with additional security services and tools such as Mobile Application Management to create a complete mobile device and security Enterprise Mobility Management solution.",
-     "The Gartner research firm defines mobile device management as “a range of products and services that enables organizations to deploy and support corporate applications to mobile devices, such as smartphones and tablets, possibly for personal use — enforcing policies and maintaining the desired level of IT control across multiple platforms.”"
+     "Mobile device management has grown into Unified Endpoint Management (UEM) — one console to secure and manage phones, tablets and laptops across Android, iOS, Windows and macOS, whether company-owned or personal (BYOD)."
     ],
     "li": []
    },
    {
     "h": "Microsoft Intune",
-    "p": [
-     "Simplify modern workplace management and achieve digital transformation with Microsoft Intune. Create the most productive Microsoft 365 environment for users to work on devices and apps they choose, while protecting data.",
-     "In Intune, you manage devices (MDM) using an approach that’s right for you. For organisation-owned devices, you may want full control over the devices, including settings, features, and security. In this approach, devices and users of these devices “enrol” in Intune. Once enrolled, they receive your rules and settings through policies configured in Intune.",
-     "The scope of device management that Microsoft Intune features is huge. You can keep track of all of your employee’s devices, whether company-owned or BYOD, on Windows or Mac, ISO or Android. As an admin, you’ll be able to see the devices enrolled, as well as get an inventory of devices accessing organisation resources. There are a variety of simple ways that let you take charge of safeguarding your company’s (and clients’) assets and data."
-    ],
-    "li": []
-   },
-   {
-    "h": "Benefits of Intune",
     "p": [],
     "li": [
-     "Support your diverse mobile ecosystem",
-     "Achieve IT efficiencies in the cloud",
-     "Protect data with or without device enrollment",
-     "Access our team of deployment experts and get support anytime",
-     "Manage your diverse mobile ecosystem from the cloud",
-     "Cutting edge information protection in Office 365"
+     "Enrol company and personal devices with compliance policies",
+     "App protection for BYOD — company data stays protected without managing the whole phone",
+     "Windows Autopilot for zero-touch laptop deployment",
+     "Conditional Access with Microsoft Entra ID — only healthy devices get in"
     ]
    },
    {
-    "h": "CITRIX",
-    "p": [
-     "With the growing number of Android devices, Citrix is making it easier for you to adopt and manage Android devices in a consistent, secure manner. Regardless of the device manufacturer, this winning combination will save you time and give you greater confidence in meeting compliance requirements—while enhancing user experience and productivity.",
-     "With the deprecation of Android Device Admin APIs over the next several Android releases, you’ll want to act now to develop a seamless transition plan to Android Enterprise."
-    ],
-    "li": []
-   },
-   {
-    "h": "Citrix Endpoint Management and Android Enterprise",
+    "h": "Android & Apple management",
     "p": [],
-    "li": []
+    "li": [
+     "Android Enterprise work profiles and zero-touch enrolment",
+     "Apple Business Manager automated enrolment for iPhone, iPad and Mac"
+    ]
    },
    {
-    "h": "Designed for any use case",
-    "p": [
-     "Whether corporate or employee-owned, Citrix Endpoint Management and Android Enterprise deliver the controls you need to protect your information while enabling user productivity. Citrix Endpoint Management supports each of the Android Enterprise management modes including BYOD (Android work profile) and corporate profiles including COPE, COBO, COSU use cases.",
-     "For BYOD users, Android Enterprise managed by Citrix Endpoint Management users get peace of mind and personal privacy while IT benefits from data security and compliance."
-    ],
-    "li": []
+    "h": "Security & control",
+    "p": [],
+    "li": [
+     "Remote lock and wipe for lost or stolen devices",
+     "Encryption, passcode and OS-update enforcement",
+     "App deployment and inventory reporting"
+    ]
    },
    {
-    "h": "Enhanced security",
+    "h": "Other platforms",
     "p": [
-     "When managed by Citrix Endpoint Management, Android Enterprise provides flexibility in your approach to protecting your company information. Leverage the multiple layers of Android security including hardened security and Google Play Protection, and extend those with Citrix Endpoint Management advanced device and app management controls."
-    ],
-    "li": []
-   },
-   {
-    "h": "Better Android user experience",
-    "p": [
-     "For faster onboarding and enrollment, Citrix Endpoint Management supports the different provisioning options provided by Android Enterprise, including EMM token, zero-touch enrollment, NFC and QR code. In addition to Android Enterprise managed by Citrix Endpoint Management, users get seamless access to their Android business apps through managed Google Play. When combined with Citrix Workspace, users also get access to all other apps including virtual, SaaS and web. Users also get more work done with Citrix mobile productivity including Citrix Secure Mail and Citrix Content Collaboration with integrated workflows."
+     "Citrix Endpoint Management and ManageEngine Endpoint Central, where they fit your environment better."
     ],
     "li": []
    }
   ]
  },
  "web-proxy-filtering": {
-  "source": "https://proxinet.in/proxy-and-content-filters/",
   "blocks": [
    {
     "h": "Proxy and Content Filters",
     "p": [
-     "A proxy server acts as a gateway between you and the internet. It’s an intermediary server separating end users from the websites they browse. Proxy servers provide varying levels of functionality, security, and privacy depending on your use case, needs, or company policy.",
-     "Web content filters can be considered a form of DLP to some extent. They intend to prevent users from sending out sensitive data to other websites, while also filtering out potentially harmful or malicious data or information from a website. They can also prevent access to sites that have content that might be deemed objectionable, unnecessary, or harmful. For example, it is common for organizations to prevent connections to pornographic websites and web torrents. Many organizations ban social media sites on work computers. We have worked with several organizations that also ban access to hacker websites, as they do not want malicious tools downloaded onto their network.",
-     "Similarly, the content filters are the programs that help you filter the content which is acceptable for viewing and accessing. When implemented, a content filter restricts a user from accessing inappropriate Internet sites while allowing access to desired sites. It is the system administrator who decides, what is to be seen and what is to be blocked or prevented."
+     "A proxy server sits between your users and the internet to control and secure web access. Today this is delivered as a Secure Web Gateway (SWG) — on-premise or in the cloud — so users are protected in the office and when working remotely."
     ],
     "li": []
    },
    {
-    "h": "Benefits of Proxy and content filters",
+    "h": "What we deliver",
     "p": [],
     "li": [
-     "To control internet usage of employees",
-     "Bandwidth savings and improved speeds",
-     "Privacy benefits",
-     "Improved security",
-     "Increased Productivity Level:",
-     "Get access to blocked resources",
-     "Prevention of Liability Issues"
+     "Category-based web filtering and safe search",
+     "SSL / TLS inspection to find threats hidden in encrypted traffic",
+     "Malware, phishing and malicious-site protection",
+     "Cloud app control to manage shadow IT and risky SaaS",
+     "Bandwidth control and application prioritisation",
+     "User-level reporting for HR and compliance"
+    ]
+   },
+   {
+    "h": "Benefits",
+    "p": [],
+    "li": [
+     "Control and visibility of internet usage",
+     "Improved security and privacy",
+     "Better bandwidth and productivity",
+     "Reduced legal and liability risk"
     ]
    }
   ]
  },
  "servers": {
-  "source": "https://proxinet.in/storage/",
   "blocks": [
    {
     "h": "Server",
     "p": [
-     "Proxinet with the help of our partners are able to identify the need of our customers and provide them feasible, powerful and cost effective solution. Servers are important part of IT infrastructure and their reliability is an important factor in daily operation of business and its services."
+     "Servers are the backbone of your IT infrastructure, and their reliability drives daily business operations. With our technology partners we size, supply, deploy and support the right servers for your workloads — powerful, energy-efficient and cost-effective."
     ],
     "li": []
    },
    {
-    "h": "Why IT infrastructure modernization matters",
+    "h": "What we deliver",
+    "p": [],
+    "li": [
+     "Rack, tower and blade servers with the latest Intel Xeon and AMD EPYC processors",
+     "NVMe storage, high-speed networking and built-in hardware security",
+     "GPU servers for AI and analytics workloads",
+     "Installation, configuration and migration from old servers",
+     "Warranty, AMC and lifecycle management"
+    ]
+   },
+   {
+    "h": "Why modernise now",
     "p": [
-     "“Building and maintaining up-to-date infrastructure is becoming ever more critical to organizations looking to support next-generation applications, architectures, and digital transformation initiatives,” says Stephen Belanger, senior research analyst at IDC’s Infrastructure Platforms and Technologies group. “IDC’s research outlines the clear value that regular server upgrades can have for organizations looking to achieve higher levels of efficiency and agility.”"
+     "Servers older than 5 years cost more in power, cooling, support and security risk. A planned refresh consolidates workloads onto fewer, faster servers and supports modern virtualization and AI applications."
+    ],
+    "li": []
+   },
+   {
+    "h": "Brands",
+    "p": [
+     "Dell PowerEdge, HPE ProLiant and Lenovo ThinkSystem."
     ],
     "li": []
    }
   ]
  },
  "san-storage": {
-  "source": "https://proxinet.in/san/",
   "blocks": [
    {
     "h": "SAN",
     "p": [
-     "Storage is no longer an afterthought. Too much is at stake. Companies are searching for more ways to efficiently manage expanding volumes of data, and to make that data accessible throughout the enterprise. This demand is propelling the move of storage into the network. Also, the increasing complexity of managing large numbers of storage devices and vast amounts of data is driving greater business value into software and services.",
-     "With current estimates of the amount of data to be managed and made available increasing at 60% each year, this outlook is where a storage area network (SAN) enters the arena. SANs are the leading storage infrastructure for the global economy of today. SANs offer simplified storage management, scalability, flexibility, and availability; and improved data access, movement and backup."
+     "Business data keeps growing year after year, and applications expect it to be fast and always available. A Storage Area Network (SAN) delivers high-performance block storage for databases, ERP and virtualization."
+    ],
+    "li": []
+   },
+   {
+    "h": "What we deliver",
+    "p": [],
+    "li": [
+     "All-flash and NVMe storage arrays",
+     "Fibre Channel, iSCSI and NVMe over Fabrics connectivity",
+     "Snapshots, replication and high availability",
+     "Immutable snapshots for ransomware protection",
+     "Data reduction — deduplication and compression"
+    ]
+   },
+   {
+    "h": "Brands",
+    "p": [
+     "Dell PowerStore, NetApp, HPE Alletra and IBM FlashSystem."
     ],
     "li": []
    }
   ]
  },
  "nas-storage": {
-  "source": "https://proxinet.in/nas/",
   "blocks": [
    {
     "h": "NAS",
     "p": [
-     "Network-attached storage (NAS) is an IP-based file-sharing device attached to a local area network. NAS serves a mix of clients and servers over and IP network. A NAS device uses its own operating system and integrated hardware and software components to meet a variety of file service needs.",
-     "Network-Attached Storage allows organizations to:"
+     "Network-attached storage (NAS) is a dedicated file storage system on your network — the simplest way to give teams shared, secure and centrally managed file access."
     ],
+    "li": []
+   },
+   {
+    "h": "What NAS gives you",
+    "p": [],
     "li": [
-     "Provide comprehensive data access and file sharing",
-     "Increase efficiency with centralized storage",
-     "Gain flexibility to support UNIX and Windows clients",
-     "Simplify management",
-     "Scale storage capacity and performance",
-     "Increase availability with efficient data replication and recovery options",
-     "Secure data with user authentication and file locking"
+     "Shared file access over SMB and NFS for Windows, Mac and Linux",
+     "Centralised storage with simple management",
+     "Snapshots and replication for quick recovery",
+     "Immutable snapshots to protect files from ransomware",
+     "Cloud sync and tiering to keep older data off expensive disks",
+     "User authentication and access control"
     ]
+   },
+   {
+    "h": "Brands",
+    "p": [
+     "Synology, QNAP, NetApp and Dell PowerScale."
+    ],
+    "li": []
    }
   ]
  },
  "veeam-backup": {
-  "source": "https://proxinet.in/veem-and-backup/",
   "blocks": [
    {
-    "h": "Modern Data Protection Built for Modern Business Challenges",
-    "p": [],
-    "li": []
-   },
-   {
-    "h": "What Makes Veeam Cloud Data Management Unique?",
+    "h": "Modern Data Protection & Cyber Resilience",
     "p": [
-     "Veeam® Cloud Data Management™ enables any organization to achieve unparalleled data availability, visibility, automation, and governance across data centers, at the edge and in the cloud. Click on each of the capabilities to learn more about their unique solutions."
+     "Ransomware attacks now target backups first. Modern data protection means immutable, regularly tested backups across your servers, cloud and SaaS applications — so you can always recover."
     ],
     "li": []
    },
    {
-    "h": "“A modern data management platform built for any cloud”",
-    "p": [
-     "Veeam Cloud Data Management Platform is the most complete solution to help our organizations evolve the way they manage data, while ensuring its availability across any application or cloud infrastructure. Click on each of the platform layers to learn more about how they can help."
-    ],
-    "li": []
-   },
-   {
-    "h": "4 Reasons Choose Veeam",
-    "p": [
-     "Veeam provides a single platform for modernizing backup, accelerating hybrid cloud and securing your data. Our platform is open and compliments a broad ecosystem of partners to easily integrate our solution into any customer environment.",
-     "Veeam is software-defined and hardware agnostic providing the ultimate in best-in-class solutions and customer flexibility. We provide simple, flexible and reliable Backup so our customers can go beyond and focus on their business – there’s a reason they like to say “Veeam, it just works”.",
-     "Backup and recovery is a dynamic challenge with ever-changing needs. It’s time to get one step ahead and leave reactive plans in the dust."
-    ],
-    "li": []
-   },
-   {
-    "h": "Commvault",
-    "p": [
-     "Backup and recovery is a dynamic challenge with ever-changing needs. It’s time to get one step ahead and leave reactive plans in the dust."
-    ],
-    "li": []
-   },
-   {
-    "h": "The Commvault Advantage",
+    "h": "The 3-2-1-1-0 rule",
     "p": [],
     "li": [
-     "Hybrid IT control – make your multi-cloud strategy an extension of your data center",
-     "Service delivery automation – automate the complex IT change control processes",
-     "Recovery confidence – gain recovery validation for your diverse IT environment",
-     "Risk reduction – ensure compliance with information governance policies",
-     "Complete enterprise protection – consolidate your tools and turn to a Complete solution"
+     "3 copies of your data",
+     "2 different storage types",
+     "1 copy offsite",
+     "1 copy immutable or offline",
+     "0 errors — verified by automated restore testing"
     ]
    },
    {
-    "h": "veritas",
-    "p": [
-     "Protect your enterprise from the unforeseen. Eliminate the cost and complexity of point products while keeping your data secure, compliant and available—no matter where it lives. Ensure rapid recovery of business-critical data across hybrid physical, virtual and multi-cloud environments while scaling to any size workload"
-    ],
-    "li": []
-   },
-   {
-    "h": "NetBackup delivers a unified, reliable and scalable solution.",
-    "p": [
-     "Migrate data to the cloud. Manage workloads across hybrid/multicloud infrastructures. Maximize resiliency in the cloud and beyond.",
-     "Unified, cloud-native data protection. Integrated business resiliency. More efficiency. See the latest features in NetBackup."
-    ],
+    "h": "Platforms we work with",
+    "p": [],
     "li": [
-     "NetBackup CloudPointTM and NetBackup ResiliencyTM integrations with simplified licensing",
-     "Source-side deduplication directly to object storage from a single storage pool",
-     "Granular recovery for cloud-native assets",
-     "Expanded disaster recovery orchestration across regions within Azure and AzureStack"
+     "Veeam Data Platform",
+     "Commvault Cloud",
+     "Veritas NetBackup (now part of Cohesity)",
+     "Acronis Cyber Protect",
+     "Arcserve"
     ]
    },
    {
-    "h": "Resilience from Ransomware.",
+    "h": "What we protect",
+    "p": [],
+    "li": [
+     "Physical and virtual servers — VMware, Hyper-V, Proxmox and Nutanix",
+     "Microsoft 365 and Google Workspace data",
+     "Databases and applications",
+     "Cloud workloads on Azure and AWS"
+    ]
+   }
+  ]
+ },
+ "disaster-recovery-draas": {
+  "blocks": [
+   {
+    "h": "Disaster Recovery",
     "p": [
-     "Protect. Detect. Recover.",
-     "Ensure data integrity, monitor your environment, and recover at scale to optimize your resilience."
+     "Disaster recovery keeps your business running when systems fail — from hardware failure and power outages to ransomware. We design on-premise, cloud and hybrid DR with defined recovery objectives, so critical applications come back quickly."
     ],
     "li": []
    },
    {
-    "h": "Virtual environments.",
-    "p": [
-     "The most VMs protected, recovered, and moved to the cloud.",
-     "Protect VMware, Microsoft Hyper-V, Nutanix AHV, Red Hat Virtualization, AzureStack and OpenStack with automated protection and instant access to VM data via flexible recovery."
-    ],
-    "li": []
-   },
-   {
-    "h": "Cloud data protection.",
-    "p": [
-     "Manage the cloud more efficiently.",
-     "Resiliency. Migration. Snapshot orchestration. Disaster recovery. Unified, end-to-end deduplication. One solution manages it all."
-    ],
-    "li": []
-   },
-   {
-    "h": "NetBackup Resiliency.",
-    "p": [
-     "At-scale disaster recovery with near-zero RPO and RTO.",
-     "Protect your data with 60+ public cloud storage targets, an automated, SLA-driven resiliency platform, and a new supported integration with NetBackup Protect your enterprise from the unforeseen. Eliminate the cost and complexity of point products while keeping your data secure, compliant and available—no matter where it lives. Ensure rapid recovery of business-critical data across hybrid physical, virtual and multi-cloud environments while scaling to any size workload."
-    ],
-    "li": []
+    "h": "What we deliver",
+    "p": [],
+    "li": [
+     "Replication of servers and data to a secondary site or the cloud",
+     "Defined RPO and RTO for every critical application",
+     "Disaster Recovery as a Service (DRaaS) on Azure or AWS",
+     "Documented runbooks with automated failover and failback",
+     "Clean-room recovery from immutable copies after a ransomware attack",
+     "Regular DR drills and test reports"
+    ]
    }
   ]
  },
  "structured-cabling": {
-  "source": "https://proxinet.in/wired/",
   "blocks": [
    {
     "h": "Wired",
     "p": [
-     "Meet the demands of high-performance networking with resilient, high-density, full-featured solutions",
-     "It’s arguable that nothing has had a greater impact on modern business than the personal computer, and nothing has had a more profound impact on the computer than networking. But networking brings with it security threats which, if mitigated, allow the benefits of communication to outweigh the risks. Risks of poor security to your business network include theft, intrusion and even destruction of digital property."
+     "A fast, secure and reliable wired network is the foundation for everything else — from Wi-Fi and phones to CCTV and cloud applications. We design and deploy campus and branch networks built for today’s speeds and security needs."
     ],
     "li": []
    },
    {
-    "h": "Our Offering",
+    "h": "What we deliver",
+    "p": [],
+    "li": [
+     "Multi-gigabit and PoE+ access switching for Wi-Fi, phones and cameras",
+     "10 / 25 / 100G core and data center switching",
+     "Routing and SD-WAN for branch connectivity",
+     "Network Access Control (802.1X) so only trusted devices connect",
+     "Structured cabling with Cat6A copper and fibre backbone",
+     "Cloud-managed networking with central monitoring"
+    ]
+   },
+   {
+    "h": "Our offering",
     "p": [
-     "Routers",
-     "Switches"
+     "Routers and switches from Cisco, HPE Aruba, Dell, Netgear and Ruckus."
+    ],
+    "li": []
+   }
+  ]
+ },
+ "enterprise-wifi": {
+  "blocks": [
+   {
+    "h": "Wireless",
+    "p": [
+     "Users and devices expect fast, seamless Wi-Fi everywhere. We design enterprise wireless from a proper site survey, using the latest Wi-Fi 6E and Wi-Fi 7 technology for higher speeds, more capacity and lower latency."
+    ],
+    "li": []
+   },
+   {
+    "h": "What we deliver",
+    "p": [],
+    "li": [
+     "Predictive and on-site surveys for coverage and capacity",
+     "Wi-Fi 6E / Wi-Fi 7 access points for offices, campuses and warehouses",
+     "Separate staff, guest and IoT networks with WPA3 security",
+     "Cloud-managed Wi-Fi with monitoring and reporting",
+     "Seamless roaming across floors and buildings"
+    ]
+   },
+   {
+    "h": "Brands",
+    "p": [
+     "Cisco, HPE Aruba, Juniper Mist, Ruckus and Netgear."
     ],
     "li": []
    }
   ]
  },
  "svc:infrastructure-services": {
-  "source": "https://proxinet.in/infrastructure-services/",
   "blocks": [
    {
-    "h": "infrastructure services",
+    "h": "Infrastructure Services",
     "p": [
-     "Helping you manage your IT infrastructure effectively",
-     "A group of services designed to adjust the customer’s IT infrastructure to new, ever-growing business and technical requirements. IT infrastructure services have now grown in importance. They are now expected to help businesses become agile, secure, service-oriented, and capable of delivering unified experiences to end customers.",
-     "Integration services include the launch of new systems on modern platforms, introduction of new functionalities by updating software, migration between systems, and consolidation (or virtualization) of currently used environments.",
-     "We provide you the flexibility to focus on your core business instead of having to handle the day-to-day technology operations and management issues.",
-     "We utilize established processes and effective technology deployment in achieving consistent service delivery matching customer expectations.",
-     "We bring years of experience and in-depth technical expertise in managing IT instalments for small, medium and large size enterprises. We help in designing IT strategy for businesses to complement the long term business goals. Our services cover planning, implementing and supporting the IT installations for enterprises.",
-     "Our Portfolio of Services",
-     "We offer an extensive portfolio of Managed IT infrastructure services that combine flexibility, reliability and responsiveness to deliver tremendous value and efficiency to your business. Our services include:",
-     "Service Desk",
-     "Our Service Desk is all about delivering the right support and top customer experience. Plus, it will help you minimize the costs resulting from forced office downtimes, giving you full cost transparency regarding its operations."
+     "Helping you manage your IT infrastructure effectively. Our managed infrastructure services keep your systems secure, up to date and aligned with your business — so your team can focus on growth instead of day-to-day IT operations."
     ],
+    "li": []
+   },
+   {
+    "h": "Our portfolio of services",
+    "p": [],
     "li": [
-     "Field Support Services",
-     "Application Management Services",
-     "Legacy Platform Transformation Services",
-     "Desktop Virtualization Services",
-     "Enterprise Mobility Management",
-     "Directory Services",
-     "Messaging and Collaboration Services"
+     "Field support and onsite engineers",
+     "Application management services",
+     "Legacy platform modernisation",
+     "Desktop and application virtualization",
+     "Endpoint and mobility management",
+     "Identity and directory services — Active Directory and Microsoft Entra ID",
+     "Messaging and collaboration — Microsoft 365 and Google Workspace"
     ]
+   },
+   {
+    "h": "Service Desk",
+    "p": [
+     "A single point of contact for every IT issue, with SLA-backed response, ITIL-based processes, full ticket visibility and transparent costs."
+    ],
+    "li": []
    }
   ]
  },
  "svc:data-center-services": {
-  "source": "https://proxinet.in/data-center-services/",
   "blocks": [
    {
     "h": "Data Center Services",
     "p": [
-     "Our data center experts are ready to make your data center operational capabilities meet with your business needs, close any data center operational gaps, improve your data center efficiency by automating various routine processes in your data center, such as data center scheduling and monitoring, application delivery.",
-     "Our services include:"
+     "Our data center experts keep your servers, storage and virtualization running at their best — closing operational gaps, automating routine tasks and preventing unplanned downtime."
     ],
+    "li": []
+   },
+   {
+    "h": "Our services include",
+    "p": [],
     "li": [
-     "Ongoing monitoring of Windows and computer systems to ensure they perform properly and avoid unplanned downtimes.",
-     "Monitoring of data center operations and predicting or quickly addressing any arising issues to avoid business interruptions due to unexpected downtimes.",
-     "Data Centre Transformation and Managed Services",
-     "Data Center Consolidation and Optimization Services",
-     "Data Center Security Services",
-     "Workload Migration Services",
-     "Core Infrastructure Transformation Services",
-     "Open Compute Services",
-     "Data Center Migration"
+     "24×7 monitoring of servers, storage and virtualization platforms",
+     "Proactive issue detection and incident response",
+     "Data center consolidation and optimisation",
+     "Virtualization platform migration — including moves away from VMware to Hyper-V, Proxmox or Nutanix",
+     "Data center security and compliance",
+     "Workload migration to and from the cloud",
+     "Data center relocation and migration"
     ]
    }
   ]
  },
  "svc:network-services": {
-  "source": "https://proxinet.in/network-services/",
   "blocks": [
    {
     "h": "Network Services",
     "p": [
-     "We offers a package of various functionalities in the field of network managed services and network security selected according to the needs and requirements of the customer. The main aim is to relieve the customer of any activities related to the management and administration of data networks.",
-     "Our services include:"
+     "We take care of your network end to end — design, deployment, monitoring and security — relieving you of the day-to-day work of running your data networks."
     ],
+    "li": []
+   },
+   {
+    "h": "Our services include",
+    "p": [],
     "li": [
-     "Network Optimization Services",
-     "Campus Network Services",
-     "Software defined Network Services",
-     "Network Security Services",
-     "Unified Communication and Collaboration Services Security Assessment.",
-     "Failover Network Solutions design, development and implementation.",
-     "Failover Network Configuration.",
-     "Failover Internet Access Configuration.",
-     "Failover Remote Access Configuration.",
-     "Unauthorized Network Access protection."
+     "Network monitoring and optimisation",
+     "Campus LAN and Wi-Fi services",
+     "SD-WAN for multi-branch connectivity",
+     "Network security — firewalls, NAC and segmentation",
+     "Unified communication and collaboration",
+     "Security assessment and audits",
+     "Failover design for internet links and remote access"
     ]
    }
   ]
  },
  "svc:cloud-services": {
-  "source": "https://proxinet.in/cloud-services/",
   "blocks": [
    {
     "h": "Cloud Services",
     "p": [
-     "Cloud Computing Consulting Services",
-     "Our team delivers highly-effective and reliable cloud computing services that provide organizations with a competitive edge.",
-     "We assist customers with our on-demand delivery of computing services, tools and applications such as servers, storage, databases, networking and software among others.",
-     "By enabling organizations for cloud adoption, we help them become more agile and responsive to the changing market landscape, thus supporting them in the right decision-making and maximizing their Return on Investment.",
-     "We take a strategic approach to implementing cloud consulting services. Our methodology involves a four-step process:",
-     "Our Portfolio of Cloud Computing Services",
-     "Partnerships",
-     "Our expertise and experience in dealing with the leading public cloud platforms make us a perfect choice for your business:"
+     "We help organisations adopt and run the cloud with confidence — becoming more agile, more secure and getting the best return on their investment."
     ],
+    "li": []
+   },
+   {
+    "h": "Our approach",
+    "p": [],
     "li": [
      "Assessment",
      "Planning",
      "Deployment",
-     "Optimization",
-     "Strategy and Consulting Service",
-     "Maintenance and Security Service",
-     "Migration Services · Monitoring Services",
-     "Managed Services",
-     "Network Services"
+     "Optimisation"
     ]
+   },
+   {
+    "h": "Our portfolio of cloud services",
+    "p": [],
+    "li": [
+     "Cloud strategy and consulting",
+     "Migration services",
+     "Managed cloud and monitoring",
+     "Cloud security and compliance",
+     "Backup and disaster recovery in the cloud",
+     "Cost optimisation (FinOps)"
+    ]
+   },
+   {
+    "h": "Partnerships",
+    "p": [
+     "Microsoft Azure, Amazon Web Services and Google Cloud."
+    ],
+    "li": []
    }
   ]
  }

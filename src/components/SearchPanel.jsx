@@ -23,7 +23,8 @@ export const searchIndex = [
   { t: 'AMC Plan Selector', d: 'Find the right plan for you', to: '/tools/amc-plan-selector', kind: 'Tool' },
   { t: 'Contact / Get A Quote', d: 'Send your requirement to our team', to: '/contact', kind: 'Page' },
   { t: 'Careers', d: 'Open positions and talent database', to: '/careers', kind: 'Page' },
-  { t: 'Client Portal', d: 'Tickets, assets, SLA reports', to: '/portal/login', kind: 'Page' },
+  // Client Portal — hidden for now
+  // { t: 'Client Portal', d: 'Tickets, assets, SLA reports', to: '/portal/login', kind: 'Page' },
   { t: 'Procurement Pack', d: 'Vendor onboarding documents', to: '/procurement', kind: 'Page' },
 ];
 

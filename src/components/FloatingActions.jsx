@@ -26,7 +26,9 @@ const answer = (q) => {
   if (s.includes('azure') || s.includes('cloud') || s.includes('migrat'))
     return { text: 'We migrate in waves — dependency mapping, a pilot, then the bulk move, always with a rollback plan. You can estimate the monthly cost up front.', cta: { label: 'Cloud Cost Calculator', to: '/tools/cloud-cost-calculator' } };
   if (s.includes('ticket') || s.includes('support') || s.includes('issue'))
-    return { text: 'If you are an existing client, raise it in the portal — the SLA timer starts immediately. If you are new, the contact form is the best route.', cta: { label: 'Client Portal', to: '/portal/login' } };
+    // Client Portal suggestion — hidden for now
+    // return { text: 'If you are an existing client, raise it in the portal — the SLA timer starts immediately. If you are new, the contact form is the best route.', cta: { label: 'Client Portal', to: '/portal/login' } };
+    return { text: 'Raise it with our support team — call, WhatsApp or use the contact form and the SLA timer starts immediately.', cta: { label: 'Contact Support', to: '/contact' } };
   if (s.includes('backup') || s.includes('veeam') || s.includes('restore'))
     return { text: 'We follow the 3-2-1-1-0 rule — one immutable copy and zero errors on a verified restore. Veeam SureBackup verifies every backup automatically.', cta: { label: 'Backup & DR', to: '/solutions/backup-dr' } };
   if (s.includes('wifi') || s.includes('wi-fi') || s.includes('network'))

@@ -21,9 +21,9 @@ const liveBlocks = [
     title: 'Support & Services',
     groups: [
       { h: 'Governance', items: ['Service Level Agreement based delivery model', '24×7 support available', 'Standardised & established processes to meet changes & escalations'] },
-      { h: 'Resource Pool', items: ['Capable pool of technical resources', 'Experience in the ITIL framework', 'Experience of service delivery with enterprise customers'] },
-      { h: 'Knowledge Management', items: ['Client-specific knowledge repository', 'Updated knowledge base to respond to sudden, unexpected changes', 'Plans for redundancy'] },
-      { h: 'Information Security', items: ['Customer data confidentiality', 'Regulatory information compliance', 'Support & services on all perimeter and endpoint security measures'] },
+      { h: 'Resource Pool', items: ['Capable pool of technical resources', 'ITIL 4 based service management', 'Experience of service delivery with enterprise customers'] },
+      { h: 'Knowledge Management', items: ['Client-specific knowledge repository', 'Up-to-date knowledge base and documented runbooks', 'Plans for redundancy'] },
+      { h: 'Information Security', items: ['Customer data confidentiality', 'Regulatory compliance, including the DPDP Act 2023', 'Support for perimeter, endpoint, identity and cloud security'] },
     ],
   },
 ];

@@ -66,8 +66,8 @@ export const solutionFamilies = [
             { t: "Secure your data and devices", d: "Protect company data with 2-step verification, single sign-on and endpoint management, archive email and chats, and manage security from one admin console with 24/7 support." },
           ],
           links: [
-            { label: "Learn more", href: "https://gsuite.google.com/intl/en_in/" },
-            { label: "Pricing", href: "https://gsuite.google.com/intl/en_in/pricing.html" },
+            { label: "Google Workspace", href: "https://workspace.google.com/intl/en_in/" },
+            { label: "Workspace pricing", href: "https://workspace.google.com/intl/en_in/pricing.html" },
           ],
         } },
       { slug: 'hybrid-cloud', name: 'Hybrid Cloud', blurb: 'Seamless workload placement across on-prem and cloud.',

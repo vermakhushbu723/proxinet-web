@@ -24,7 +24,8 @@ export function Sitemap() {
     { t: 'Resources', links: [['Resources Hub', '/resources'], ['Blog', '/blog'], ['Whitepapers', '/resources/whitepapers'], ['Glossary', '/resources/glossary'], ['FAQs', '/resources/faq'], ['News & Events', '/news-events'], ...posts.map((p) => [p.title, `/blog/${p.slug}`])] },
     { t: 'Tools', links: [['All Tools', '/tools'], ['Cloud Cost Calculator', '/tools/cloud-cost-calculator'], ['Security Health Score', '/tools/security-health-score'], ['AMC Plan Selector', '/tools/amc-plan-selector'], ['Server Sizing', '/tools/server-sizing'], ['Wi-Fi Estimator', '/tools/wifi-estimator'], ['TCO Calculator', '/tools/tco-calculator']] },
     { t: 'Contact & Conversion', links: [['Contact Us', '/contact'], ['Procurement Pack', '/procurement'], ['Careers', '/careers'], ['Service Status', '/status']] },
-    { t: 'Client Portal', links: [['Portal Login', '/portal/login'], ['Dashboard', '/portal/dashboard']] },
+    // Client Portal — hidden for now
+    // { t: 'Client Portal', links: [['Portal Login', '/portal/login'], ['Dashboard', '/portal/dashboard']] },
     { t: 'Legal', links: [['Privacy Policy', '/legal/privacy-policy'], ['Terms of Service', '/legal/terms'], ['Cookie Policy', '/legal/cookie-policy'], ['DPDP Compliance', '/legal/dpdp-compliance'], ['Accessibility', '/legal/accessibility']] },
   ];
 

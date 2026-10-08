@@ -190,88 +190,118 @@ export function FeatureImage({ src, alt = '', className = '', badge, ratio = 'as
  * Used directly below the hero on detail pages.
  */
 export function SplitFeature({ image, alt = '', eyebrow, title, intro, points = [], links = [], blocks = null, className = '' }) {
-  // Long content: the image keeps a fixed size and stays in view (sticky) while the text scrolls,
-  // instead of stretching to the full height of the text.
-  const textLength = blocks
-    ? blocks.reduce((n, b) => n + b.h.length + [...b.p, ...b.li].join(' ').length, 0)
-    : points.reduce((n, p) => n + (p.t ? p.t.length + p.d.length : p.length), 0);
-  const long = textLength > 700 || points.length > 8;
+  // Top row keeps the original card size: image and text side by side, same height.
+  // When there is a lot of content, only the first part sits beside the image — the rest
+  // continues below both boxes in a full-width card, so the image box never stretches.
+  const size = (b) => b.h.length + [...b.p, ...b.li].join(' ').length;
+  let topBlocks = null;
+  let restBlocks = [];
+  if (blocks) {
+    topBlocks = [blocks[0]];
+    if (blocks[1] && size(blocks[0]) + size(blocks[1]) < 450) topBlocks.push(blocks[1]);
+    restBlocks = blocks.slice(topBlocks.length);
+  }
+  const topPoints = blocks ? [] : points.slice(0, 6);
+  const restPoints = blocks ? [] : points.slice(6);
+  const hasRest = restBlocks.length > 0 || restPoints.length > 0;
+
+  const Block = ({ b, first }) => (
+    <div>
+      {!first && b.h && <h3 className="font-display text-[16px] font-bold text-slate-900 dark:text-white">{b.h}</h3>}
+      {b.p.map((t) => (
+        <p key={t} className="mt-1.5 text-[14.5px] leading-relaxed text-slate-600 dark:text-slate-300">{t}</p>
+      ))}
+      {b.li.length > 0 && (
+        <ul className="mt-2 list-disc space-y-1 pl-5 marker:text-slate-800 dark:marker:text-slate-200">
+          {b.li.map((t) => (
+            <li key={t} className="text-[14px] leading-relaxed text-slate-700 dark:text-slate-200">{t}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+
+  const PointList = ({ items }) => (items[0]?.t ? (
+    <ul className="list-disc space-y-1.5 pl-5 marker:text-slate-800 dark:marker:text-slate-200">
+      {items.map((p) => (
+        <li key={p.t} className="text-[14px] leading-relaxed text-slate-600 dark:text-slate-300">
+          <span className="font-semibold text-slate-800 dark:text-slate-100">{p.t}</span> – {p.d}
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <ul className="list-disc space-y-1.5 pl-5 marker:text-slate-800 dark:marker:text-slate-200">
+      {items.map((p) => (
+        <li key={p} className="text-[14px] font-semibold leading-relaxed text-slate-800 dark:text-slate-100">{p}</li>
+      ))}
+    </ul>
+  ));
+
+  const Links = () => (links.length > 0 ? (
+    <div className="mt-6 flex flex-wrap gap-2.5 border-t border-slate-100 pt-5 dark:border-white/10">
+      {links.map((l) => (
+        <a
+          key={l.href} href={l.href} target="_blank" rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-[13px] font-semibold text-brand-600 transition-colors hover:border-brand-500 hover:bg-brand-500 hover:text-white dark:border-brand-500/30 dark:bg-brand-500/10 dark:text-brand-300"
+        >
+          {l.label} <span aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </div>
+  ) : null);
+
+  const card = 'rounded-2xl border border-slate-200 bg-white shadow-[0_12px_30px_rgba(15,23,42,0.12)] dark:border-white/10 dark:bg-ink-900';
 
   return (
-    <div className={`grid gap-6 lg:gap-8 ${long ? 'items-start md:grid-cols-[2fr_3fr]' : 'items-stretch md:grid-cols-2'} ${className}`}>
-      {/* image box — same height as the text box, or a fixed sticky picture for long content */}
-      <Reveal className={long ? 'md:sticky md:top-28' : 'h-full'}>
-        <div className={`relative overflow-hidden rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.12)] dark:border-white/10 ${long ? 'aspect-[4/3] md:aspect-[4/5]' : 'h-full min-h-[300px]'}`}>
-          <img src={image} alt={alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-900/30 via-transparent to-transparent" aria-hidden="true" />
-        </div>
-      </Reveal>
+    <div className={className}>
+      <div className="grid items-stretch gap-6 md:grid-cols-2 lg:gap-8">
+        {/* image box — same height as the text box; the whole picture is shown, never cropped */}
+        <Reveal className="h-full">
+          <div className="relative h-full min-h-[320px] overflow-hidden rounded-2xl border border-slate-200 bg-ink-900 shadow-[0_12px_30px_rgba(15,23,42,0.12)] dark:border-white/10">
+            <img src={image} alt="" aria-hidden="true" loading="lazy" className="absolute inset-0 h-full w-full scale-110 object-cover opacity-60 blur-xl" />
+            <img src={image} alt={alt} loading="lazy" className="absolute inset-0 h-full w-full object-contain" />
+          </div>
+        </Reveal>
 
-      {/* text box */}
-      <Reveal delay={0.08} className={long ? '' : 'h-full'}>
-        <div className="flex h-full flex-col justify-center rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.12)] sm:p-8 dark:border-white/10 dark:bg-ink-900">
-          {eyebrow && (
-            <div className="px-eyebrow mb-3">
-              <span className="inline-block h-px w-6 bg-brand-400" />{eyebrow}
-            </div>
-          )}
-          <h2 className="font-display text-[1.5rem] font-bold leading-tight text-slate-900 sm:text-[1.75rem] dark:text-white">{title}</h2>
-          {blocks ? (
-            /* text exactly as on the live proxinet.in page: headings, paragraphs and lists in order */
-            <div className="mt-3 space-y-4">
-              {blocks.map((b, bi) => (
-                <div key={bi}>
-                  {bi > 0 && b.h && <h3 className="font-display text-[16px] font-bold text-slate-900 dark:text-white">{b.h}</h3>}
-                  {b.p.map((t) => (
-                    <p key={t} className="mt-1.5 text-[14.5px] leading-relaxed text-slate-600 dark:text-slate-300">{t}</p>
-                  ))}
-                  {b.li.length > 0 && (
-                    <ul className="mt-2 list-disc space-y-1 pl-5 marker:text-slate-800 dark:marker:text-slate-200">
-                      {b.li.map((t) => (
-                        <li key={t} className="text-[14px] leading-relaxed text-slate-700 dark:text-slate-200">{t}</li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-              ))}
-            </div>
-          ) : (<>
-          {intro && <p className="mt-2 text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">{intro}</p>}
+        {/* text box */}
+        <Reveal delay={0.08} className="h-full">
+          <div className={`flex h-full flex-col justify-center p-6 sm:p-8 ${card}`}>
+            {eyebrow && (
+              <div className="px-eyebrow mb-3">
+                <span className="inline-block h-px w-6 bg-brand-400" />{eyebrow}
+              </div>
+            )}
+            <h2 className="font-display text-[1.5rem] font-bold leading-tight text-slate-900 sm:text-[1.75rem] dark:text-white">{title}</h2>
+            {topBlocks ? (
+              <div className="mt-3 space-y-4">
+                {topBlocks.map((b, i) => <Block key={i} b={b} first={i === 0} />)}
+              </div>
+            ) : (
+              <>
+                {intro && <p className="mt-2 text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">{intro}</p>}
+                {topPoints.length > 0 && <div className="mt-4"><PointList items={topPoints} /></div>}
+              </>
+            )}
+            {!hasRest && <Links />}
+          </div>
+        </Reveal>
+      </div>
 
-          {points[0]?.t ? (
-            /* detailed points: simple bulleted list — bold title, dash, description */
-            <ul className="mt-4 list-disc space-y-1.5 pl-5 marker:text-slate-800 dark:marker:text-slate-200">
-              {points.map((p) => (
-                <li key={p.t} className="text-[14px] leading-relaxed text-slate-600 dark:text-slate-300">
-                  <span className="font-semibold text-slate-800 dark:text-slate-100">{p.t}</span> – {p.d}
-                </li>
-              ))}
-            </ul>
-          ) : (
-            /* simple points: same bulleted list as the detailed ones — no numbers */
-            <ul className="mt-4 list-disc space-y-1.5 pl-5 marker:text-slate-800 dark:marker:text-slate-200">
-              {points.map((p) => (
-                <li key={p} className="text-[14px] font-semibold leading-relaxed text-slate-800 dark:text-slate-100">{p}</li>
-              ))}
-            </ul>
-          )}
-
-          </>)}
-
-          {links.length > 0 && (
-            <div className="mt-6 flex flex-wrap gap-2.5 border-t border-slate-100 pt-5 dark:border-white/10">
-              {links.map((l) => (
-                <a
-                  key={l.href} href={l.href} target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-[13px] font-semibold text-brand-600 transition-colors hover:border-brand-500 hover:bg-brand-500 hover:text-white dark:border-brand-500/30 dark:bg-brand-500/10 dark:text-brand-300"
-                >
-                  {l.label} <span aria-hidden="true">↗</span>
-                </a>
-              ))}
-            </div>
-          )}
-        </div>
-      </Reveal>
+      {/* the rest of the content, below both boxes */}
+      {hasRest && (
+        <Reveal className="mt-6 lg:mt-8">
+          <div className={`p-6 sm:p-8 ${card}`}>
+            {restBlocks.length > 0 ? (
+              <div className="grid gap-x-10 gap-y-6 md:grid-cols-2">
+                {restBlocks.map((b, i) => <Block key={i} b={b} first={false} />)}
+              </div>
+            ) : (
+              <PointList items={restPoints} />
+            )}
+            <Links />
+          </div>
+        </Reveal>
+      )}
     </div>
   );
 }
