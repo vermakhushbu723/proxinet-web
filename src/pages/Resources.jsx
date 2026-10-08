@@ -235,12 +235,15 @@ export function NewsEvents() {
   useEffect(() => {
     setType(hash === '#news' ? 'News' : hash === '#events' ? 'Event' : 'All');
   }, [hash]);
+  // Posts from proxinet.in/news and proxinet.in/events — each opens the original post
   const all = [
-    { date: '2026-09-02', type: 'Event', title: 'Webinar: Ransomware readiness for SMEs', desc: 'A 45-minute session co-hosted with Veeam on immutable backup and the recovery playbook.' },
-    { date: '2026-08-18', type: 'News', title: '24x7 NOC coverage expanded', desc: 'The 15-minute P1 response guarantee is now live for Gold plan clients.' },
-    { date: '2026-07-25', type: 'News', title: 'New Delhi office expansion', desc: 'The service desk team at the New Ashok Nagar office has doubled in size.' },
-    { date: '2026-06-30', type: 'Event', title: 'Workshop: Cloud cost optimisation', desc: 'A hands-on session on the practical steps that cut Azure and AWS bills by 20 to 40 percent.' },
-    { date: '2026-05-12', type: 'News', title: 'ISO 27001:2022 transition complete', desc: 'The ISMS has migrated to the updated standard and cleared its surveillance audit.' },
+    { date: '2020-12-04', type: 'Event', title: 'Installing, Configuring and Maintaining Windows 10: Maintaining Windows 10', desc: 'Online course · 4 Dec 2020, 9:30 AM – 10:30 AM.', href: 'https://proxinet.in/installing-configuring-and-maintaining-windows-10-maintaining-windows-10/' },
+    { date: '2020-12-02', type: 'News', title: 'Cisco to Host 2020 Annual Meeting of Shareholders', desc: '2020 Cisco Virtual Annual Meeting of Shareholders — Thursday, December 10, 2020, 8:00 a.m. PT.', href: 'https://proxinet.in/cisco-to-host-2020-annual-meeting-of-shareholders/' },
+    { date: '2020-12-02', type: 'Event', title: 'Webinar | Firstline Workers First', desc: 'Join our webinar, Firstline Workers First, to learn why it’s important that Firstline Workers are empowered.', href: 'https://proxinet.in/webinar-firstline-workers-first/' },
+    { date: '2020-11-30', type: 'News', title: 'What’s new in the Windows 10 October 2020 Update', desc: 'A refreshing Start — the Start menu has a more streamlined design with a uniform, partially transparent background.', href: 'https://proxinet.in/whats-new-in-the-windows-10-october-2020-update/' },
+    { date: '2020-11-19', type: 'News', title: 'Dell Technologies Forum', desc: 'Be ready for what’s next at Dell Technologies Forum.', href: 'https://proxinet.in/dell-technologies/' },
+    { date: '2020-11-18', type: 'News', title: 'The Cloud Innovation Summit', desc: 'Join us in our live virtual summit to learn and explore how to reshape your business with the cloud.', href: 'https://proxinet.in/the-cloud-innovation-summit/' },
+    { date: '2020-11-18', type: 'News', title: 'Cyber Security', desc: 'The cyber security landscape is changing at a dizzying pace, meaning that cyber security leaders must keep up.', href: 'https://proxinet.in/cyber-security/' },
   ];
   const items = type === 'All' ? all : all.filter((n) => n.type === type);
   return (
@@ -273,6 +276,9 @@ export function NewsEvents() {
                   <Tag color={n.type === 'Event' ? 'gold' : 'blue'}>{n.type}</Tag>
                   <h2 className="mt-2 font-display text-[17px] font-semibold text-slate-900 dark:text-white">{n.title}</h2>
                   <p className="px-body mt-1.5">{n.desc}</p>
+                  <a href={n.href} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex items-center gap-1.5 text-[13px] font-semibold text-brand-600 hover:text-brand-700 dark:text-brand-300">
+                    Read more <span aria-hidden="true">↗</span>
+                  </a>
                 </div>
                 <img
                   src={n.type === 'Event' ? slotImg('news-event-thumb', photos.event, 400) : slotImg('news-news-thumb', photos.openOffice, 400)} alt="" aria-hidden="true" loading="lazy"

@@ -8,249 +8,110 @@ import {
   FacebookFilled,
   TwitterOutlined,
   InstagramOutlined,
-  SafetyCertificateOutlined,
+  ClockCircleOutlined,
 } from '@ant-design/icons';
 import { company } from '../data/company';
-import { certifications } from '../data/proof';
 import LogoImage from '../LOGO-1.png';
 
-// Only links that are NOT already in the navbar menus
-const supportLinks = [
-  { label: 'Client Portal login', to: '/portal/login' },
-  { label: 'Service Status', to: '/status' },
-  { label: 'Sitemap', to: '/sitemap' },
+const social = [
+  { i: <LinkedinFilled />, h: company.social.linkedin, l: 'LinkedIn' },
+  { i: <FacebookFilled />, h: company.social.facebook, l: 'Facebook' },
+  { i: <TwitterOutlined />, h: company.social.twitter, l: 'Twitter' },
+  { i: <InstagramOutlined />, h: company.social.instagram, l: 'Instagram' },
 ];
+
+/** Column heading with a short brand-coloured underline. */
+function ColHead({ children }) {
+  return (
+    <p className="mb-6 text-sm font-bold uppercase tracking-[0.14em] text-white">
+      {children}
+      <span className="mt-2.5 block h-0.5 w-10 rounded-full bg-gradient-to-r from-brand-500 to-orange-400" />
+    </p>
+  );
+}
 
 export default function Footer() {
   return (
     <footer className="mt-auto border-t border-slate-700 bg-slate-800 dark:border-white/10 dark:bg-ink-900">
 
       {/* ================= MAIN FOOTER ================= */}
-      <div className="px-container py-12">
+      <div className="px-container py-14">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.2fr_1.3fr_1fr] lg:gap-14">
 
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-[1.7fr_1fr_1fr]">
-
-          {/* ================= BRAND + ADDRESSES ================= */}
+          {/* ================= BRAND ================= */}
           <div>
+            <Link to="/" className="inline-flex shrink-0 items-center rounded-xl bg-white px-4 py-2.5 shadow-lift">
+              <img src={LogoImage} alt={`${company.name} Logo`} className="h-14 w-auto max-w-[260px] object-contain" />
+            </Link>
 
-            {/* Logo + Social Media */}
-            <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:gap-8">
+            <p className="mt-6 max-w-[340px] text-sm leading-6 text-slate-300">
+              One Stop IT Solutions — cloud, cybersecurity, data center, backup and networking,
+              designed, deployed and managed by one accountable team.
+            </p>
 
-              {/* Logo */}
-              <Link
-                to="/"
-                className="inline-flex shrink-0 items-center"
-              >
-                <img
-                  src={LogoImage}
-                  alt={`${company.name} Logo`}
-                  className="h-20 w-auto max-w-[320px] object-contain"
-                />
-              </Link>
-            </div>
-
-
-            {/* Offices / Addresses */}
-            <div className="mt-7 max-w-[450px] space-y-5">
-
-              {company.offices.map((o) => (
-                <div
-                  key={o.label}
-                  className="flex gap-3"
+            <p className="mb-3 mt-7 text-xs font-bold uppercase tracking-[0.14em] text-white">Connect With Us</p>
+            <div className="flex gap-2.5">
+              {social.map((x) => (
+                <a
+                  key={x.l} href={x.h} aria-label={x.l} target="_blank" rel="noopener noreferrer"
+                  className="grid h-10 w-10 place-items-center rounded-full border border-slate-500 bg-slate-700/40 text-white transition-all duration-200 hover:-translate-y-1 hover:border-brand-400 hover:bg-brand-500 hover:text-white"
                 >
-
-                  <EnvironmentOutlined className="mt-1 shrink-0 text-lg text-brand-400" />
-
-                  <div>
-
-                    <p className="mb-1.5 text-xs font-bold uppercase tracking-[0.12em] text-white">
-                      {o.label}
-                    </p>
-
-                    <p className="m-0 text-sm font-medium leading-6 text-white">
-                      {o.line}
-                    </p>
-
-                  </div>
-
-                </div>
+                  {x.i}
+                </a>
               ))}
-
             </div>
-
           </div>
 
+          {/* ================= OFFICES ================= */}
+          <div>
+            <ColHead>Our Offices</ColHead>
+            <div className="space-y-6">
+              {company.offices.map((o) => (
+                <div key={o.label} className="flex gap-3.5">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-500/15 text-brand-300">
+                    <EnvironmentOutlined />
+                  </span>
+                  <div>
+                    <p className="mb-1 text-xs font-bold uppercase tracking-[0.12em] text-white">{o.label}</p>
+                    <p className="m-0 text-sm leading-6 text-slate-300">{o.line}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
 
           {/* ================= CONTACT ================= */}
           <div>
-
-            <p className="mb-5 text-sm font-bold uppercase tracking-[0.12em] text-white">
-              Contact Us
-            </p>
-
+            <ColHead>Contact Us</ColHead>
             <ul className="m-0 list-none space-y-4 p-0">
-
               {company.phones.map((p) => (
                 <li key={p}>
-
-                  <a
-                    href={`tel:${p}`}
-                    className="
-                      flex items-center gap-3
-                      text-sm font-semibold text-white
-                      transition-colors
-                      hover:text-brand-300
-                    "
-                  >
-                    <PhoneOutlined className="text-brand-400" />
+                  <a href={`tel:${p}`} className="flex items-center gap-3.5 text-sm font-semibold text-white transition-colors hover:text-brand-300">
+                    <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-500/15 text-brand-300"><PhoneOutlined /></span>
                     {p}
                   </a>
-
                 </li>
               ))}
-
               <li>
-
-                <a
-                  href={`mailto:${company.email}`}
-                  className="
-                    flex items-center gap-3
-                    break-all
-                    text-sm font-semibold text-white
-                    transition-colors
-                    hover:text-brand-300
-                  "
-                >
-                  <MailOutlined className="shrink-0 text-brand-400" />
+                <a href={`mailto:${company.email}`} className="flex items-center gap-3.5 break-all text-sm font-semibold text-white transition-colors hover:text-brand-300">
+                  <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-brand-500/15 text-brand-300"><MailOutlined /></span>
                   {company.email}
                 </a>
-
               </li>
-
             </ul>
 
-
-            {/* Business Hours */}
-            <div
-              className="
-                mt-7 rounded-xl
-                border border-slate-600
-                bg-slate-700/40
-                p-4
-              "
-            >
-
-              <p className="mb-2 text-xs font-bold uppercase tracking-wider text-brand-300">
-                Business Hours
+            <div className="mt-7 rounded-xl border border-slate-600 bg-slate-700/40 p-4">
+              <p className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-300">
+                <ClockCircleOutlined /> Business Hours
               </p>
-
-              <p className="m-0 text-xs font-semibold leading-5 text-white">
-                Mon–Sat · 9:30 AM – 6:30 PM
+              <p className="m-0 text-sm font-semibold leading-6 text-white">Mon–Sat · 9:30 AM – 6:30 PM</p>
+              <p className="m-0 mt-1 flex items-center gap-2 text-sm font-semibold text-emerald-400">
+                <span className="h-2 w-2 rounded-full bg-emerald-400" /> NOC Support · 24×7
               </p>
-
-              <p className="m-0 mt-1 text-xs font-semibold text-white">
-                NOC Support · 24×7
-              </p>
-
             </div>
-
           </div>
 
-
-          {/* ================= SUPPORT ================= */}
-         <div>
-
-  <p className="mb-5 text-sm font-bold uppercase tracking-[0.12em] text-white">
-    Support
-  </p>
-
-  <ul className="m-0 list-none space-y-3 p-0">
-
-    {supportLinks.map((l) => (
-      <li key={l.to}>
-
-        <Link
-          className="
-            inline-flex
-            text-sm
-            font-semibold
-            text-white
-            transition-all
-            hover:translate-x-1
-            hover:text-brand-300
-          "
-          to={l.to}
-        >
-          →&nbsp; {l.label}
-        </Link>
-
-      </li>
-    ))}
-
-  </ul>
-
-
-  {/* Connect With Us */}
-  <div className="mt-8">
-
-    <p className="mb-3 text-xs font-bold uppercase tracking-[0.14em] text-white">
-      Connect With Us
-    </p>
-
-    <div className="flex gap-2.5">
-
-      {[
-        {
-          i: <LinkedinFilled />,
-          h: company.social.linkedin,
-          l: 'LinkedIn',
-        },
-        {
-          i: <FacebookFilled />,
-          h: company.social.facebook,
-          l: 'Facebook',
-        },
-        {
-          i: <TwitterOutlined />,
-          h: company.social.twitter,
-          l: 'Twitter',
-        },
-        {
-          i: <InstagramOutlined />,
-          h: company.social.instagram,
-          l: 'Instagram',
-        },
-      ].map((s) => (
-        <a
-          key={s.l}
-          href={s.h}
-          aria-label={s.l}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="
-            grid h-10 w-10 place-items-center rounded-lg
-            border border-slate-500
-            bg-slate-700/40
-            text-white
-            transition-all duration-200
-            hover:-translate-y-1
-            hover:border-brand-400
-            hover:bg-brand-500/20
-            hover:text-brand-300
-          "
-        >
-          {s.i}
-        </a>
-      ))}
-
-    </div>
-
-  </div>
-
-</div>
-
         </div>
-
       </div>
 
       {/* ================= LEGAL ================= */}

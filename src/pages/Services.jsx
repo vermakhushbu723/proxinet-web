@@ -6,6 +6,27 @@ import { services, findService, slaPlans } from '../data/services';
 import { Reveal, Stagger, StaggerItem } from '../components/ui';
 import { PageHero, CTABand, InfoCard, SplitFeature } from '../components/blocks';
 import { serviceImg } from '../data/images';
+import liveContent from '../data/liveContent.json';
+
+/* Content from proxinet.in/services */
+const liveBlocks = [
+  {
+    title: 'Project Management',
+    groups: [
+      { h: 'We plan every project around', items: ['Scope – size, goals, requirements', 'Resources – staff, equipment, material', 'Time – start and end, task durations, dependencies', 'Money – costs, contingencies and profit'] },
+      { h: 'So that we', items: ['Improve productivity and quality of work', 'Encourage consistent communication amongst staff, suppliers and clients', 'Satisfy the needs of the project’s stakeholders', 'Mitigate the risk of a project failing', 'Increase customer satisfaction'] },
+    ],
+  },
+  {
+    title: 'Support & Services',
+    groups: [
+      { h: 'Governance', items: ['Service Level Agreement based delivery model', '24×7 support available', 'Standardised & established processes to meet changes & escalations'] },
+      { h: 'Resource Pool', items: ['Capable pool of technical resources', 'Experience in the ITIL framework', 'Experience of service delivery with enterprise customers'] },
+      { h: 'Knowledge Management', items: ['Client-specific knowledge repository', 'Updated knowledge base to respond to sudden, unexpected changes', 'Plans for redundancy'] },
+      { h: 'Information Security', items: ['Customer data confidentiality', 'Regulatory information compliance', 'Support & services on all perimeter and endpoint security measures'] },
+    ],
+  },
+];
 
 /* =================== HUB =================== */
 export function ServicesHub() {
@@ -17,6 +38,31 @@ export function ServicesHub() {
         sub="Consulting, deployment, 24/7 support and lifecycle care."
         crumbs={[{ label: 'Services' }]}
       />
+
+      {/* From proxinet.in/services */}
+      <section className="px-container pt-16 sm:pt-20">
+        <div className="grid gap-6 lg:grid-cols-2">
+          {liveBlocks.map((b) => (
+            <Reveal key={b.title}>
+              <div className="h-full rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.10)] sm:p-8 dark:border-white/10 dark:bg-ink-900">
+                <h2 className="font-display text-[1.45rem] font-extrabold tracking-tight text-slate-900 dark:text-white">{b.title}</h2>
+                <div className="mt-5 space-y-4">
+                  {b.groups.map((g) => (
+                    <div key={g.h}>
+                      {g.h && <p className="font-display text-[15px] font-bold text-slate-800 dark:text-slate-100">{g.h}</p>}
+                      <ul className="mt-1.5 list-disc space-y-1 pl-5 marker:text-brand-500">
+                        {g.items.map((it) => (
+                          <li key={it} className="text-[14px] leading-relaxed text-slate-600 dark:text-slate-300">{it}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
       <section className="px-container px-section">
         <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -44,7 +90,7 @@ export function ServiceDetail() {
   return (
     <>
       <PageHero
-        eyebrow="Service" title={s.name} sub={s.hero}
+        title={s.name} sub={liveContent[`svc:${s.slug}`] ? null : s.hero}
         crumbs={[{ label: 'Services', to: '/services' }, { label: s.name }]}
       />
 
@@ -52,7 +98,8 @@ export function ServiceDetail() {
         <div className="min-w-0">
           <SplitFeature
             image={serviceImg(s.slug, 800)} alt={s.name}
-            eyebrow="Service" title="What is included" intro={s.blurb}
+            title={liveContent[`svc:${s.slug}`]?.blocks[0]?.h || 'What is included'} intro={s.blurb}
+            blocks={liveContent[`svc:${s.slug}`]?.blocks}
             points={s.deliverables}
           />
 

@@ -261,8 +261,8 @@ const localHero = Object.fromEntries(
     .map(([path, url]) => [path.split('/').pop().replace('.jpg', ''), url]),
 );
 export const solutionHeroImg = (slug, w) => localHero[slug] || img(ov(`solution-hero:${slug}`, sol[slug]?.hero || pick(solutionMap, slug, P.circuitBoard)), w);
-export const serviceImg = (slug, w) => img(svc[slug]?.side || pick(serviceMap, slug, P.teamMonitors), w);
-export const serviceHeroImg = (slug, w) => img(svc[slug]?.hero || pick(serviceMap, slug, P.teamMonitors), w);
+export const serviceImg = (slug, w) => img(ov(`service-side:${slug}`, svc[slug]?.side || pick(serviceMap, slug, P.teamMonitors)), w);
+export const serviceHeroImg = (slug, w) => img(ov(`service-hero:${slug}`, svc[slug]?.hero || pick(serviceMap, slug, P.teamMonitors)), w);
 export const industryImg = (slug, w) => img(ov(`industry-side:${slug}`, pick(industryMap, slug, P.skyscrapers)), w);
 const industryHeroImg = (slug, w) => img(ov(`industry-hero:${slug}`, pick(industryMap, slug, P.skyscrapers)), w);
 export const caseImg = (slug, w) => img(ov(`case-side:${slug}`, pick(caseMap, slug, P.teamMeeting)), w);

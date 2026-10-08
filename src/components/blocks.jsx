@@ -189,19 +189,26 @@ export function FeatureImage({ src, alt = '', className = '', badge, ratio = 'as
  * Compact image on the left, heading + numbered points on the right.
  * Used directly below the hero on detail pages.
  */
-export function SplitFeature({ image, alt = '', eyebrow, title, intro, points = [], className = '' }) {
+export function SplitFeature({ image, alt = '', eyebrow, title, intro, points = [], links = [], blocks = null, className = '' }) {
+  // Long content: the image keeps a fixed size and stays in view (sticky) while the text scrolls,
+  // instead of stretching to the full height of the text.
+  const textLength = blocks
+    ? blocks.reduce((n, b) => n + b.h.length + [...b.p, ...b.li].join(' ').length, 0)
+    : points.reduce((n, p) => n + (p.t ? p.t.length + p.d.length : p.length), 0);
+  const long = textLength > 700 || points.length > 8;
+
   return (
-    <div className={`grid items-stretch gap-6 md:grid-cols-2 lg:gap-8 ${className}`}>
-      {/* image box — stretches to the same height as the text box */}
-      <Reveal className="h-full">
-        <div className="relative h-full min-h-[300px] overflow-hidden rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.12)] dark:border-white/10">
+    <div className={`grid gap-6 lg:gap-8 ${long ? 'items-start md:grid-cols-[2fr_3fr]' : 'items-stretch md:grid-cols-2'} ${className}`}>
+      {/* image box — same height as the text box, or a fixed sticky picture for long content */}
+      <Reveal className={long ? 'md:sticky md:top-28' : 'h-full'}>
+        <div className={`relative overflow-hidden rounded-2xl border border-slate-200 shadow-[0_12px_30px_rgba(15,23,42,0.12)] dark:border-white/10 ${long ? 'aspect-[4/3] md:aspect-[4/5]' : 'h-full min-h-[300px]'}`}>
           <img src={image} alt={alt} loading="lazy" className="absolute inset-0 h-full w-full object-cover" />
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-900/30 via-transparent to-transparent" aria-hidden="true" />
         </div>
       </Reveal>
 
       {/* text box */}
-      <Reveal delay={0.08} className="h-full">
+      <Reveal delay={0.08} className={long ? '' : 'h-full'}>
         <div className="flex h-full flex-col justify-center rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_12px_30px_rgba(15,23,42,0.12)] sm:p-8 dark:border-white/10 dark:bg-ink-900">
           {eyebrow && (
             <div className="px-eyebrow mb-3">
@@ -209,18 +216,60 @@ export function SplitFeature({ image, alt = '', eyebrow, title, intro, points = 
             </div>
           )}
           <h2 className="font-display text-[1.5rem] font-bold leading-tight text-slate-900 sm:text-[1.75rem] dark:text-white">{title}</h2>
+          {blocks ? (
+            /* text exactly as on the live proxinet.in page: headings, paragraphs and lists in order */
+            <div className="mt-3 space-y-4">
+              {blocks.map((b, bi) => (
+                <div key={bi}>
+                  {bi > 0 && b.h && <h3 className="font-display text-[16px] font-bold text-slate-900 dark:text-white">{b.h}</h3>}
+                  {b.p.map((t) => (
+                    <p key={t} className="mt-1.5 text-[14.5px] leading-relaxed text-slate-600 dark:text-slate-300">{t}</p>
+                  ))}
+                  {b.li.length > 0 && (
+                    <ul className="mt-2 list-disc space-y-1 pl-5 marker:text-slate-800 dark:marker:text-slate-200">
+                      {b.li.map((t) => (
+                        <li key={t} className="text-[14px] leading-relaxed text-slate-700 dark:text-slate-200">{t}</li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (<>
           {intro && <p className="mt-2 text-[15px] leading-relaxed text-slate-600 dark:text-slate-300">{intro}</p>}
 
-          <ul className="mt-5 grid gap-2.5">
-            {points.map((p, i) => (
-              <li key={p} className="flex items-center gap-3 rounded-xl border border-slate-100 bg-slate-50 px-3.5 py-2.5 dark:border-white/10 dark:bg-white/[0.03]">
-                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-brand-500 font-mono text-[11px] font-bold text-white">
-                  {String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="text-[14.5px] font-semibold leading-snug text-slate-800 dark:text-slate-100">{p}</span>
-              </li>
-            ))}
-          </ul>
+          {points[0]?.t ? (
+            /* detailed points: simple bulleted list — bold title, dash, description */
+            <ul className="mt-4 list-disc space-y-1.5 pl-5 marker:text-slate-800 dark:marker:text-slate-200">
+              {points.map((p) => (
+                <li key={p.t} className="text-[14px] leading-relaxed text-slate-600 dark:text-slate-300">
+                  <span className="font-semibold text-slate-800 dark:text-slate-100">{p.t}</span> – {p.d}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            /* simple points: same bulleted list as the detailed ones — no numbers */
+            <ul className="mt-4 list-disc space-y-1.5 pl-5 marker:text-slate-800 dark:marker:text-slate-200">
+              {points.map((p) => (
+                <li key={p} className="text-[14px] font-semibold leading-relaxed text-slate-800 dark:text-slate-100">{p}</li>
+              ))}
+            </ul>
+          )}
+
+          </>)}
+
+          {links.length > 0 && (
+            <div className="mt-6 flex flex-wrap gap-2.5 border-t border-slate-100 pt-5 dark:border-white/10">
+              {links.map((l) => (
+                <a
+                  key={l.href} href={l.href} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-brand-200 bg-brand-50 px-3 py-1.5 text-[13px] font-semibold text-brand-600 transition-colors hover:border-brand-500 hover:bg-brand-500 hover:text-white dark:border-brand-500/30 dark:bg-brand-500/10 dark:text-brand-300"
+                >
+                  {l.label} <span aria-hidden="true">↗</span>
+                </a>
+              ))}
+            </div>
+          )}
         </div>
       </Reveal>
     </div>
@@ -267,7 +316,7 @@ export function CTABand({
   secondary = null,
 }) {
   return (
-    <section className="px-container py-14 sm:py-18 lg:py-20">
+    <section className="px-container pb-14 pt-2 sm:pb-16 sm:pt-4 lg:pb-20 lg:pt-6">
       <Reveal>
         <div
           className="

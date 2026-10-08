@@ -77,5 +77,13 @@
  "page:/testimonials": "1543269664-56d93c1b41a6",
  "page:/resources": "1501504905252-473c47e087f8",
  "solution-hero:server-virtualization": "1489436969537-cf0c1dc69cba",
- "solution-side:microsoft-azure": "1667372283536-a832e74401c2"
+ "solution-side:microsoft-azure": "1667372283536-a832e74401c2",
+ "service-hero:infrastructure-services": "1573166584647-2c1366f9b219",
+ "service-side:infrastructure-services": "1606770347238-77fcfd29906c",
+ "service-hero:data-center-services": "1680992044138-ce4864c2b962",
+ "service-side:data-center-services": "1782094673136-5198a372980c",
+ "service-hero:network-services": "1663932210347-164a05ed0ccd",
+ "service-side:network-services": "1750711731797-25c3f2551ff8",
+ "service-hero:cloud-services": "1752742111841-f490c48aa668",
+ "service-side:cloud-services": "1733195296321-b99d129b09cd"
 }

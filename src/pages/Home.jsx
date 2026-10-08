@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { ArrowRightOutlined, ThunderboltFilled } from '@ant-design/icons';
 import { motion, AnimatePresence } from 'framer-motion';
 import { stats, processSteps } from '../data/company';
-import { solutionFamilies } from '../data/solutions';
+import { featuredFamilies as solutionFamilies } from '../data/solutions';
 import { partners } from '../data/proof';
 import { Reveal, Stagger, StaggerItem, Counter, SectionHead, ArrowLink, Glow, IconBadge } from '../components/ui';
 import PartnerLogo from '../components/PartnerLogo';
@@ -439,7 +439,7 @@ export default function Home() {
       <SectionHead
         eyebrow="What we do"
         title="Solutions"
-        sub="Seven practice areas under one accountable partner."
+        sub="Six practice areas under one accountable partner."
       />
 
       <ArrowLink to="/solutions">

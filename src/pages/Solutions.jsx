@@ -1,9 +1,10 @@
 import React from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import { solutionFamilies, findFamily, findChild } from '../data/solutions';
+import { featuredFamilies, findFamily, findChild } from '../data/solutions';
 import { Stagger, StaggerItem, SectionHead } from '../components/ui';
 import { PageHero, CTABand, InfoCard, dotList, SplitFeature } from '../components/blocks';
 import { familyImg, solutionImg } from '../data/images';
+import liveContent from '../data/liveContent.json';
 
 
 /* =================== HUB: /solutions =================== */
@@ -13,12 +14,12 @@ export function SolutionsHub() {
       <PageHero
         eyebrow="Solutions"
         title="The full IT stack, one accountable partner"
-        sub="Seven practice areas, 40+ services — one accountable partner."
+        sub="Six practice areas, 30+ services — one accountable partner."
         crumbs={[{ label: 'Solutions' }]}
       />
       <section className="px-container px-section">
         <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {solutionFamilies.map((f) => (
+          {featuredFamilies.map((f) => (
             <StaggerItem key={f.slug}>
               <InfoCard
                 to={`/solutions/${f.slug}`} image={familyImg(f.slug, 800)} as="h2"
@@ -43,14 +44,14 @@ export function SolutionFamily() {
   return (
     <>
       <PageHero
-        eyebrow={f.tag} title={f.name} sub={f.hero}
+        title={f.name} sub={f.hero}
         crumbs={[{ label: 'Solutions', to: '/solutions' }, { label: f.name }]}
       />
 
       {/* children */}
       <section className="px-container px-section">
         <div>
-          <SectionHead eyebrow="Services" title={`What ${f.name} includes`} />
+          <SectionHead title={`What ${f.name} includes`} />
           <Stagger className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {f.children.map((c) => (
               <StaggerItem key={c.slug}>
@@ -79,7 +80,7 @@ export function SolutionDetail() {
   return (
     <>
       <PageHero
-        eyebrow={f.name} title={c.name} sub={c.blurb}
+        title={c.name} sub={liveContent[c.slug] ? null : c.blurb}
         crumbs={[{ label: 'Solutions', to: '/solutions' }, { label: f.name, to: `/solutions/${f.slug}` }, { label: c.name }]}
       />
 
@@ -88,8 +89,11 @@ export function SolutionDetail() {
           {/* what you get */}
           <SplitFeature
             image={solutionImg(c.slug, 800)} alt={c.name}
-            eyebrow={f.name} title="What gets delivered" intro={c.blurb}
-            points={c.bullets}
+            title={liveContent[c.slug]?.blocks[0]?.h || c.deliver?.title || 'What gets delivered'}
+            blocks={liveContent[c.slug]?.blocks}
+            intro={c.deliver ? c.deliver.intro : c.blurb}
+            points={c.deliver?.items || c.bullets}
+            links={c.deliver?.links}
           />
 
         </div>

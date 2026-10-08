@@ -98,10 +98,10 @@ const megaMenu = [
       {
         title: 'Services',
         items: [
-          { label: 'Infrastructure Services', to: '/services/managed-it-services' },
-          { label: 'Data Center Services', to: '/solutions/data-center' },
-          { label: 'Network Services', to: '/solutions/network' },
-          { label: 'Cloud Services', to: '/solutions/cloud' },
+          { label: 'Infrastructure Services', to: '/services/infrastructure-services' },
+          { label: 'Data Center Services', to: '/services/data-center-services' },
+          { label: 'Network Services', to: '/services/network-services' },
+          { label: 'Cloud Services', to: '/services/cloud-services' },
         ],
       },
     ],
